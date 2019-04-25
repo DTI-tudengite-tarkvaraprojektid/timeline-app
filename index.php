@@ -1,7 +1,8 @@
 <?php 
-    require_once "includes/" // todo:
+    require_once "includes/database.php";
+
+    require "includes/header.php";
 ?>
-<?php require "includes/header.php"; ?>
 <div class="container mt-3">
     <h1> This is an index page </h1>
     <div class="timeline-container" >
