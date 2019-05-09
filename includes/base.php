@@ -2,4 +2,4 @@
 
 require_once(__DIR__ . '/../config/config.php');
 require_once(__DIR__ . '/database.php');
-require_once(__DIR__ . '/classes/ResponseHelper.php');
+require_once(__DIR__ . '/Classes/ResponseHelper.php');
