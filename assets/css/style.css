@@ -39,6 +39,11 @@
     background-color: #0084ff;
 }
 
+.timeline-point#sub-timeline:hover::before {
+    background-color: inherit;
+}
+
+
 .timeline-point {
     padding-top: 10px;
     position: absolute;

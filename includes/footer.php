@@ -5,7 +5,7 @@
     <?php
         if (isset($javascripts)) {
             foreach ($javascripts as $javascript) {
-                echo '<script src="' . $javascript . '"></script>';
+                echo '<script src="' . $javascript . '" type="module"></script>';
             }
         }
     ?>
