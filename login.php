@@ -31,12 +31,12 @@ if(isset($_POST["submit"])){
 
 <div class="container mt-3">
     <h3>Logi sisse! </h3>
-    <form class="mt-3">
+    <form class="mt-3" method="post">
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Sisesta email">
         </div>
-        <div class="form-group">
+        <div class="form-group" method="post">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Sisesta parool">
         </div>

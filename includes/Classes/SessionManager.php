@@ -1,6 +1,6 @@
 
 <?php
-require_once("incldes/base.php");
+require_once("includes/base.php");
 
 
 class SessionManager {
