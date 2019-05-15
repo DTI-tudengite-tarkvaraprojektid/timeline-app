@@ -1,3 +1,4 @@
+
 <?php
 require_once("incldes/base.php")
 class SessionManager {
@@ -23,19 +24,17 @@ class SessionManager {
               $mysqli->close();
               header("Location: main.php");
               exit();
-              
             } else {
               $notice = "Sisestasite vale salasõna!";
             }
           } else {
-            $notice = "Sellist kasutajat (" .$email .") ei leitud!";  
-          }		  
+            $notice = "Sellist kasutajat (" .$email .") ei leitud!";
+          }
         } else {
           $notice = "Sisselogimisel tekkis tehniline viga!" .$stmt->error;
         }
         $stmt->close();
         $mysqli->close();
         return $notice;
-      }
-
+  }
 }
