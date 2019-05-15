@@ -5,27 +5,27 @@ class Response {
     private $status;
     private $data;
 
-    public function __construct(int $status, array $data) {
+    public function __construct($status, $data) {
         $this->status = $status;
         $this->data = $data;
     }
 
-    public function getStatus() : int
+    public function getStatus()
     {
         return $this->status;
     }
 
-    public function setStatus(int $status)
+    public function setStatus($status)
     {
         $this->status = $status;
     }
 
-    public function getData() : array
+    public function getData()
     {
         return $this->data;
     }
 
-    public function setData(array $data)
+    public function setData($data)
     {
         $this->data = $data;
     }
