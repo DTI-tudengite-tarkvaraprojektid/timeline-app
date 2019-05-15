@@ -14,7 +14,7 @@ class ResponseHelper {
     }
 
     // This will stop the script
-    public static function sendResponse(Response $response) : Response
+    public static function sendResponse(Response $response) : void
     {
         header('Content-Type: application/json');
         http_response_code($response->getStatus());
