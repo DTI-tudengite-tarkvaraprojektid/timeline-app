@@ -1,9 +1,10 @@
 export class TimelineManager {
-    constructor(timeline, subTimeline, events = []) {
+    constructor(timeline, subTimeline, eventManager, events = []) {
         this.timeline = $(timeline);
         this.subTimeline = $(subTimeline);
         this.zoom = 0;
         this.events = events;
+        this.eventManager = eventManager;
 
         //this.subTimeline.hide();
 
@@ -16,6 +17,12 @@ export class TimelineManager {
             e.preventDefault();
             let point = $(e.target);
             this.renderSubTimeline(point.data('year'));
+        });
+
+        this.subTimeline.on('click', '.point-event', (e) => {
+            e.preventDefault();
+            let point = $(e.target);
+            this.eventManager.showEvent(this.events[point.data('event')]);
         });
     }
 
@@ -50,23 +57,35 @@ export class TimelineManager {
         let timelineEnd = new Date(year + 1, 0, 1).getTime();
         let timelineDelta = timelineEnd - timelineStart;
 
-        this.events.forEach(event => {
+        this.events.forEach((event, index) => {
             let delta = event.time.getTime() - timelineStart;
             if (delta >= 0 && delta <= timelineDelta) {
                 let location = delta / timelineDelta * 100
-                this.subTimeline.append(this.getTimelinePoint(event.title, event.time.toLocaleString(), location));
+                this.subTimeline.append(this.getTimelinePoint(index, event.title, event.time.toLocaleString(), location));
             }
         });
 
     }
 
-    getTimelinePoint(title, description = null, left=0, width=null) {
-        return '<div class="timeline-point point-year" style="left: ' + left + '%' + (width !== null ? '; width: ' + width + '%' : '') + '">' +
-            '<div class="point-header">' +
-                '<p>' + title + '</p>' +
-                (description !== null ? '<small>' +  description+ '</small>' : '') +
-            '</div>' +
-        '</div>';
+    getTimelinePoint(index, title, description = null, left=0, width=null) {
+        let timeline = $('<div></div>');
+        timeline.addClass('timeline-point point-event')
+            .prop('title', title)
+            .data('event', index)
+            .data('toggle', 'tooltip')
+            .data('placement', 'bottom')
+            .css('left', left + '%')
+
+        if (width !== null) {
+            timeline.css('width', width + '%');
+        }
+
+        let header = $('<div></div>');
+        header.addClass('point-header');
+
+        timeline.append(header);
+        timeline.tooltip();
+        return timeline;
     }
 
     getYearTimelinePoint(year, description = null, left=0, width=0) {
