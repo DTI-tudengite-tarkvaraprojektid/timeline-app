@@ -1,10 +1,12 @@
 <?php
+require_once("includes/Classes/SessionManager.php");
 require_once("includes/base.php");
 
-$logger = new SessionManager;
+$logout = new SessionManager;
 
-$logger->signOut();
+$logout->signOut();
 
+header("location: index.php");
 
 
  ?>
