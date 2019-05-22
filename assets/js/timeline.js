@@ -18,7 +18,7 @@ let events = [
     new Event(11, 'Event 12', new Date('2018-01-01')),
     new Event(12, 'Event 13', new Date('2019-07-01')),
     new Event(13, 'Event 14', new Date('2019-07-02'))
-]
+];
 
 let timelineManager = new TimelineManager('#timeline', '#sub-timeline', new EventManager('#card-event'), events);
 timelineManager.render();

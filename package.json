@@ -1,0 +1,37 @@
+{
+  "name": "slim-base",
+  "version": "4.0.0",
+  "description": "Slim PHP Micro-Framework skeleton",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awurth/Slim.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/awurth/Slim#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "autoprefixer": "^9.5.1",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.6.0",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.32.1",
+    "webpack-cli": "^3.3.2",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "acorn": "^6.1.1",
+    "bootstrap": "^4.3.1",
+    "dotenv": "^8.0.0",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0"
+  },
+  "scripts": {
+    "dev": "webpack --config build/config.development.js",
+    "prod": "webpack --config build/config.production.js"
+  }
+}
