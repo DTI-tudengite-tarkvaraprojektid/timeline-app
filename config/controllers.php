@@ -5,4 +5,5 @@ return [
     'auth' => App\Controller\AuthController::class,
     'event' => App\Controller\EventController::class,
     'user' => App\Controller\UserController::class,
+    'timeline' => App\Controller\TimelineController::class,
 ];
