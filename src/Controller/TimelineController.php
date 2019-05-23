@@ -19,4 +19,12 @@ class TimelineController extends Controller{
       Timeline::destroy($args['id']);
       return $response->withJson(['message' => 'Timeline deleted!']);
   }
+  public function addTimeline(Request $request, Response $response)
+  {
+
+      $timeline = new Timeline();
+      $timeline->name= $request->getParam('name');
+      $timeline->save();
+      return $response->withJson(['message' => 'Timline Created!']);
+  }
 }
