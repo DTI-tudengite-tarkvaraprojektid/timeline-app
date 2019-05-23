@@ -17,10 +17,10 @@ $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
 
-/*$app->group('/content', function () {
-    $this->map(['GET'], '/', 'controller.event:events')->setName('get-events');
-    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event');
-})->add($container['middleware.guest']);*/
+$app->group('/content', function () {
+    $this->map(['POST'], '/', 'controller.content:addText')->setName('add-text');
+});
+
 $app->group('/timelines', function () {
     $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('get-timelines');
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-timeline');
