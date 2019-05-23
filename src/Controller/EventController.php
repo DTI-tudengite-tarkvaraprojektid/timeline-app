@@ -13,7 +13,7 @@ class EventController extends Controller
     {
         
         $event = new Event(); 
-        $event->user_id = $this->auth->getUser();
+        $event->user_id = $this->auth->getUser()->id;
         $event->timeline_id = $request->getParam('timeline_id');
         $event->title= $request->getParam('title');
         $event->time = $request->getParam('time');
