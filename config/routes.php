@@ -16,3 +16,8 @@ $app->group('/events', function () {
 $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
+
+$app->group('/timelines', function () {
+    $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('get-timelines');
+    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-timeline');
+});
