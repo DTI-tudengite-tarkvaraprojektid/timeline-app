@@ -1,6 +1,7 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+{% include 'app/_new_event_modal.twig' %}
 <div class="container mt-3">
     <h3> [Insert timeline name here] </h3>
     <div class="timeline-container" >
@@ -13,21 +14,43 @@
             </div> -->
         </div>
     </div>
+    <div class="d-flex justify-content-between"><span id="sub-timeline-start"> </span><span id="sub-timeline-end"> </span></div>
     <div class="timeline-container collapse" >
         <div id="sub-timeline" class="timeline">
         </div>
     </div>
-    <div class="row">
+    
+    <div id="card-event" class="row"{#  style="display: none;" #}>
         <div class="col">
-            <div id="card-event" class="card" style="display: none;">
+            <div class="card">
                 <div class="card-header">
                     None
                 </div>
-                <div class="card-body">
-                    Select an event to start...
+                <div {# class="card-body" #}>
+                    <div class="row">
+                        <div class="col">
+                            <div id="event-editor-container" class="card-body d-flex flex-column">
+                                <div id="event-editor">
+                                    <p>Select an event to start...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-group mb-4">
+                                <a href="#" class="list-group-item list-group-item-action">Galerii</a>
+                                <a href="#" class="list-group-item list-group-item-action">Failid</a>
+                            </ul>
+                            <p>Toimetaja tööriistad:</p>
+                            <ul class="list-group">
+                                <a href="#" id="event-edit" class="list-group-item list-group-item-action">Muuda sündmust</a>
+                                <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Kustuta sündmus</a>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 {% endblock %}

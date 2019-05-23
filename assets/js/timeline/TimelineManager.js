@@ -21,8 +21,14 @@ export class TimelineManager {
 
         this.subTimeline.on('click', '.point-event', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             let point = $(e.target);
             this.eventManager.showEvent(this.events[point.data('event')]);
+        });
+
+        this.subTimeline.on('click', (e) => {
+            e.preventDefault();
+            $('#new-event-modal').modal('show');
         });
     }
 
@@ -52,6 +58,8 @@ export class TimelineManager {
     renderSubTimeline(year) {
         this.subTimeline.parent().collapse('show');
         this.subTimeline.empty();
+        $('#sub-timeline-start').text(year);
+        $('#sub-timeline-end').text(year+1);
 
         let timelineStart = new Date(year, 0, 1).getTime();
         let timelineEnd = new Date(year + 1, 0, 1).getTime();
