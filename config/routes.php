@@ -15,3 +15,8 @@ $app->group('/events', function () {
 $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
+
+/*$app->group('/content', function () {
+    $this->map(['GET'], '/', 'controller.event:events')->setName('get-events');
+    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event');
+})->add($container['middleware.guest']);*/
