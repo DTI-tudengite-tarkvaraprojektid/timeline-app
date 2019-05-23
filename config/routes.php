@@ -18,4 +18,5 @@ $app->get('/logout', 'controller.auth:logout')
 
 $app->group('/timelines', function () {
     $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('get-timelines');
+    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-timeline');
 });
