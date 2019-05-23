@@ -9,6 +9,18 @@ use Awurth\Slim\Helper\Controller\Controller;
 
 class EventController extends Controller
 {
+    public function addEvent(Request $request, Response $response)
+    {
+        
+        $event = new Event(); 
+        $event->user_id = $this->auth->getUser();
+        $event->timeline_id = $request->getParam('timeline_id');
+        $event->title= $request->getParam('title');
+        $event->time = $request->getParam('time');
+        $event->save();
+        return $response->withJson(['message' => 'Event Created!']);
+    }
+
     public function events(Request $request, Response $response)
     {
         return $response->withJson(Event::all());

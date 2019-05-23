@@ -10,6 +10,7 @@ $app->group('', function () {
 $app->group('/events', function () {
     $this->map(['GET'], '/', 'controller.event:events')->setName('get-events');
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event');
+    $this->map(['POST'], '/', 'controller.event:addEvent')->setName('add-event');
 })->add($container['middleware.guest']);
 
 $app->get('/logout', 'controller.auth:logout')
