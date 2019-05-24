@@ -30,7 +30,7 @@ export class EventManager {
             this.quill = null;
         } else {
             $('#event-editor-container').removeClass('card-body');
-            var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], ['link', 'image', 'video']];
+            var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], ['link', 'image', 'video']];
             this.quill = new Quill('#event-editor', {
                 theme: 'snow',
                 modules: {
