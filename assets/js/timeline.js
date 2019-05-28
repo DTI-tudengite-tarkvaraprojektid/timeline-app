@@ -3,7 +3,8 @@ import { TimelineManager } from './timeline/TimelineManager.js';
 import { Event } from './timeline/Event.js';
 import { EventManager } from './timeline/EventManager.js';
 
-let events = [
+let timelineManager = new TimelineManager('#timeline', '#sub-timeline', new EventManager('#card-event'))
+/*  = [
     new Event(0, 'Event 1', new Date('2013-01-01')),
     new Event(1, 'Event 2', new Date('2013-08-01')),
     new Event(2, 'Event 3', new Date('2014-02-01')),
@@ -18,7 +19,14 @@ let events = [
     new Event(11, 'Event 12', new Date('2018-01-01')),
     new Event(12, 'Event 13', new Date('2019-07-01')),
     new Event(13, 'Event 14', new Date('2019-07-02'))
-];
+]; */
 
-let timelineManager = new TimelineManager('#timeline', '#sub-timeline', new EventManager('#card-event'), events);
-timelineManager.render();
+$.getJSON('/events/', function(data) {
+    let events = [];
+    data.forEach(event => {
+        events.push(new Event(event.id, event.title, new Date(event.time)));
+    });
+    timelineManager.events = events;
+    timelineManager.render();
+})
+

@@ -16,7 +16,9 @@ export class TimelineManager {
         this.timeline.on('click', '.point-year', (e) => {
             e.preventDefault();
             let point = $(e.target);
-            this.renderSubTimeline(point.data('year'));
+            if (!point.hasClass('year-last')) {
+                this.renderSubTimeline(point.data('year'));
+            }
         });
 
         this.subTimeline.on('click', '.point-event', (e) => {
@@ -44,7 +46,7 @@ export class TimelineManager {
             let timelineDelta = timelineEnd - timelineStart;
             
             for (let i = 0; i < totalYears; i++) {
-                this.timeline.append(this.getYearTimelinePoint(startYear + i, null, 100 / (totalYears - 1) * i, 100 / (totalYears- 1)));
+                this.timeline.append(this.getYearTimelinePoint(startYear + i, null, 100 / (totalYears - 1) * i, (i == totalYears - 1 ? 0 : 100 / (totalYears- 1))));
             }
 
             this.events.forEach(event => {
@@ -97,7 +99,11 @@ export class TimelineManager {
     }
 
     getYearTimelinePoint(year, description = null, left=0, width=0) {
-        return '<div class="timeline-point point-year" data-year="' + year + '" style="left: ' + left + '%; width: ' + width + '%">' +
+        let widthStyle = '';
+        if (width > 0) {
+            widthStyle = ' width: ' + width + '%';
+        }
+        return '<div class="timeline-point point-year' + (width === 0 ? ' year-last' : '') + '" data-year="' + year + '" style="left: ' + left + '%;' + widthStyle +'">' +
             '<div class="point-header">' +
                 '<p>' + year + '</p>' +
                 (description != null ? '<small>' +  description+ '</small>' : '') +

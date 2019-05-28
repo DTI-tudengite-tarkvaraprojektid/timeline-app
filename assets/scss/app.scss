@@ -1,6 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~quill/dist/quill.core.css";
 @import '~quill/dist/quill.snow.css';
+@import 'toasts';
 
 .timeline-container {
     text-align: center;
@@ -45,7 +46,7 @@
         transition: background-color 0.2s;
     }
 
-    &.point-year:hover::before {
+    &.point-year:not(.year-last):hover::before {
         background-color: #0084ff;
     }
 
@@ -59,7 +60,7 @@
         background: #0004ff;
         border-radius: 50%; */
 
-        &:hover {
+        &:not(.year-last):hover {
             background-color: #6bb7ff3d;
         }
     }

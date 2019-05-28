@@ -1,12 +1,16 @@
-<div class="ui container flash">
-    {% for name, messages in flash.getMessages() %}
-        <div class="ui {{ name }} message">
-            <i class="close icon"></i>
-            <div class="header">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
+<div class="position-relative">
+    <div class="toasts-container">
+        {% for name, messages in flash.getMessages() %}
+            <div class="toast m-2 ml-auto" aria-atomic="true" aria-live="polite" role="status">
+                {# TODO: Add information icon #}
+                <div class="toast-body text-white bg-{{ name }}">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+
+

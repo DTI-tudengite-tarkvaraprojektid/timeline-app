@@ -42,7 +42,8 @@
         "symfony/var-dumper": "^4.1"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 0
     },
     "scripts": {
         "start": "php -S 0.0.0.0:8080 -t public",

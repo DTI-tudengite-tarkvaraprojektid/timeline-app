@@ -1,9 +1,20 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-{% include 'app/_new_event_modal.twig' %}
+{% if auth.check() %}
+    {% include 'app/_new_event_modal.twig' %}
+{% endif %}
 <div class="container mt-3">
-    <h3> [Insert timeline name here] </h3>
+    <div class="row mt-4">
+        <div class="col">
+            <h3> [Insert timeline name here] </h3>
+        </div>
+        {% if auth.check() %}
+            <div class="col text-right">
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#new-event-modal" >+ Lisa sündmus</a>
+            </div>
+        {% endif %}
+    </div>
     <div class="timeline-container" >
         <div id="timeline" class="timeline">
             <!-- <div class="timeline-point">
@@ -35,19 +46,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <ul class="list-group mb-4">
-                                <a href="#" class="list-group-item list-group-item-action">Pildid</a>
-                                <a href="#" class="list-group-item list-group-item-action">Videod</a>
-                                <a href="#" class="list-group-item list-group-item-action">Failid</a>
-                                <a href="#" class="list-group-item list-group-item-action">Link: Sündmuse leht</a>
-                            </ul>
-                            <p>Toimetaja tööriistad:</p>
-                            <ul class="list-group">
-                                <a href="#" id="event-edit" class="list-group-item list-group-item-action">Muuda sündmust</a>
-                                <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Kustuta sündmus</a>
-                            </ul>
-                        </div>
+                        {% if auth.check() %}
+                            <div class="col-4">
+                                <p class="mt-4">Toimetaja tööriistad</p>
+                                <ul class="list-group">
+                                    <a href="#" id="event-edit-title" class="list-group-item list-group-item-action">Muuda pealkirja / kuupäeva</a>
+                                    <a href="#" id="event-edit" class="list-group-item list-group-item-action">Muuda sisu</a>
+                                    <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Kustuta sündmus</a>
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
