@@ -6,10 +6,11 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/login', 'controller.auth:login')->setName('login');
 })->add($container['middleware.guest']);
 
-$app->group('/events', function () {
-    $this->map(['GET'], '/', 'controller.event:events')->setName('get-events');
-    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event');
-    $this->map(['POST'], '/', 'controller.event:addEvent')->setName('add-event');
+
+$app->group('/events', function () use ($container) {
+    $this->get('/[{id}]', 'controller.event:events')->setName('get-events');
+    $this->delete('/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event');
+    $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
 });
 
 $app->get('/logout', 'controller.auth:logout')

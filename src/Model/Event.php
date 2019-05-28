@@ -9,4 +9,13 @@ class Event extends Model
 {
     use SoftDeletes;
 
+    public function user()
+    {
+        return $this->belongsTo('App\Model\User');
+    }
+
+    public function timeline()
+    {
+        return $this->belongsTo('App\Model\Timeline');
+    }
 }
