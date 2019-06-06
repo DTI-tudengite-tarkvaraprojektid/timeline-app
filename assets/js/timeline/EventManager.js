@@ -13,10 +13,11 @@ export class EventManager {
             this.toggleEdit();
         });
     }
-
+    
     showEvent(event) {
         console.log('showEvent(): ' + event.title);
-        this.card.find('.card-header').text(event.title);
+        this.card.find('#event-title').text(event.title);
+        this.card.find('#event-time').text(event.time.toLocaleDateString('et'));
         this.card.show();
     }
 

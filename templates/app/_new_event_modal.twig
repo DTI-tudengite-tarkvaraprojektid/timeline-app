@@ -8,20 +8,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="new-event-form" action="{{ path_for('add-event') }}" method="POST">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Sündmuse nimi</label>
-                        <input class="form-control" id="new-event-name" type="text">
+                        <input class="form-control" id="new-event-name" type="text" name="title">
                     </div>
                     <div class="form-group">
                         <label for="new-event-date">Sündmuse aeg</label>
-                        <input class="form-control" id="new-event-date" type="date" value="2019-05-24">
+                        <input class="form-control" id="new-event-date" type="date" name="time" value="2019-05-24">
                     </div>
+                    <input type="hidden" name="timeline_id" value="1"></input>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
-                <button class="btn btn-primary" type="button">Lisa</button>
+                <button id="new-event-form-button" class="btn btn-primary" type="button">Lisa</button>
             </div>
         </div>
     </div>
