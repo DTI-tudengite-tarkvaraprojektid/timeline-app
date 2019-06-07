@@ -24,6 +24,7 @@ export class EventManager {
     toggleEdit() {
         
         if (this.editing) {
+            console.log(this.quill.getContents());
             $('#event-editor-container').addClass('card-body');
             $('#event-editor-container').html(
                 $('<div></div>').prop('id', 'event-editor').html(this.quill.root.innerHTML)

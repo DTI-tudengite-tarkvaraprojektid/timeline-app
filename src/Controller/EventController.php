@@ -14,6 +14,13 @@ class EventController extends Controller
 
     public function addEvent(Request $request, Response $response)
     {
+        $timelineId = $request->getParam('timeline_id');
+        $timeline = Timeline::find($timelineId);
+        
+        if (!$timeline) {
+            throw $this->notFoundException($request, $response);
+        }
+
         // Validate input:
         $this->validator->request($request, [
             'title' => V::length(1, null),
@@ -28,17 +35,10 @@ class EventController extends Controller
                 $this->flash('danger', 'Kontrolli kuupäeva');
             }
             
-            return $response->withRedirect($this->path('home'));
+            return $response->withRedirect($this->path('timeline', [
+                'id' => $timeline->id
+            ]));
         }
-
-        $timelineId = $request->getParam('timeline_id');
-        $timeline = Timeline::find($timelineId);
-        
-        if (!$timeline) {
-            $this->flash('danger', 'Ei leidnud valitud ajajoont');
-        }
-
-
 
         $event = new Event(); 
         $event->user()->associate($this->auth->getUser());
@@ -48,14 +48,16 @@ class EventController extends Controller
         $timeline->events()->save($event);
         $this->flash('success', 'Sündmus lisatud edukalt');
 
-        return $response->withRedirect($this->path('home'));
+        return $response->withRedirect($this->path('timeline', [
+            'id' => $timeline->id
+        ]));
     }
 
-    public function events(Request $request, Response $response, $args = null)
+    public function events(Request $request, Response $response, $id = null)
     {
         // var_dump($args);
-        if ($args) {
-            $timeline = Timeline::with('events')->findOrFail($args);
+        if ($id) {
+            $timeline = Timeline::with('events')->findOrFail($id);
             return $response->withJson($timeline->events()->orderBy('time')->get());
         } else {
             return $response->withJson(Event::orderBy('time')->get());

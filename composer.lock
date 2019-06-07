@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "898b5b2338c241886c30d20e0bc589f4",
+    "content-hash": "3ea0707e223e165c1f5526c4c3d11fe2",
     "packages": [
         {
             "name": "awurth/slim-helpers",

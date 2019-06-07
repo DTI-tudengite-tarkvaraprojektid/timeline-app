@@ -1,53 +1,69 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-{% if auth.check() %}
-    {% include 'app/_new_event_modal.twig' %}
-{% endif %}
-<div class="container mt-3">
-    <div class="row mt-4">
-        <div class="col">
-            <h3> [Insert timeline name here] </h3>
-        </div>
-        {% if auth.check() %}
-            <div class="col text-right">
-                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#new-event-modal" >+ Lisa sündmus</a>
+    {% if auth.check() %}
+        {% include 'app/_new_event_modal.twig' %}
+    {% endif %}
+    <div class="container mt-3">
+        <div class="row mt-4">
+            <div class="col">
+                <h3>{{ timeline.name }}</h3>
             </div>
-        {% endif %}
-    </div>
-    <div id="timeline"></div>
-    <div id="sub-timeline" class="collapse"></div>
-    
-    <div id="card-event" class="row" style="display: none;">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    <span id="event-title"></span> - Toimus: <span id="event-time"></span>
+            {% if auth.check() %}
+                <div class="col text-right">
+                    <a class="btn btn-primary" data-target="#new-event-modal" data-toggle="modal" href="#">+ Lisa sündmus</a>
                 </div>
-                <div {# class="card-body" #}>
-                    <div class="row">
-                        <div class="col">
-                            <div id="event-editor-container" class="card-body d-flex flex-column h-100">
-                                <div id="event-editor">
-                                    <p>[TODO: Sisu tuleb siia...]</p>
+            {% endif %}
+        </div>
+        {% if timeline.events_count == 0 %}
+            <div class="jumbotron mt-4">
+                <div class="container">
+                    <h1 class="display-4">Tere tulemast {{ timeline.name }} ajajoonele</h1>
+                    {% if auth.check() %}
+                        <p class="lead">See ajajoon on tühi :( Palun lisa sündmus, et alustada.</p>
+                        <a class="btn btn-primary btn-lg" data-target="#new-event-modal" data-toggle="modal" href="#">Lisa sündmus</a>
+                    {% else %}
+                        <p class="lead">Hetkel pole ühtegi sündmust sellel ajajoonel :(</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div id="timeline" data-url="{{ path_for('get-events', {'id': timeline.id}) }}"></div>
+            <div class="collapse" id="sub-timeline"></div>
+
+            <div class="row" id="card-event" style="display: none;">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <span id="event-title"></span>
+                            - Toimus:
+                            <span id="event-time"></span>
+                        </div>
+                        <div {# class="card-body" #}>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card-body d-flex flex-column h-100" id="event-editor-container">
+                                        <div id="event-editor">
+                                            <p>[TODO: Sisu tuleb siia...]</p>
+                                        </div>
+                                    </div>
                                 </div>
+                                {% if auth.check() %}
+                                    <div class="col-4">
+                                        <p class="mt-4">Toimetaja tööriistad</p>
+                                        <ul class="list-group">
+                                            <a class="list-group-item list-group-item-action" href="#" id="event-edit-title">Muuda pealkirja / kuupäeva</a>
+                                            <a class="list-group-item list-group-item-action" href="#" id="event-edit">Muuda sisu</a>
+                                            <a class="list-group-item list-group-item-action list-group-item-danger" href="#">Kustuta sündmus</a>
+                                        </ul>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
-                        {% if auth.check() %}
-                            <div class="col-4">
-                                <p class="mt-4">Toimetaja tööriistad</p>
-                                <ul class="list-group">
-                                    <a href="#" id="event-edit-title" class="list-group-item list-group-item-action">Muuda pealkirja / kuupäeva</a>
-                                    <a href="#" id="event-edit" class="list-group-item list-group-item-action">Muuda sisu</a>
-                                    <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Kustuta sündmus</a>
-                                </ul>
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
-        
+        {% endif %}
+
     </div>
-</div>
 {% endblock %}

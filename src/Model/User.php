@@ -20,4 +20,14 @@ class User extends EloquentUser
     ];
 
     protected $loginNames = ['email'];
+
+    public function events()
+    {
+        return $this->hasMany('App\Model\Event');
+    }
+
+    public function timelines()
+    {
+        return $this->hasMany('App\Model\Timeline');
+    }
 }
