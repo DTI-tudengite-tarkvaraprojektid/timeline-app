@@ -17,20 +17,27 @@ export class GroupedTimeline {
 
             let point = this.getGroupTimelinePoint(i, group.name, null, groupWidth * i, (i == count - 1 ? 0 : groupWidth));
 
-            point.on('click', () => {
-                if (this.onGroupClick != null) {
-                    this.onGroupClick(group);
-                }
-            });
-
             this.anchor.append(point);
+
+            if (i < count - 1) {
+                point.on('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (this.onGroupClick != null) {
+                        this.onGroupClick(group, this.groups[i + 1]);
+                    }
+                });
+
+                // Add small dots in between
+                group.events.forEach(event => {
+                    let delta = event.time.getTime() - group.startTime.getTime();
+                    let location = (groupWidth * i) + delta / groupDelta * groupWidth;
+                    this.anchor.append(this.getSmallTimelinePoint(location, event.title));
+                });
+            }
+
             
-            // Add small dots in between
-            group.events.forEach(event => {
-                let delta = event.time.getTime() - group.startTime.getTime();
-                let location = (groupWidth * i) + delta / groupDelta * groupWidth;
-                this.anchor.append(this.getSmallTimelinePoint(location, event.title));
-            });
+            
         }
     }
 

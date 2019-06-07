@@ -1,10 +1,12 @@
 import { Group } from "./Group";
+import { Timeline } from "./Timeline";
 import { GroupedTimeline } from "./GroupedTimeline";
 
 export class TimelineManager {
     constructor(timeline, subTimeline, eventManager, events = []) {
         this.timelineSelector = timeline;
         this.timeline = $(timeline);
+        this.subTimelineSelector = subTimeline;
         this.subTimeline = $(subTimeline);
         this.zoom = 0;
         this.events = events;
@@ -17,14 +19,6 @@ export class TimelineManager {
 
 
     initEvents() {
-
-        this.subTimeline.on('click', '.point-event', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            let point = $(e.target);
-            this.eventManager.showEvent(this.events[point.data('event')]);
-        });
-
         this.subTimeline.on('click', (e) => {
             e.preventDefault();
             $('#new-event-modal').modal('show');
@@ -49,7 +43,6 @@ export class TimelineManager {
             let year = event.time.getFullYear();
             if (lastYear != year) {
                 if (group != null) {
-                    groups.push(group);
                     let tempYear = lastYear;
                     // If empty years in between, add them as empty groups
                     while (tempYear < year - 1) {
@@ -58,6 +51,7 @@ export class TimelineManager {
                     }
                 }
                 group = new Group(year, [], new Date(year, 0, 1), new Date(year + 1, 0, 1));
+                groups.push(group);
                 lastYear = year;
             }
             group.events.push(event);
@@ -66,31 +60,22 @@ export class TimelineManager {
         groups.push(new Group(lastYear + 1, [], new Date(lastYear + 1, 0, 1), new Date(lastYear + 1, 0, 1)));
 
         // Create the timeline
-        let timeline = new GroupedTimeline(this.timelineSelector, groups, (group) => {
-            this.renderSubTimeline(group.startTime.getFullYear());
+        let timeline = new GroupedTimeline(this.timelineSelector, groups, (group, nextGroup) => {
+            this.renderSubTimeline(group, nextGroup);
         });
         timeline.render();
     }
 
-    renderSubTimeline(year) {
-        console.log(year);
+    renderSubTimeline(group, nextGroup) {
         this.subTimeline.parent().collapse('show');
-        this.subTimeline.empty();
-        $('#sub-timeline-start').text(year);
-        $('#sub-timeline-end').text(year + 1);
+        //this.subTimeline.empty();
+        //$('#sub-timeline-start').text(year);
+        //$('#sub-timeline-end').text(year + 1);
 
-        let timelineStart = new Date(year, 0, 1).getTime();
-        let timelineEnd = new Date(year + 1, 0, 1).getTime();
-        let timelineDelta = timelineEnd - timelineStart;
-
-        this.events.forEach((event, index) => {
-            let delta = event.time.getTime() - timelineStart;
-            if (delta >= 0 && delta <= timelineDelta) {
-                let location = delta / timelineDelta * 100
-                this.subTimeline.append(this.getTimelinePoint(index, event.title, event.time.toLocaleString(), location));
-            }
+        let timeline = new Timeline(this.subTimelineSelector, group, nextGroup, (event) => {
+            this.eventManager.showEvent(event);
         });
-
+        timeline.render();
     }
 
     getTimelinePoint(index, title, description = null, left=0, width=null) {

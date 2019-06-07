@@ -46,7 +46,7 @@
         transition: background-color 0.2s;
     }
 
-    &.point-year:not(.year-last):hover::before {
+    &.point-year:not(:last-child):hover::before {
         background-color: #0084ff;
     }
 
@@ -60,7 +60,7 @@
         background: #0004ff;
         border-radius: 50%; */
 
-        &:not(.year-last):hover {
+        &:not(:last-child):hover {
             background-color: #6bb7ff3d;
         }
     }
