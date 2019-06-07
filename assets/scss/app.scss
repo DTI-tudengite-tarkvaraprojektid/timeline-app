@@ -29,13 +29,11 @@
 }
 
 .timeline-point {
-    padding-top: 10px;
     position: absolute;
     transition: background-color 0.2s;
-    height: 30px;
+    height: 25px;
 
-    &.point-year::before,
-    &.point-small::before {
+    &::before {
         content: "";
         position: absolute;
         left: -5px;
@@ -81,12 +79,13 @@
     &.point-event {
         position: absolute;
         transition: background-color 0.2s;
-        left: -10px;
-        top: 5px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background-color: #0004ff;
+        padding-top: 5px;
+
+        &::before {
+            left: -10px;
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 
@@ -98,4 +97,9 @@
     border: 1px solid #c7c7c7; */
     border-radius: 5px;
     padding: 5px;
+}
+
+.timeline-title-start {
+    position: absolute;
+    top: 0;
 }

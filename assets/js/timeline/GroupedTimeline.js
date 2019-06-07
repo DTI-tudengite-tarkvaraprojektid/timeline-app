@@ -6,10 +6,10 @@ export class GroupedTimeline {
     }
 
     render () {
-        this.anchor.empty();
-
+        
         let count = this.groups.length;
         let groupWidth = 100 / (count - 1);
+        let timeline = this.initTimeline();
 
         for (let i = 0; i < count; i++) {
             let group = this.groups[i];
@@ -17,7 +17,7 @@ export class GroupedTimeline {
 
             let point = this.getGroupTimelinePoint(i, group.name, null, groupWidth * i, (i == count - 1 ? 0 : groupWidth));
 
-            this.anchor.append(point);
+            timeline.append(point);
 
             if (i < count - 1) {
                 point.on('click', (e) => {
@@ -32,13 +32,27 @@ export class GroupedTimeline {
                 group.events.forEach(event => {
                     let delta = event.time.getTime() - group.startTime.getTime();
                     let location = (groupWidth * i) + delta / groupDelta * groupWidth;
-                    this.anchor.append(this.getSmallTimelinePoint(location, event.title));
+                    timeline.append(this.getSmallTimelinePoint(location, event.title));
                 });
             }
 
             
             
         }
+    }
+
+    initTimeline() {
+        this.anchor.empty();
+
+        let container = $('<div></div>');
+        container.addClass("timeline-container");
+
+        let timeline = $('<div></div>');
+        timeline.addClass("timeline");
+
+        container.append(timeline);
+        this.anchor.append(container);
+        return timeline;
     }
 
     getGroupTimelinePoint(index, name, description = null, left=0, width=0) {

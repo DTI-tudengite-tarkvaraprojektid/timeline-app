@@ -12,19 +12,16 @@ export class Timeline {
     }
 
     render () {
-        this.anchor.empty();
-
         let count = this.events.length;
         let timelineDelta = this.timelineEnd - this.timelineStart;
-
-        this.anchor.append(this.getTitle(this.group.name));
+        let timeline = this.initTimeline();
 
         for (let i = 0; i < count; i++) {
             let event = this.events[i];
             let delta = event.time.getTime() - this.timelineStart;
             let location = delta / timelineDelta * 100;
 
-            let point = this.getTimelinePoint(i, event.title, null, location);
+            let point = this.getTimelinePoint(i, event.title, location);
 
             point.on('click', (e) => {
                 e.preventDefault();
@@ -34,14 +31,36 @@ export class Timeline {
                 }
             });
 
-            this.anchor.append(point);
+            timeline.append(point);
         };
 
-        
-        this.anchor.append(this.getTitle(this.nextGroup.name, true));
+        this.setTitles(this.group.name, this.nextGroup.name);
     }
 
-    getTimelinePoint(index, name, description = null, left=0, width=null) {
+    initTimeline() {
+        this.anchor.empty();
+
+        let container = $('<div></div>');
+        container.addClass("timeline-container");
+
+        let timeline = $('<div></div>');
+        timeline.addClass("timeline");
+
+        container.append(timeline);
+        this.anchor.append(container);
+        return timeline;
+    }
+
+    setTitles(startTitle, endTitle) {
+        let container = $('<div></div>');
+        container.addClass('d-flex justify-content-between');
+        container.append($('<span></span>').text(startTitle));
+        container.append($('<span></span>').text(endTitle));
+        
+        this.anchor.prepend(container);
+    }
+
+    getTimelinePoint(index, name, left=0, width=null) {
         let point = $('<div></div>');
         point.addClass('timeline-point point-event')
             .prop('title', name)
@@ -54,24 +73,9 @@ export class Timeline {
             point.css('width', width + '%');
         }
 
-        let header = $('<div></div>');
-        header.addClass('point-header');
-
-        point.append(header);
         point.tooltip();
         return point;
     }
 
-    getTitle(title, end = false) {
-        let point = $('<div></div>');
-        point.addClass('timeline-point')
-            .css('left', (end ? 100 : 0) + '%')
-        
-        let header = $('<div></div>');
-        header.addClass('point-header');
-        header.text(title)
 
-        point.append(header);
-        return point;
-    }
 }

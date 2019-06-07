@@ -1,6 +1,8 @@
 import { Group } from "./Group";
 import { Timeline } from "./Timeline";
 import { GroupedTimeline } from "./GroupedTimeline";
+const moment = require("moment");
+moment.locale('et');
 
 export class TimelineManager {
     constructor(timeline, subTimeline, eventManager, events = []) {
@@ -27,6 +29,28 @@ export class TimelineManager {
 
     render() {
         this.timeline.empty();
+
+        if (this.events.length < 5) { // TODO: change to larger number after testing
+            this.renderTimelineUngrouped();
+        } else {
+            this.renderTimelineGroupedByYears();
+        }
+    }
+
+    renderTimelineUngrouped() {
+        let startTime = this.events[0].time;
+        let endTime = this.events[this.events.length - 1].time;
+
+        let startGroup = new Group(moment(startTime).format('Do MMM YYYY'), this.events, startTime, endTime);
+        let endGroup = new Group(moment(endTime).format('Do MMM YYYY'), [], endTime, endTime);
+
+        let timeline = new Timeline(this.timelineSelector, startGroup, endGroup, (event) => {
+            this.eventManager.showEvent(event);
+        });
+        timeline.render();
+    }
+
+    renderTimelineGroupedByYears() {
         let startYear = this.events[0].time.getFullYear();
         let endYear = this.events[this.events.length - 1].time.getFullYear();
         let totalYears = endYear - startYear + 2 // + 2 because we want to include both, start and end year, as well
@@ -67,7 +91,6 @@ export class TimelineManager {
     }
 
     renderSubTimeline(group, nextGroup) {
-        this.subTimeline.parent().collapse('show');
         //this.subTimeline.empty();
         //$('#sub-timeline-start').text(year);
         //$('#sub-timeline-end').text(year + 1);
@@ -76,6 +99,7 @@ export class TimelineManager {
             this.eventManager.showEvent(event);
         });
         timeline.render();
+        this.subTimeline.collapse('show');
     }
 
     getTimelinePoint(index, title, description = null, left=0, width=null) {
