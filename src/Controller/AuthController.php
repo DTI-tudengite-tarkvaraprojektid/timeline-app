@@ -21,6 +21,7 @@ class AuthController extends Controller
                 'email' => $request->getParam('email'),
                 'password' => $request->getParam('password')
             ];
+
             $remember = (bool)$request->getParam('remember');
 
             try {
@@ -101,4 +102,6 @@ class AuthController extends Controller
 
         return $this->redirect($response, 'home');
     }
+
+
 }

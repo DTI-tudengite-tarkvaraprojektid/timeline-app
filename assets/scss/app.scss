@@ -1,7 +1,9 @@
+@import 'variables';
 @import "~bootstrap/scss/bootstrap";
 @import "~quill/dist/quill.core.css";
 @import '~quill/dist/quill.snow.css';
 @import 'toasts';
+
 
 .timeline-container {
     text-align: center;
@@ -12,8 +14,8 @@
         position: absolute;
         top: 15px;
         left: 0;
-        border-top: 1px solid #00ccff;
-        background: #00ccff;
+        border-top: 1px solid #6bcaba;
+        background: #6bcaba;
         width: 100%;
         transform: translateY(-50%);
     }
@@ -39,13 +41,13 @@
         left: -5px;
         width: 10px;
         height: 10px;
-        background-color: #0004ff;
+        background-color: #b71234;
         border-radius: 50%;
         transition: background-color 0.2s;
     }
 
     &.point-year:not(:last-child):hover::before {
-        background-color: #0084ff;
+        background-color: #ff0035;
     }
 
     &.point-year {
@@ -72,7 +74,7 @@
             top: 2px;
             width: 6px;
             height: 6px;
-            background-color: #008a007e;
+            background-color: #ff0035;
         }
     }
 
@@ -102,4 +104,28 @@
 .timeline-title-start {
     position: absolute;
     top: 0;
+}
+
+.bg-dti{
+  background-color: #6bcaba;
+}
+
+.btn-dti{
+  color: #ffffff;
+  background-color: #6bcaba;
+  //background-color: #b71234;
+  border-color: #6bcaba;
+  //border-color: #b71234;
+}
+
+.btn-dti:hover, .btn-dti:focus, .btn-dti:active, .btn-dti.active, .open>.dropdown-toggle.btn-dti {
+    color: #fff;
+    background-color: #36ccb2;
+    border-color: #ffffff; /*set the color you want here*/
+}
+
+
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #ffffff;
 }
