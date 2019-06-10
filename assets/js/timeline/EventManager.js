@@ -1,5 +1,5 @@
 import Quill from "../quill";
-
+const moment = require("moment");
 
 export class EventManager {
     constructor(card) {
@@ -18,11 +18,13 @@ export class EventManager {
         console.log('showEvent(): ' + event.title);
         this.card.find('#event-title').text(event.title);
         this.card.find('#event-time').text(event.time.toLocaleDateString('et'));
+        this.card.find('#event-edit-title').data('id', event.id);
+        this.card.find('#event-edit-title').data('title', event.title);
+        this.card.find('#event-edit-title').data('time', moment(event.time).format('YYYY-MM-DD'));
         this.card.show();
     }
 
     toggleEdit() {
-        
         if (this.editing) {
             console.log(this.quill.getContents());
             $('#event-editor-container').addClass('card-body');

@@ -69,4 +69,15 @@ class EventController extends Controller
         Event::destroy($args['id']);
         return $response->withJson(['message' => 'Event deleted!']);
     }
+
+    public function editEvent(Request $request, Response $response){
+        $event = Event::find($request->getParam('id'));
+        $event->title = $request->getParam('title');
+        $event->time = $request->getParam('time');
+        $event->save();
+        $this->flash('success', 'Sündmus muudetud edukalt');
+        return $response->withRedirect($this->path('timeline', [
+            'id' => $event->timeline->id
+        ]));
+    }
 }

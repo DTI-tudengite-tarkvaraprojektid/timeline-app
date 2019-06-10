@@ -3,6 +3,7 @@
 {% block body %}
     {% if auth.check() %}
         {% include 'app/_new_event_modal.twig' %}
+        {% include 'app/_edit_event_modal.twig' %}
     {% endif %}
     <div class="container mt-3">
         <div class="row mt-4">

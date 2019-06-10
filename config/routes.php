@@ -13,6 +13,7 @@ $app->group('/events', function () use ($container) {
     $this->get('/[{id}]', 'controller.event:events')->setName('get-events');
     $this->delete('/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
+    $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
 });
 
 $app->get('/logout', 'controller.auth:logout')

@@ -22,7 +22,10 @@ $('#new-event-form-button').click(() => {
     $('#new-event-form').submit();
 })
 
+$('#edit-event-form-button').click(() => {
+    $('#edit-event-form').submit();
+})
+
 $('#new-timeline-form-button').click(() => {
     $('#new-timeline-form').submit();
 })
-
