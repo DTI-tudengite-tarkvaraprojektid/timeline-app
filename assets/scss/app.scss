@@ -29,13 +29,11 @@
 }
 
 .timeline-point {
-    padding-top: 10px;
     position: absolute;
     transition: background-color 0.2s;
-    height: 30px;
+    height: 25px;
 
-    &.point-year::before,
-    &.point-small::before {
+    &::before {
         content: "";
         position: absolute;
         left: -5px;
@@ -46,7 +44,7 @@
         transition: background-color 0.2s;
     }
 
-    &.point-year:not(.year-last):hover::before {
+    &.point-year:not(:last-child):hover::before {
         background-color: #0084ff;
     }
 
@@ -60,7 +58,7 @@
         background: #0004ff;
         border-radius: 50%; */
 
-        &:not(.year-last):hover {
+        &:not(:last-child):hover {
             background-color: #6bb7ff3d;
         }
     }
@@ -81,12 +79,13 @@
     &.point-event {
         position: absolute;
         transition: background-color 0.2s;
-        left: -10px;
-        top: 5px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background-color: #0004ff;
+        padding-top: 5px;
+
+        &::before {
+            left: -10px;
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 
@@ -100,25 +99,7 @@
     padding: 5px;
 }
 
-main {
-    width: 50%;
-    margin: 50px auto;
-}
-
-/* Bootstrap 4 text input with search icon */
-
-.has-search .form-control {
-    padding-left: 2.375rem;
-}
-
-.has-search .form-control-feedback {
+.timeline-title-start {
     position: absolute;
-    z-index: 2;
-    display: block;
-    width: 2.375rem;
-    height: 2.375rem;
-    line-height: 2.375rem;
-    text-align: center;
-    pointer-events: none;
-    color: #aaa;
+    top: 0;
 }

@@ -1,6 +1,14 @@
+import { Group } from "./Group";
+import { Timeline } from "./Timeline";
+import { GroupedTimeline } from "./GroupedTimeline";
+const moment = require("moment");
+moment.locale('et');
+
 export class TimelineManager {
     constructor(timeline, subTimeline, eventManager, events = []) {
+        this.timelineSelector = timeline;
         this.timeline = $(timeline);
+        this.subTimelineSelector = subTimeline;
         this.subTimeline = $(subTimeline);
         this.zoom = 0;
         this.events = events;
@@ -13,21 +21,6 @@ export class TimelineManager {
 
 
     initEvents() {
-        this.timeline.on('click', '.point-year', (e) => {
-            e.preventDefault();
-            let point = $(e.target);
-            if (!point.hasClass('year-last')) {
-                this.renderSubTimeline(point.data('year'));
-            }
-        });
-
-        this.subTimeline.on('click', '.point-event', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            let point = $(e.target);
-            this.eventManager.showEvent(this.events[point.data('event')]);
-        });
-
         this.subTimeline.on('click', (e) => {
             e.preventDefault();
             $('#new-event-modal').modal('show');
@@ -36,45 +29,77 @@ export class TimelineManager {
 
     render() {
         this.timeline.empty();
-        if (this.zoom == 0) {
-            let startYear = this.events[0].time.getFullYear();
-            let endYear = this.events[this.events.length - 1].time.getFullYear();
-            let totalYears = endYear - startYear + 2 // + 2 because we want to include both, start and end year, as well
-            
-            let timelineStart = new Date(startYear, 0, 1).getTime();
-            let timelineEnd = new Date(endYear + 1, 0, 1).getTime();
-            let timelineDelta = timelineEnd - timelineStart;
-            
-            for (let i = 0; i < totalYears; i++) {
-                this.timeline.append(this.getYearTimelinePoint(startYear + i, null, 100 / (totalYears - 1) * i, (i == totalYears - 1 ? 0 : 100 / (totalYears- 1))));
-            }
 
-            this.events.forEach(event => {
-                let delta = event.time.getTime() - timelineStart;
-                let location = delta / timelineDelta * 100
-                this.timeline.append(this.getEmptyTimelinePoint(location, event.title));
-            });
+        if (this.events.length < 5) { // TODO: change to larger number after testing
+            this.renderTimelineUngrouped();
+        } else {
+            this.renderTimelineGroupedByYears();
         }
     }
 
-    renderSubTimeline(year) {
-        this.subTimeline.parent().collapse('show');
-        this.subTimeline.empty();
-        $('#sub-timeline-start').text(year);
-        $('#sub-timeline-end').text(year+1);
+    renderTimelineUngrouped() {
+        let startTime = this.events[0].time;
+        let endTime = this.events[this.events.length - 1].time;
 
-        let timelineStart = new Date(year, 0, 1).getTime();
-        let timelineEnd = new Date(year + 1, 0, 1).getTime();
-        let timelineDelta = timelineEnd - timelineStart;
+        let startGroup = new Group(moment(startTime).format('Do MMM YYYY'), this.events, startTime, endTime);
+        let endGroup = new Group(moment(endTime).format('Do MMM YYYY'), [], endTime, endTime);
 
-        this.events.forEach((event, index) => {
-            let delta = event.time.getTime() - timelineStart;
-            if (delta >= 0 && delta <= timelineDelta) {
-                let location = delta / timelineDelta * 100
-                this.subTimeline.append(this.getTimelinePoint(index, event.title, event.time.toLocaleString(), location));
-            }
+        let timeline = new Timeline(this.timelineSelector, startGroup, endGroup, (event) => {
+            this.eventManager.showEvent(event);
         });
+        timeline.render();
+    }
 
+    renderTimelineGroupedByYears() {
+        let startYear = this.events[0].time.getFullYear();
+        let endYear = this.events[this.events.length - 1].time.getFullYear();
+        let totalYears = endYear - startYear + 2 // + 2 because we want to include both, start and end year, as well
+        
+        let timelineStart = new Date(startYear, 0, 1).getTime();
+        let timelineEnd = new Date(endYear + 1, 0, 1).getTime();
+        let timelineDelta = timelineEnd - timelineStart;
+        
+        let groups = [];
+        let lastYear = 0; // 2018 year 2020
+        let group = null;
+
+        this.events.forEach(event => {
+            let year = event.time.getFullYear();
+            if (lastYear != year) {
+                if (group != null) {
+                    let tempYear = lastYear;
+                    // If empty years in between, add them as empty groups
+                    while (tempYear < year - 1) {
+                        tempYear++;
+                        groups.push(new Group(tempYear, [], new Date(tempYear, 0, 1), new Date(tempYear + 1, 0, 1)));
+                    }
+                }
+                group = new Group(year, [], new Date(year, 0, 1), new Date(year + 1, 0, 1));
+                groups.push(group);
+                lastYear = year;
+            }
+            group.events.push(event);
+        });
+        // Add the end year
+        groups.push(new Group(lastYear + 1, [], new Date(lastYear + 1, 0, 1), new Date(lastYear + 1, 0, 1)));
+
+        // Create the timeline
+        let timeline = new GroupedTimeline(this.timelineSelector, groups, (group, nextGroup) => {
+            this.renderSubTimeline(group, nextGroup);
+        });
+        timeline.render();
+    }
+
+    renderSubTimeline(group, nextGroup) {
+        //this.subTimeline.empty();
+        //$('#sub-timeline-start').text(year);
+        //$('#sub-timeline-end').text(year + 1);
+
+        let timeline = new Timeline(this.subTimelineSelector, group, nextGroup, (event) => {
+            this.eventManager.showEvent(event);
+        });
+        timeline.render();
+        this.subTimeline.collapse('show');
     }
 
     getTimelinePoint(index, title, description = null, left=0, width=null) {
@@ -97,24 +122,5 @@ export class TimelineManager {
         timeline.tooltip();
         return timeline;
     }
-
-    getYearTimelinePoint(year, description = null, left=0, width=0) {
-        let widthStyle = '';
-        if (width > 0) {
-            widthStyle = ' width: ' + width + '%';
-        }
-        return '<div class="timeline-point point-year' + (width === 0 ? ' year-last' : '') + '" data-year="' + year + '" style="left: ' + left + '%;' + widthStyle +'">' +
-            '<div class="point-header">' +
-                '<p>' + year + '</p>' +
-                (description != null ? '<small>' +  description+ '</small>' : '') +
-            '</div>' +
-        '</div>';
-    }
-
-    getEmptyTimelinePoint(left=0, name='') {
-        return '<div class="timeline-point point-small" data-name="' + name + '" style="left: ' + left + '%">' +
-            '</div>';
-    }
-
 
 }

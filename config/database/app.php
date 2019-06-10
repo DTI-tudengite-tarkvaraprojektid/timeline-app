@@ -5,9 +5,12 @@ use Illuminate\Database\Schema\Blueprint;
 
 Manager::schema()->create('timelines', function (Blueprint $table) {
     $table->increments('id');
+    $table->integer('user_id')->unsigned();
     $table->string('name', 255);
+    $table->text('description');
     $table->timestamps();
     $table->softDeletes();
+    $table->foreign('user_id')->references('id')->on('user');
 });
 
 Manager::schema()->create('events', function (Blueprint $table) {
