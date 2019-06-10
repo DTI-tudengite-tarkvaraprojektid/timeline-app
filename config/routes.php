@@ -15,8 +15,9 @@ $app->group('', function () {
 
 $app->group('/events', function () use ($container) {
     $this->get('/[{id}]', 'controller.event:events')->setName('get-events');
-    $this->delete('/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
+    $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
+    $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
 });
 
 $app->get('/logout', 'controller.auth:logout')
@@ -33,9 +34,11 @@ $app->group('/user', function () {
 
 $app->group('/timelines', function () use ($container) {
     $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('timelines');
-    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
+    $this->map(['GET'], '/{id:[0-9]+}', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->map(['POST'], '/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
 
 });
 
-
+$app->group('/users', function () {
+    $this->map(['GET'], '/', 'controller.user:showUsers')->setName('userlist');
+})->add($container['middleware.auth']());

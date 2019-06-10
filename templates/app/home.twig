@@ -3,6 +3,7 @@
 {% block body %}
     {% if auth.check() %}
         {% include 'app/_new_event_modal.twig' %}
+        {% include 'app/_edit_event_modal.twig' %}
     {% endif %}
     <div class="container mt-3">
       <div class="float-right">
@@ -15,7 +16,7 @@
             </div>
             {% if auth.check() %}
                 <div class="col text-right">
-                    <a class="btn btn-primary" data-target="#new-event-modal" data-toggle="modal" href="#">+ Lisa sündmus</a>
+                    <a class="btn btn-dti" data-target="#new-event-modal" data-toggle="modal" href="#">+ Lisa sündmus</a>
                 </div>
             {% endif %}
         </div>
@@ -25,7 +26,7 @@
                     <h1 class="display-4">Tere tulemast {{ timeline.name }} ajajoonele</h1>
                     {% if auth.check() %}
                         <p class="lead">See ajajoon on tühi :( Palun lisa sündmus, et alustada.</p>
-                        <a class="btn btn-primary btn-lg" data-target="#new-event-modal" data-toggle="modal" href="#">Lisa sündmus</a>
+                        <a class="btn btn-dti btn-lg" data-target="#new-event-modal" data-toggle="modal" href="#">Lisa sündmus</a>
                     {% else %}
                         <p class="lead">Hetkel pole ühtegi sündmust sellel ajajoonel :(</p>
                     {% endif %}
@@ -58,7 +59,7 @@
                                         <ul class="list-group">
                                             <a class="list-group-item list-group-item-action" href="#" id="event-edit-title">Muuda pealkirja / kuupäeva</a>
                                             <a class="list-group-item list-group-item-action" href="#" id="event-edit">Muuda sisu</a>
-                                            <a class="list-group-item list-group-item-action list-group-item-danger" href="#">Kustuta sündmus</a>
+                                            <a class="list-group-item list-group-item-action list-group-item-danger" id="deleteEventButton" href="#">Kustuta sündmus</a>
                                         </ul>
                                     </div>
                                 {% endif %}

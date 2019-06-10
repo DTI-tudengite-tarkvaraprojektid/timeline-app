@@ -30,7 +30,7 @@ class AuthController extends Controller
 
                     return $this->redirect($response, 'home');
                 } else {
-                    $this->validator->addError('auth', 'Bad username or password');
+                    $this->validator->addError('auth', 'Wrong username or password');
                 }
             } catch (ThrottlingException $e) {
                 $this->validator->addError('auth', 'Too many attempts!');
@@ -65,11 +65,11 @@ class AuthController extends Controller
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {
-                $this->validator->addError('username', 'This username is already used.');
+                $this->validator->addError('username', 'Username already taken.');
             }
 
             if ($this->auth->findByCredentials(['login' => $email])) {
-                $this->validator->addError('email', 'This email is already used.');
+                $this->validator->addError('email', 'Email already taken.');
             }
 
             if ($this->validator->isValid()) {

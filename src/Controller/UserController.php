@@ -70,4 +70,14 @@ class UserController extends Controller
         User::destroy($args['id']);
         return $response->withJson(['message' => 'User deleted!']);
     }
+
+    public function showUsers(Request $request, Response $response)
+    {
+
+        $users = User::all();
+        return $this->render($response, 'app/userlist.twig', [
+            'users' => $users
+        ]);
+    }
+
 }

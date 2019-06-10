@@ -11,4 +11,12 @@ $(function() {
 
     $('#new-event-date').val(moment().format('YYYY-MM-DD'));
 
+    $('#event-edit-title').click((e) => {
+        e.preventDefault();
+        
+        $('#edit-event-name').val($('#event-edit-title').data('title'));
+        $('#edit-event-date').val($('#event-edit-title').data('time'));
+        $('#edit-event-id').val($('#event-edit-title').data('id'));
+        $('#edit-event-modal').modal('show');   
+    });
 });

@@ -18,6 +18,7 @@ Manager::schema()->create('events', function (Blueprint $table) {
     $table->integer('user_id')->unsigned();
     $table->integer('timeline_id')->unsigned();
     $table->string('title', 255);
+    $table->text('content');
     $table->timestamp('time');
     $table->timestamps();
     $table->softDeletes();
