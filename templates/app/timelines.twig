@@ -17,7 +17,7 @@
         </div>
         {% if auth.check() %}
             <div class="col text-right">
-                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#new-timeline-modal" >+ Lisa ajajoon</a>
+                <a class="btn btn-dti" href="#" data-toggle="modal" data-target="#new-timeline-modal" >+ Lisa ajajoon</a>
             </div>
         {% endif %}
     </div>
@@ -29,7 +29,7 @@
                         <h1 class="display-4">Pole ühtegi ajajoont :(</h1>
                         {% if auth.check() %}
                             <p class="lead">Palun lisa uus ajajoon, et alustada sündmuste lisamist.</p>
-                            <a class="btn btn-primary btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
+                            <a class="btn btn-dti btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
                         {% else %}
                             <p class="lead">Ajajooned lisatakse peatselt.</p>
                         {% endif %}
