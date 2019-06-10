@@ -30,7 +30,7 @@ $app->group('/user', function () {
 
 $app->group('/timelines', function () use ($container) {
     $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('timelines');
-    $this->map(['GET'], '/{id:[0-9]+}', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
+    $this->map(['GET'], '/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->map(['POST'], '/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
 });
 

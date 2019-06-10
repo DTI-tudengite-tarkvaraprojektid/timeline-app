@@ -13,10 +13,22 @@ $(function() {
 
     $('#event-edit-title').click((e) => {
         e.preventDefault();
-        
+
         $('#edit-event-name').val($('#event-edit-title').data('title'));
         $('#edit-event-date').val($('#event-edit-title').data('time'));
         $('#edit-event-id').val($('#event-edit-title').data('id'));
-        $('#edit-event-modal').modal('show');   
-    });
-});
+        $('#edit-event-modal').modal('show');
+      });
+      $('.deleteTimelineButton').on("click", deleteTimeline);
+
+
+    function deleteTimeline(e) {
+      var timeline = $(this).data("id");
+      if(confirm(timeline)){
+          console.log("delete funkts");
+          window.location.replace("/timelines/"+timeline+"/delete");
+      }
+
+        //window.location.reload();
+    }
+  });
