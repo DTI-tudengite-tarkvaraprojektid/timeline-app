@@ -64,9 +64,13 @@ class EventController extends Controller
         }
     }
 
-    public function delete(Request $request, Response $response, $args)
+    public function delete(Request $request, Response $response, $id)
     {
-        Event::destroy($args['id']);
-        return $response->withJson(['message' => 'Event deleted!']);
+        $timeline = Event::find($id)->timeline;
+        Event::destroy($id);
+        $this->flash('success', 'Sündmus kustutati');
+        return $response->withRedirect($this->path('timeline', [
+            'id' => $timeline->id
+        ]));
     }
 }
