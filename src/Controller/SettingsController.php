@@ -22,9 +22,7 @@ class SettingsController extends Controller
         $user->firstname = $request->getParam('firstname');  
         $user->lastname = $request->getParam('lastname');  
         $user->save();
-        return $response->withRedirect($this->path('settings', [
-            'id' => $user->id
-            ]));
+        return $response->withRedirect($this->path('settings'));
 
     }
 }
