@@ -5,6 +5,12 @@
     {% include 'app/_new_timeline_modal.twig' %}
 {% endif %}
 <div class="container mt-3">
+  {% if timelines|length > 0 %}
+    <div class="float-right">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input type="text" class="form-control" placeholder="Search">
+    </div>
+  {% endif %}
     <div class="row mt-4">
         <div class="col">
             <h3>Ajajooned</h3>
