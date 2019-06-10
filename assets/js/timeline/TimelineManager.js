@@ -13,12 +13,13 @@ export class TimelineManager {
         this.zoom = 0;
         this.events = events;
         this.eventManager = eventManager;
+        this.currentTimeline = null;
 
         //this.subTimeline.hide();
 
         this.initEvents();
-    }
 
+      }
 
     initEvents() {
         this.subTimeline.on('click', (e) => {
@@ -54,11 +55,11 @@ export class TimelineManager {
         let startYear = this.events[0].time.getFullYear();
         let endYear = this.events[this.events.length - 1].time.getFullYear();
         let totalYears = endYear - startYear + 2 // + 2 because we want to include both, start and end year, as well
-        
+
         let timelineStart = new Date(startYear, 0, 1).getTime();
         let timelineEnd = new Date(endYear + 1, 0, 1).getTime();
         let timelineDelta = timelineEnd - timelineStart;
-        
+
         let groups = [];
         let lastYear = 0; // 2018 year 2020
         let group = null;

@@ -30,12 +30,12 @@ class TimelineController extends Controller
         ]);
     }
 
-    public function delete(Request $request, Response $response, $args)
+    public function delete(Request $request, Response $response, $id)
     {
-        Timeline::destroy($args['id']);
-        return $response->withJson(['message' => 'Timeline deleted']);
+        Timeline::destroy($id);
+        $this->flash('success', 'Ajajoon kustutati');
+        return $response->withRedirect($this->path('timelines'));
     }
-
     public function addTimeline(Request $request, Response $response)
     {
         // Validate input:
@@ -51,7 +51,7 @@ class TimelineController extends Controller
             else if ($this->validator->getFirstError('description')) {
                 $this->flash('danger', 'Kontrolli kirjeldust');
             }
-            
+
             return $response->withRedirect($this->path('timelines'));
         }
 
