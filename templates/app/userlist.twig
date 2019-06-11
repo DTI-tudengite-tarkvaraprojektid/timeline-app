@@ -19,7 +19,9 @@
             <h1>Users</h1>
             <ul class="list-group">
                 {% for user in users %}
-                    <a href="#" class="list-group-item list-group-item-action">{{ user.email }}<button type="button" class="btn btn-outline-danger btn-sm float-right"">Delete</button></a>
+                    <a href="#" class="list-group-item list-group-item-action">{{ user.email }}
+                    <button type="button"class="btn btn-outline-danger btn-sm float-right">Delete</button>
+                    <button type="button" name="settings" action="{{ path_for('settings') }}" class="btn btn-outline-success btn-sm float-right">Edit</button></a>
                 {% endfor %}
             </ul>
         

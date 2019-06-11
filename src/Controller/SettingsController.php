@@ -17,12 +17,16 @@ class SettingsController extends Controller
     public function submit(Request $request, Response $response)
     {
         $user = $this->auth->getUser();
-        $user->email = $request->getParam('email');     
-        $user->password = $request->getParam('password'); 
-        $user->firstname = $request->getParam('firstname');  
+        $user->email = $request->getParam('email');   
+        $user->firstname = $request->getParam('firstname'); 
         $user->lastname = $request->getParam('lastname');  
-        $user->save();
+        $user->password = $request->getParam('password');
+        $array = ['password' =>'$password'];
+        if ($this->auth->findByCredentials(['firstname' => $firstname])) {
+            $this->validator->addError('firstname', 'This is your old name...');
+        }
+        $user= $this->auth->update($user, $array);  
+        $this->flash('success', 'Kasutaja muudetud edukalt');
         return $response->withRedirect($this->path('settings'));
-
     }
 }
