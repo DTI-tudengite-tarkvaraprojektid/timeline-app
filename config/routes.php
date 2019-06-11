@@ -24,9 +24,13 @@ $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
 
-$app->group('/content', function () {
-    $this->map(['POST'], '/', 'controller.content:addText')->setName('add-text');
+$app->group('/event/{id:[0-9]+}/content', function () {
+    $this->get('/', 'controller.content:get')->setName('get-content');
+    $this->post('/', 'controller.content:save')->setName('save-content');
+    $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
+    $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
 });
+
 $app->group('/user', function () {
     $this->map(['GET', 'POST'], '/register', 'controller.user:register')->setName('register');
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
