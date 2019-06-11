@@ -30,6 +30,7 @@ $app->group('/event/{id:[0-9]+}/content', function () {
     $this->get('/', 'controller.content:get')->setName('get-content');
     $this->post('/', 'controller.content:save')->setName('save-content');
     $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
+    $this->get('/thumb/{image:[0-9]+}', 'controller.content:getThumb')->setName('get-thumb');
     $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
 });
 
@@ -52,3 +53,7 @@ $app->group('/users', function () {
    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
     $this->get('/settings', 'controller.user:settings')->setName('settings');
 })->add($container['middleware.auth']());
+
+$app->group('/gallery', function (){
+  $this->get('/', 'controller.gallery:gallery')->setName('gallery');
+});

@@ -9,4 +9,6 @@ var/log/*
 public/assets/*
 !public/assets/.gitkeep
 var/uploads/*
-!var/uploads/.gitkeep
+!var/uploads/thumbnails/
+var/uploads/thumbnails/*
+!var/uploads/thumbnails/.gitkeep

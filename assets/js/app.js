@@ -1,4 +1,5 @@
 require('./timeline.js');
+require('./modal.js');
 
 import 'bootstrap';
 const moment = require('moment');
@@ -18,7 +19,7 @@ $(function() {
     $('#edit-event-name').val($('#event-edit-title').data('title'));
     $('#edit-event-date').val($('#event-edit-title').data('time'));
     $('#edit-event-privacy').prop( "checked", $('#event-edit-title').data('private') == 1 ? true : false);
-    $('#edit-event-modal').modal('show');        
+    $('#edit-event-modal').modal('show');
   });
   $('.deleteTimelineButton').on("click", deleteTimeline);
   $('#tsearch-form').submit(searchtimelines);

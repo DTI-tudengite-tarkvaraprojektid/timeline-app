@@ -1,5 +1,5 @@
 import Quill from "../quill";
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 const moment = require("moment");
 
 export class EventManager {
@@ -22,7 +22,7 @@ export class EventManager {
             };
         });
     }
-    
+
     showEvent(event) {
         if (this.editing) {
             $('#event-editor-container').addClass('card-body');
@@ -58,7 +58,7 @@ export class EventManager {
             var elements = $.parseHTML(htmlString)
             $(elements).find('img').each((index, node) => {
                 console.log("Changing image");
-                $(node).addClass('img-fluid')
+                $(node).addClass('img-fluid GPics')
             })
             return $(elements).html();
         });

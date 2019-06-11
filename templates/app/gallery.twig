@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <div class="container mt-3">
+    <h1>Galerii</h1>
+    <div class="container">
+      <div class="row">
+        {% for pic in pics %}
+          <div class="col-sm-3">
+            <img class="GPics" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" data-path="{{ path_for('get-image', {'id': pic.event.id, 'image': pic.id }) }}" alt="..." class="img-thumbnail">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal -->
+    <div id="myModal" class="modal">
+    <!-- The Close Button -->
+    <span class="close" onclick="document,getElementById('myModal').style.display='none'">&times;</span>
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+    <a href="#">Link to event</a>
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+{% endblock %}

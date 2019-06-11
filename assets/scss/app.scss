@@ -3,6 +3,7 @@
 @import "~quill/dist/quill.core.css";
 @import '~quill/dist/quill.snow.css';
 @import 'toasts';
+@import 'modal.css';
 
 
 .timeline-container {
@@ -127,4 +128,3 @@
 .navbar-dark .navbar-nav .nav-link {
   color: #ffffff;
 }
-
