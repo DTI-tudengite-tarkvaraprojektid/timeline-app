@@ -20,6 +20,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path_for('logout') }}">Logi välja</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path_for('settings') }}">Konto seaded</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path_for('users') }}">Kasutajate nimekiri</a>
+                </li>
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path_for('login') }}">Logi sisse</a>

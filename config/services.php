@@ -28,6 +28,8 @@ return [
         'name'  => 'app',
         'path'  => $app->getLogDir().'/'.$app->getEnvironment().'.log',
         'level' => Monolog\Logger::ERROR
-    ]
+    ],
+
+    'upload_path' => $app->getRootDir() . '/var/uploads'
 
 ];

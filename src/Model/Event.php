@@ -18,4 +18,9 @@ class Event extends Model
     {
         return $this->belongsTo('App\Model\Timeline');
     }
+
+    public function content()
+    {
+        return $this->hasMany('App\Model\Content');
+    }
 }

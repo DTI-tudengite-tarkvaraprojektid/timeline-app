@@ -11,6 +11,8 @@ Manager::schema()->create('user', function (Blueprint $table) {
     $table->increments('id');
     $table->string('email')->unique();
     $table->string('password');
+    $table->string('firstname', 255);
+    $table->string('lastname', 255);
     $table->text('permissions');
     $table->timestamp('last_login');
     $table->timestamps();
