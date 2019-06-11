@@ -3,7 +3,7 @@ import Quill from 'quill/core';
 import Toolbar from 'quill/modules/toolbar';
 import Snow from 'quill/themes/snow';
 
-import { AlignStyle } from 'quill/formats/align';
+import { AlignClass } from 'quill/formats/align';
 import { SizeClass } from 'quill/formats/size';
 import Bold from 'quill/formats/bold';
 import Italic from 'quill/formats/italic';
@@ -14,12 +14,14 @@ import Link from 'quill/formats/link';
 import Image from 'quill/formats/image';
 import Video from 'quill/formats/video';
 
+import { ImageUpload } from 'quill-image-upload';
+
 Image.className = 'img-fluid';
 
 Quill.register({
     'modules/toolbar': Toolbar,
     'themes/snow': Snow,
-    'formats/align': AlignStyle,
+    'formats/align': AlignClass,
     'formats/size': SizeClass,
     'formats/bold': Bold,
     'formats/italic': Italic,
@@ -29,6 +31,7 @@ Quill.register({
     'formats/link': Link,
     'formats/image': Image,
     'formats/video': Video,
+    'modules/imageUpload': ImageUpload
 });
 
 

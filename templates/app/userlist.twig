@@ -17,11 +17,12 @@
     <div class="container mt-3">
         
             <h1>Users</h1>
-            <ul class="list-group">
+            <div class="list-group">
                 {% for user in users %}
-                    <a href="#" class="list-group-item list-group-item-action">{{ user.email }}<button type="button" class="btn btn-outline-danger btn-sm float-right"">Delete</button></a>
+                    <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action">{{ user.email }}
+                    <button type="button"class="btn btn-outline-danger btn-sm float-right">Delete</button></a>
                 {% endfor %}
-            </ul>
+            </div>
         
     </div>
 {% endblock %}

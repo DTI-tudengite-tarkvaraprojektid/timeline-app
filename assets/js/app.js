@@ -21,7 +21,7 @@ $(function() {
         $('#edit-event-modal').modal('show');        
       });
       $('.deleteTimelineButton').on("click", deleteTimeline);
-    
+    $('#tsearch-form').submit(searchtimelines);
     $('.editBtn').click((e) => {
         e.preventDefault();
         $('#edit-timeline-id').val($('.editBtn').data('id'));
@@ -40,4 +40,21 @@ $(function() {
 
         //window.location.reload();
     }
+
+    function searchtimelines(){
+      var data = $('#tsearch').val();
+      if(data == ''){
+
+      } else {
+        console.log(data);
+        //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
+        //console.log(data);
+        var uri = $(this).prop('action') + data;
+        $(this).prop('action', uri);
+      }
+    }
+
+
+
+
   });

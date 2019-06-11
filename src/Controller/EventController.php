@@ -16,7 +16,7 @@ class EventController extends Controller
     {
         $timelineId = $request->getParam('timeline_id');
         $timeline = Timeline::find($timelineId);
-        
+
         if (!$timeline) {
             throw $this->notFoundException($request, $response);
         }
@@ -34,17 +34,17 @@ class EventController extends Controller
             else if ($this->validator->getFirstError('time')) {
                 $this->flash('danger', 'Kontrolli kuupäeva');
             }
-            
+
             return $response->withRedirect($this->path('timeline', [
                 'id' => $timeline->id
             ]));
         }
 
-        $event = new Event(); 
+        $event = new Event();
         $event->user()->associate($this->auth->getUser());
         $event->title= $request->getParam('title');
         $event->time = $request->getParam('time');
-        
+
         $timeline->events()->save($event);
         $this->flash('success', 'Sündmus lisatud edukalt');
 
@@ -55,13 +55,19 @@ class EventController extends Controller
 
     public function events(Request $request, Response $response, $id = null)
     {
-        // var_dump($args);
         if ($id) {
             $timeline = Timeline::with('events')->findOrFail($id);
-            return $response->withJson($timeline->events()->orderBy('time')->get());
+            $events = $timeline->events()->orderBy('time')->get()->toArray();
         } else {
-            return $response->withJson(Event::orderBy('time')->get());
+            $events = Event::orderBy('time')->get()->toArray();
         }
+        for ($i=0; $i < count($events); $i++) {
+            $events[$i]['path_get_content'] = $this->path('get-content', ['id' => $events[$i]['id']]);
+            $events[$i]['path_save_content'] = $this->path('save-content', ['id' => $events[$i]['id']]);
+            $events[$i]['path_save_image'] = $this->path('save-image', ['id' => $events[$i]['id']]);
+            $events[$i]['path_delete'] = $this->path('delete-event', ['id' => $events[$i]['id']]);
+        }
+        return $response->withJson($events);
     }
 
     public function delete(Request $request, Response $response, $id)
@@ -84,5 +90,16 @@ class EventController extends Controller
         return $response->withRedirect($this->path('timeline', [
             'id' => $event->timeline->id
         ]));
+    }
+
+    public function searchEvent(Request $request, Response $response, $id, $args)
+    {
+        //var_dump($args);
+        if ($id) {
+            $events = Timeline::with('events')->findOrFail($id)->events()->where('title', 'like' ,'%' . $args . '%')->orderBy('time')->get();
+            return $response->withJson($events);
+        } else {
+            return $response->withJson(Event::orderBy('time')->get());
+        }
     }
 }
