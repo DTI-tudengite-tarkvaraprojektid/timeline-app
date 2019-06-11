@@ -38,28 +38,56 @@
                 </div>
             </div>
         {% else %}
-            {% for timeline in timelines %}
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ timeline.name }}
-                        </div>
-                        <div class="card-body">
-                            <p>{{ timeline.description }}</p>
-                            <p>
-                                <small>
-                                    Sündmusi: {{ timeline.events_count }}<br>
-                                    Viimati muudetud: {{ timeline.updated_at|date("d.m.Y") }}
-                                </small>
-                            </p>
-                            <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
-                            <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
-                            <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
-                            data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" >Muuda</button>
+            {% if auth.check() %}
+                {% for timeline in timelines %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                {{ timeline.name }}
+                            </div>
+                            <div class="card-body">
+                                <p>{{ timeline.description }}</p>
+                                <p>
+                                    <small>
+                                        Sündmusi: {{ timeline.events_count }}<br>
+                                        Viimati muudetud: {{ timeline.updated_at|date("d.m.Y") }}
+                                    {% if timeline.private == true %}<i>Privaatne</i>{% endif %}
+                                    </small>                           
+                                </p>
+                                <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                                <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
+                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
+                                data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                {% for timeline in timelines %}
+                    {% if timeline.private == false %}
+                        <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                {{ timeline.name }}
+                            </div>
+                            <div class="card-body">
+                                <p>{{ timeline.description }}</p>
+                                <p>
+                                    <small>
+                                        Sündmusi: {{ timeline.events_count }}<br>
+                                        Viimati muudetud: {{ timeline.updated_at|date("d.m.Y") }}
+                                    </small>                           
+                                </p>
+                                <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                                <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
+                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
+                                data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {% endif %}
     </div>
 </div>

@@ -59,6 +59,7 @@ class TimelineController extends Controller
         $timeline->user()->associate($this->auth->getUser());
         $timeline->name = $request->getParam('name');
         $timeline->description = $request->getParam('description');
+        $timeline->private = ($request->getParam('private') ? true : false);
         $timeline->save();
 
         $this->flash('success', 'Ajajoon loodud');
@@ -70,6 +71,7 @@ class TimelineController extends Controller
         $timeline = Timeline::find($request->getParam('id'));
         $timeline->name = $request->getParam('name');
         $timeline->description = $request->getParam('description');
+        $timeline->private = $request->getParam('private');
         $timeline->save();
         $this->flash('success', 'Ajajoon muudetud edukalt');
         return $response->withRedirect($this->path('timelines'));

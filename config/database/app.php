@@ -11,6 +11,7 @@ Manager::schema()->create('timelines', function (Blueprint $table) {
     $table->timestamps();
     $table->softDeletes();
     $table->foreign('user_id')->references('id')->on('user');
+    $table->boolean('private');
 });
 
 Manager::schema()->create('events', function (Blueprint $table) {
@@ -24,6 +25,7 @@ Manager::schema()->create('events', function (Blueprint $table) {
     $table->softDeletes();
     $table->foreign('user_id')->references('id')->on('user');
     $table->foreign('timeline_id')->references('id')->on('timelines');
+    $table->boolean('private');
 });
 
 Manager::schema()->create('contents', function (Blueprint $table) {

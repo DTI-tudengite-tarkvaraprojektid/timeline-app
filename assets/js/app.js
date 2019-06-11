@@ -17,7 +17,8 @@ $(function() {
         $('#edit-event-id').val($('#event-edit-title').data('id'));
         $('#edit-event-name').val($('#event-edit-title').data('title'));
         $('#edit-event-date').val($('#event-edit-title').data('time'));
-        $('#edit-event-modal').modal('show');
+        $('#edit-event-privacy').prop( "checked", $('#event-edit-title').data('private') == 1 ? true : false);
+        $('#edit-event-modal').modal('show');        
       });
       $('.deleteTimelineButton').on("click", deleteTimeline);
     
@@ -26,6 +27,7 @@ $(function() {
         $('#edit-timeline-id').val($('.editBtn').data('id'));
         $('#edit-timeline-name').val($('.editBtn').data('name'));
         $('#edit-timeline-description').val($('.editBtn').data('description'));
+        $('#edit-timeline-privacy').prop( "checked", $('.editBtn').data('private') == 1 ? true : false);
         $('#edit-timeline-modal').modal('show');
     });
 
