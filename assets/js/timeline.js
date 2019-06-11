@@ -37,3 +37,7 @@ $('#edit-event-form-button').click(() => {
 $('#new-timeline-form-button').click(() => {
     $('#new-timeline-form').submit();
 })
+
+$('#edit-timeline-form-button').click(() => {
+    $('#edit-timeline-form').submit();
+})

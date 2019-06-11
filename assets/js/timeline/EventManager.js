@@ -16,7 +16,6 @@ export class EventManager {
         });
 
         $('#deleteEventButton').on("click", () => {
-            
             if(confirm(this.currentEvent.title)){
                 event = this.currentEvent.id;
                 this.deleteEvent(event);
