@@ -5,8 +5,8 @@ $app->get('/', 'controller.app:home')->setName('home');
 $app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
 
 $app->group('/settings', function () {
-    $this->get('/', 'controller.settings:settings')->setName('settings');
-    $this->post('/', 'controller.settings:submit')->setName('submit');
+    $this->get('/[{id}]', 'controller.settings:settings')->setName('settings');
+    $this->post('/[{id}]', 'controller.settings:submit')->setName('submit');
 })->add($container['middleware.auth']());
 
 $app->group('', function () {
