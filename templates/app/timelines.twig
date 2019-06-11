@@ -7,8 +7,14 @@
 <div class="container mt-3">
   {% if timelines|length > 0 %}
     <div class="float-right">
-      <span class="fa fa-search form-control-feedback"></span>
-      <input type="text" class="form-control" placeholder="Search">
+      <form id="tsearch-form" action="{{ path_for('search-timelines') }}">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Otsing" aria-label="Otsing" aria-describedby="basic-addon2" id="tsearch">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="submit" id="tsearchbutton">Search</button>
+            </div>
+        </div>
+      </form>
     </div>
   {% endif %}
     <div class="row mt-4">

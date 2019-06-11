@@ -16,7 +16,7 @@ class EventController extends Controller
     {
         $timelineId = $request->getParam('timeline_id');
         $timeline = Timeline::find($timelineId);
-        
+
         if (!$timeline) {
             throw $this->notFoundException($request, $response);
         }
@@ -34,17 +34,17 @@ class EventController extends Controller
             else if ($this->validator->getFirstError('time')) {
                 $this->flash('danger', 'Kontrolli kuupäeva');
             }
-            
+
             return $response->withRedirect($this->path('timeline', [
                 'id' => $timeline->id
             ]));
         }
 
-        $event = new Event(); 
+        $event = new Event();
         $event->user()->associate($this->auth->getUser());
         $event->title= $request->getParam('title');
         $event->time = $request->getParam('time');
-        
+
         $timeline->events()->save($event);
         $this->flash('success', 'Sündmus lisatud edukalt');
 
@@ -83,5 +83,16 @@ class EventController extends Controller
         return $response->withRedirect($this->path('timeline', [
             'id' => $event->timeline->id
         ]));
+    }
+
+    public function searchEvent(Request $request, Response $response, $id, $args)
+    {
+        //var_dump($args);
+        if ($id) {
+            $events = Timeline::with('events')->findOrFail($id)->events()->where('title', 'like' ,'%' . $args . '%')->orderBy('time')->get();
+            return $response->withJson($events);
+        } else {
+            return $response->withJson(Event::orderBy('time')->get());
+        }
     }
 }

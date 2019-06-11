@@ -19,7 +19,8 @@ $(function() {
         $('#edit-event-id').val($('#event-edit-title').data('id'));
         $('#edit-event-modal').modal('show');
       });
-      $('.deleteTimelineButton').on("click", deleteTimeline);
+    $('.deleteTimelineButton').on("click", deleteTimeline);
+    $('#tsearch-form').submit(searchtimelines);
 
 
     function deleteTimeline(e) {
@@ -31,4 +32,21 @@ $(function() {
 
         //window.location.reload();
     }
+
+    function searchtimelines(){
+      var data = $('#tsearch').val();
+      if(data == ''){
+
+      } else {
+        console.log(data);
+        //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
+        //console.log(data);
+        var uri = $(this).prop('action') + data;
+        $(this).prop('action', uri);
+      }
+    }
+
+
+
+
   });

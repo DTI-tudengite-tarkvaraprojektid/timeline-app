@@ -28,4 +28,24 @@ $('#edit-event-form-button').click(() => {
 
 $('#new-timeline-form-button').click(() => {
     $('#new-timeline-form').submit();
-})
+});
+$('#esearch-form').submit(function (e){
+      e.preventDefault();
+      console.log('hello there!');
+      var data = $('#esearch').val();
+      if(data == ''){
+
+      } else {
+        //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
+        console.log(data);
+        var uri = $(this).prop('action') + data;
+        $.getJSON(uri, function(data) {
+            let events = [];
+            data.forEach(event => {
+                events.push(new Event(event.id, event.title, new Date(event.time)));
+            });
+            timelineManager.events = events;
+            timelineManager.render();
+        })
+      }
+    });

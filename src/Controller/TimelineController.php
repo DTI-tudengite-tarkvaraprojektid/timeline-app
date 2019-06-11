@@ -65,4 +65,14 @@ class TimelineController extends Controller
 
         return $response->withRedirect($this->path('timelines'));
     }
+
+    public function searchtimeline(Request $request, Response $response, $args) {
+        $data = Timeline::Where('name', 'like' ,'%' . $args . '%')
+            ->orWhere('description', 'like' , '%' . $args . '%')
+            ->get();
+
+        return $this->render($response, 'app/timelines.twig', [
+            'timelines' => $data
+        ]);
+      }
 }
