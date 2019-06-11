@@ -9,7 +9,7 @@ use Awurth\Slim\Helper\Controller\Controller;
 
 class UserController extends Controller 
 {
-    public function register(Request $request, Response $response)
+    public function register(Request $request, Response $response, $id)
     {
         if ($request->isPost()) {
             $username = $request->getParam('username');
@@ -80,4 +80,18 @@ class UserController extends Controller
         ]);
     }
 
+    public function users(Request $request, Response $response)
+    {
+        return $this->render($response, 'app/userlist.twig');
+    }
+    public function delete2(Request $request, Response $response, $id)
+    {
+        User::destroy($id);
+        $this->flash('success', 'Ajajoon kustutati');
+        return $response->withRedirect($this->path('users'));
+    }
+    public function settings(Request $request, Response $response)
+    {
+        return $this->render($response, 'app/settings.twig');
+    }
 }

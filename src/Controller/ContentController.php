@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Model\Event;
 use App\Model\Content;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use FileUpload;
+use FileUpload\FileUploadFactory;
+use FileUpload\FileSystem;
 use Respect\Validation\Validator as V;
+use FileUpload\PathResolver;
 use Awurth\Slim\Helper\Controller\Controller;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 
@@ -16,54 +21,66 @@ use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
  */
 class ContentController extends Controller
 {
-    public function addText(Request $request, Response $response)
+    public function get(Request $request, Response $response, $id)
     {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'TEXT';
-        $content->content = $request->getParam('content');      
-        $content->save();
-    }
-    public function addImage(Request $request, Response $response)
-    {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'IMAGE';
-        $content->content = $request->getParam('content');      
-        $content->save();
-    }
-    public function addVideo(Request $request, Response $response)
-    {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'VIDEO';
-        $content->content = $request->getParam('content');      
-        $content->save();
-    }
-    public function addAudio(Request $request, Response $response)
-    {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'AUDIO';
-        $content->content = $request->getParam('content');      
-        $content->save();
-    }
-    public function addUrl(Request $request, Response $response)
-    {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'URL';
-        $content->content = $request->getParam('content');      
-        $content->save();
-    }
-    public function addFile(Request $request, Response $response)
-    {
-        $content = new Content;
-		$content->event_id = $request->getParam('event_id');
-		$content->type = 'FILE';
-        $content->content = $request->getParam('content');      
-        $content->save();
+        $event = Event::find($id);
+
+        return $response->withJson([
+            'content' => json_decode($event->content)
+        ]);
     }
 
+    public function save(Request $request, Response $response, $id)
+    {
+        $event = Event::find($id);
+        $event->content = $request->getBody();
+        $event->save();
+        return $response->withJson([
+            'message' => 'Content saved'
+        ]);
+    }
 
+    public function getImage(Request $request, Response $response, $id, $imageId) {
+        $image = Content::find($imageId);
+        if ($image != null) {
+            return $response
+                ->withHeader("Content-Type", mime_content_type($image->content))
+                ->write(file_get_contents($image->content));
+        }
+    }
+
+    public function uploadImage(Request $request, Response $response, $id)
+    {
+        $factory = new FileUploadFactory(
+            new PathResolver\Simple($this->settings['upload_path']), 
+            new FileSystem\Simple(), 
+            [
+                new FileUpload\Validator\MimeTypeValidator(['image/png', 'image/jpg'])
+            ],
+            new FileUpload\FileNameGenerator\Random(32)
+        );
+        
+        $fileupload = $factory->create($_FILES['image'], $_SERVER);
+
+        list($files, $headers) = $fileupload->processAll();
+
+        if ($files[0]->completed) {
+            $event = Event::find($id);
+            $content = new Content();
+            $content->type = 'IMAGE';
+            $content->content = $files[0]->getRealPath();
+            $event->content()->save($content);
+    
+            return $response->withJson([
+                'message' => 'Image uploaded',
+                'path' => $this->path('get-image', ['id' => $id, 'image' => $content->id])
+            ]);
+        } else {
+            return $response->withStatus(400)->withJson([
+                'message' => 'Failed to upload image'
+            ]);
+        }
+
+        
+    }
 }

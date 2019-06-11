@@ -11,7 +11,15 @@ if (timeline) {
     $.getJSON(timeline.data('url'), function(data) {
         let events = [];
         data.forEach(event => {
-            events.push(new Event(event.id, event.title, new Date(event.time)));
+            events.push(new Event(
+                event.id,
+                event.title,
+                new Date(event.time),
+                event.path_get_content,
+                event.path_save_content,
+                event.path_delete,
+                event.path_save_image
+            ));
         });
         timelineManager.events = events;
         timelineManager.render();
