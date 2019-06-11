@@ -55,13 +55,19 @@ class EventController extends Controller
 
     public function events(Request $request, Response $response, $id = null)
     {
-        // var_dump($args);
         if ($id) {
             $timeline = Timeline::with('events')->findOrFail($id);
-            return $response->withJson($timeline->events()->orderBy('time')->get());
+            $events = $timeline->events()->orderBy('time')->get()->toArray();
         } else {
-            return $response->withJson(Event::orderBy('time')->get());
+            $events = Event::orderBy('time')->get()->toArray();
         }
+        for ($i=0; $i < count($events); $i++) {
+            $events[$i]['path_get_content'] = $this->path('get-content', ['id' => $events[$i]['id']]);
+            $events[$i]['path_save_content'] = $this->path('save-content', ['id' => $events[$i]['id']]);
+            $events[$i]['path_save_image'] = $this->path('save-image', ['id' => $events[$i]['id']]);
+            $events[$i]['path_delete'] = $this->path('delete-event', ['id' => $events[$i]['id']]);
+        }
+        return $response->withJson($events);
     }
 
     public function delete(Request $request, Response $response, $id)

@@ -4,6 +4,11 @@ $app->get('/', 'controller.app:home')->setName('home');
 
 $app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
 
+$app->group('/settings', function () {
+    $this->get('/[{id}]', 'controller.settings:settings')->setName('settings');
+    $this->post('/[{id}]', 'controller.settings:submit')->setName('submit');
+})->add($container['middleware.auth']());
+
 $app->group('', function () {
     $this->map(['GET', 'POST'], '/login', 'controller.auth:login')->setName('login');
 })->add($container['middleware.guest']);
@@ -21,9 +26,13 @@ $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
 
-$app->group('/content', function () {
-    $this->map(['POST'], '/', 'controller.content:addText')->setName('add-text');
+$app->group('/event/{id:[0-9]+}/content', function () {
+    $this->get('/', 'controller.content:get')->setName('get-content');
+    $this->post('/', 'controller.content:save')->setName('save-content');
+    $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
+    $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
 });
+
 $app->group('/user', function () {
     $this->map(['GET', 'POST'], '/register', 'controller.user:register')->setName('register');
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
@@ -34,8 +43,12 @@ $app->group('/timelines', function () use ($container) {
     $this->map(['GET'], '/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->map(['POST'], '/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
     $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
+    $this->map(['POST'], '/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
 });
 
 $app->group('/users', function () {
     $this->map(['GET'], '/', 'controller.user:showUsers')->setName('userlist');
+    $this->post('/', 'controller.user:users')->setName('users');
+   // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
+    $this->get('/settings', 'controller.user:settings')->setName('settings');
 })->add($container['middleware.auth']());

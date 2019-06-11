@@ -75,4 +75,12 @@ class TimelineController extends Controller
             'timelines' => $data
         ]);
       }
+      public function editTimeline(Request $request, Response $response){
+          $timeline = Timeline::find($request->getParam('id'));
+          $timeline->name = $request->getParam('name');
+          $timeline->description = $request->getParam('description');
+          $timeline->save();
+          $this->flash('success', 'Ajajoon muudetud edukalt');
+          return $response->withRedirect($this->path('timelines'));
+      }
 }

@@ -14,14 +14,20 @@ $(function() {
     $('#event-edit-title').click((e) => {
         e.preventDefault();
 
+        $('#edit-event-id').val($('#event-edit-title').data('id'));
         $('#edit-event-name').val($('#event-edit-title').data('title'));
         $('#edit-event-date').val($('#event-edit-title').data('time'));
-        $('#edit-event-id').val($('#event-edit-title').data('id'));
         $('#edit-event-modal').modal('show');
       });
-    $('.deleteTimelineButton').on("click", deleteTimeline);
+      $('.deleteTimelineButton').on("click", deleteTimeline);
     $('#tsearch-form').submit(searchtimelines);
-
+    $('.editBtn').click((e) => {
+        e.preventDefault();
+        $('#edit-timeline-id').val($('.editBtn').data('id'));
+        $('#edit-timeline-name').val($('.editBtn').data('name'));
+        $('#edit-timeline-description').val($('.editBtn').data('description'));
+        $('#edit-timeline-modal').modal('show');
+    });
 
     function deleteTimeline(e) {
       var timeline = $(this).data("id");
