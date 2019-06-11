@@ -3,6 +3,7 @@
 {% block body %}
 {% if auth.check() %}
     {% include 'app/_new_timeline_modal.twig' %}
+    {% include 'app/_edit_timeline_modal.twig' %}
 {% endif %}
 <div class="container mt-3">
   {% if timelines|length > 0 %}
@@ -53,6 +54,8 @@
                             </p>
                             <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
                             <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
+                            <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
+                            data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" >Muuda</button>
                         </div>
                     </div>
                 </div>

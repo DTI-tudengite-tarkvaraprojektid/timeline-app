@@ -1,0 +1,29 @@
+<div id="edit-timeline-modal" aria-hidden="true" aria-labelledby="edit-timeline-modal-title" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-timeline-modal-title">Muuda Ajajoont</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-timeline-form" action="{{ path_for('edit-timeline') }}" method="POST">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Pealkiri</label>
+                        <input class="form-control" id="edit-timeline-name" type="text" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-timeline-date">Kirjeldus</label>
+                        <textarea class="form-control" id="edit-timeline-description" name="description" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="id" id="edit-timeline-id"></input>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
+                <button id="edit-timeline-form-button" class="btn btn-primary" type="button">Muuda</button>
+            </div>
+        </div>
+    </div>
+</div>
