@@ -36,7 +36,6 @@ $('#edit-event-form-button').click(() => {
 
 $('#new-timeline-form-button').click(() => {
     $('#new-timeline-form').submit();
-<<<<<<< HEAD
 });
 $('#esearch-form').submit(function (e){
       e.preventDefault();
@@ -58,10 +57,8 @@ $('#esearch-form').submit(function (e){
         })
       }
     });
-=======
-})
+  })
 
-$('#edit-timeline-form-button').click(() => {
-    $('#edit-timeline-form').submit();
-})
->>>>>>> e38f982714a299b779b2bc92e51390bd32e8df3d
+  $('#edit-timeline-form-button').click(() => {
+      $('#edit-timeline-form').submit();
+  })
