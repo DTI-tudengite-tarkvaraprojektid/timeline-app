@@ -11,7 +11,7 @@ export class Timeline {
         this.onEventClick = onEventClick;
     }
 
-    render () {
+    render() {
         let count = this.events.length;
         let timelineDelta = this.timelineEnd - this.timelineStart;
         let timeline = this.initTimeline();

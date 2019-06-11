@@ -5,7 +5,7 @@ import 'bootstrap';
 const moment = require('moment');
 require('../scss/app.scss');
 
-$(function() {
+$(function () {
 
   // Show toasts
   $('.toast').toast({delay: 1500}).toast('show');
@@ -31,6 +31,13 @@ $(function() {
     $('#edit-timeline-privacy').prop( "checked", $('.editBtn').data('private') == 1 ? true : false);
     $('#edit-timeline-modal').modal('show');
   });
+
+  $('.default-checkbox').click(function (e) {
+    var path = $(this).data('path');
+    $.post(path, () => {
+      console.log('Updated default timeline.');
+    });
+  })
 
   function deleteTimeline(e) {
     var timeline = $(this).data("id");

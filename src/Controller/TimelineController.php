@@ -17,6 +17,10 @@ class TimelineController extends Controller
             throw $this->notFoundException($request, $response);
         }
 
+        if (!$this->auth->check() && $timeline->private){
+           return $response->withRedirect($this->path('home'));
+        }
+
         return $this->render($response, 'app/home.twig', [
             'timeline' => $timeline
         ]);
@@ -24,9 +28,14 @@ class TimelineController extends Controller
 
 
     public function timelines(Request $request, Response $response)
-    {
+    {     
+        if ($this->auth->check()) {
+            $timelines = Timeline::withCount('events')->get();
+        } else {
+            $timelines = Timeline::withCount('events')->where('private', 0)->get();
+        }
         return $this->render($response, 'app/timelines.twig', [
-            'timelines' => Timeline::withCount('events')->get()
+            'timelines' => $timelines
         ]);
     }
 
@@ -84,5 +93,14 @@ class TimelineController extends Controller
         $timeline->save();
         $this->flash('success', 'Ajajoon muudetud edukalt');
         return $response->withRedirect($this->path('timelines'));
+    }
+
+    public function defaultTimeline(Request $request, Response $response, $id){
+        Timeline::where('default', 1)->update(['default' => 0]);
+        $timeline = Timeline::find($id);
+        $timeline->default = true;
+        $timeline->save();
+
+        return $response->withJson(['message' => 'Set timeline ' . $id . ' as default']);
     }
 }

@@ -42,8 +42,9 @@ class EventController extends Controller
 
         $event = new Event();
         $event->user()->associate($this->auth->getUser());
-        $event->title= $request->getParam('title');
+        $event->title = $request->getParam('title');
         $event->time = $request->getParam('time');
+        $event->private = ($request->getParam('private') ? true : false);
 
         $timeline->events()->save($event);
         $this->flash('success', 'Sündmus lisatud edukalt');
@@ -57,7 +58,15 @@ class EventController extends Controller
     {
         if ($id) {
             $timeline = Timeline::with('events')->findOrFail($id);
-            $events = $timeline->events()->orderBy('time')->get()->toArray();
+            if($this->auth->check()){
+                $events = $timeline->events()->orderBy('time')->get()->toArray();
+            } else {
+                if ($timeline->private) {
+                    return $response->withJson([]);
+                }
+                $events = $timeline->events()->orderBy('time')->where('private',0)->get()->toArray();
+            }
+               
         } else {
             $events = Event::orderBy('time')->get()->toArray();
         }
