@@ -1,9 +1,10 @@
 require('./timeline.js');
-require('./modal.js');
 
 import 'bootstrap';
+import '@fancyapps/fancybox';
 const moment = require('moment');
 require('../scss/app.scss');
+
 
 $(function () {
 

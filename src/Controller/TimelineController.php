@@ -77,9 +77,7 @@ class TimelineController extends Controller
     }
 
     public function searchtimeline(Request $request, Response $response, $args) {
-        $data = Timeline::Where('name', 'like' ,'%' . $args . '%')
-            ->orWhere('description', 'like' , '%' . $args . '%')
-            ->get();
+        $data = Timeline::searchOrderByRelevance($args)->get();
 
         return $this->render($response, 'app/timelines.twig', [
             'timelines' => $data

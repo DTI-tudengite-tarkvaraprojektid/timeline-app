@@ -18,11 +18,10 @@ $app->group('', function () {
 
 
 $app->group('/events', function () use ($container) {
-    $this->get('/[{id}]', 'controller.event:events')->setName('get-events');
+    $this->get('/{id}[/{query}]', 'controller.event:events')->setName('get-events');
     $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
-    $this->get('/{id}/search/[{query:.*}]', 'controller.event:searchEvent')->setName('search-events');
 });
 
 $app->get('/logout', 'controller.auth:logout')

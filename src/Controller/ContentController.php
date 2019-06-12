@@ -86,7 +86,7 @@ class ContentController extends Controller
 
             return $response->withJson([
                 'message' => 'Image uploaded',
-                'thumbnail-path' => $this->path('get-thumb', ['id' => $id, 'image' => $content->id],
+                'thumbnail-path' => $this->path('get-thumb', ['id' => $id, 'image' => $content->id]),
                 'path' => $this->path('get-image', ['id' => $id, 'image' => $content->id])
             ]);
         } else {

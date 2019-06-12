@@ -54,22 +54,25 @@ class EventController extends Controller
         ]));
     }
 
-    public function events(Request $request, Response $response, $id = null)
+    public function events(Request $request, Response $response, $id, $query = null)
     {
-        if ($id) {
-            $timeline = Timeline::with('events')->findOrFail($id);
-            if($this->auth->check()){
-                $events = $timeline->events()->orderBy('time')->get()->toArray();
-            } else {
-                if ($timeline->private) {
-                    return $response->withJson([]);
-                }
-                $events = $timeline->events()->orderBy('time')->where('private',0)->get()->toArray();
-            }
-               
-        } else {
-            $events = Event::orderBy('time')->get()->toArray();
+
+        $timeline = Timeline::with('events')->findOrFail($id);
+        $events = $timeline->events();
+
+        if ($query != null) {
+            $events->search($query);
         }
+
+        if(!$this->auth->check()){
+            if ($timeline->private) {
+                return $response->withJson([]);
+            }
+            $events = $events->where('private', 0);
+        }
+        
+        $events = $events->orderBy('time')->get()->toArray();
+
         for ($i=0; $i < count($events); $i++) {
             $events[$i]['path_get_content'] = $this->path('get-content', ['id' => $events[$i]['id']]);
             $events[$i]['path_save_content'] = $this->path('save-content', ['id' => $events[$i]['id']]);
@@ -99,16 +102,5 @@ class EventController extends Controller
         return $response->withRedirect($this->path('timeline', [
             'id' => $event->timeline->id
         ]));
-    }
-
-    public function searchEvent(Request $request, Response $response, $id, $args)
-    {
-        //var_dump($args);
-        if ($id) {
-            $events = Timeline::with('events')->findOrFail($id)->events()->where('title', 'like' ,'%' . $args . '%')->orderBy('time')->get();
-            return $response->withJson($events);
-        } else {
-            return $response->withJson(Event::orderBy('time')->get());
-        }
     }
 }

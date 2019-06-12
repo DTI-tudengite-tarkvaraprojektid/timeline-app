@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model
 {
     use SoftDeletes;
+    use FullTextSearchTrait;
+
+    /**
+     * The columns of the full text index
+     */
+    protected $searchable = [
+        'title',
+        'content',
+    ];
 
     public function user()
     {

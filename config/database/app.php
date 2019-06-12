@@ -15,6 +15,9 @@ Manager::schema()->create('timelines', function (Blueprint $table) {
     $table->boolean('default');
 });
 
+// Full Text Index
+Manager::statement('ALTER TABLE timelines ADD FULLTEXT fulltext_index (name, description)');
+
 Manager::schema()->create('events', function (Blueprint $table) {
     $table->increments('id');
     $table->integer('user_id')->unsigned();
@@ -28,6 +31,9 @@ Manager::schema()->create('events', function (Blueprint $table) {
     $table->foreign('timeline_id')->references('id')->on('timelines');
     $table->boolean('private');
 });
+
+// Full Text Index
+Manager::statement('ALTER TABLE events ADD FULLTEXT fulltext_index (title, content)');
 
 Manager::schema()->create('contents', function (Blueprint $table) {
     $table->increments('id');
