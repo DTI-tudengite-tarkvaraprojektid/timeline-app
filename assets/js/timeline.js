@@ -8,7 +8,7 @@ let timelineManager = new TimelineManager('#timeline', '#sub-timeline', new Even
 let timeline = $('#timeline');
 if (timeline) {
     // Load events
-    $.getJSON(timeline.data('url'), function(data) {
+    $.getJSON(timeline.data('url'), function (data) {
         let events = [];
         data.forEach(event => {
             events.push(new Event(
@@ -37,17 +37,18 @@ $('#edit-event-form-button').click(() => {
 $('#new-timeline-form-button').click(() => {
     $('#new-timeline-form').submit();
 });
-$('#esearch-form').submit(function (e){
-      e.preventDefault();
-      console.log('hello there!');
-      var data = $('#esearch').val();
-      if(data == ''){
 
-      } else {
+$('#esearch-form').submit(function (e) {
+    e.preventDefault();
+    console.log('hello there!');
+    var data = $('#esearch').val();
+    if (data == '') {
+
+    } else {
         //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
         console.log(data);
         var uri = $(this).prop('action') + data;
-        $.getJSON(uri, function(data) {
+        $.getJSON(uri, function (data) {
             let events = [];
             data.forEach(event => {
                 events.push(new Event(event.id, event.title, new Date(event.time)));
@@ -55,10 +56,9 @@ $('#esearch-form').submit(function (e){
             timelineManager.events = events;
             timelineManager.render();
         })
-      }
-    });
-  })
+    }
+});
 
-  $('#edit-timeline-form-button').click(() => {
-      $('#edit-timeline-form').submit();
-  })
+$('#edit-timeline-form-button').click(() => {
+    $('#edit-timeline-form').submit();
+})
