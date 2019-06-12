@@ -31,6 +31,13 @@ $(function() {
     $('#edit-timeline-modal').modal('show');
   });
 
+  $('.default-checkbox').click(function (e) {
+    var path = $(this).data('path');
+    $.post(path, () => {
+      console.log('Updated default timeline.');
+    });
+  })
+
   function deleteTimeline(e) {
     var timeline = $(this).data("id");
     if(confirm(timeline)){

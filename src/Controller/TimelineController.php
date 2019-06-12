@@ -85,4 +85,13 @@ class TimelineController extends Controller
         $this->flash('success', 'Ajajoon muudetud edukalt');
         return $response->withRedirect($this->path('timelines'));
     }
+
+    public function defaultTimeline(Request $request, Response $response, $id){
+        Timeline::where('default', 1)->update(['default' => 0]);
+        $timeline = Timeline::find($id);
+        $timeline->default = true;
+        $timeline->save();
+
+        return $response->withJson(['message' => 'Set timeline ' . $id . ' as default']);
+    }
 }

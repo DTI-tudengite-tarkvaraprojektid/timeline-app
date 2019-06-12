@@ -50,6 +50,10 @@
                         <div class="card">
                             <div class="card-header">
                                 {{ timeline.name }}
+                                <div class="custom-control" style="float:right;">
+                                    <label>Vaikimisi</label>
+                                    <input type="radio" name="default" class="default-checkbox" data-path="{{ path_for('default-timeline', {'id': timeline.id }) }}" value="1" {% if timeline.default == true %} checked="checked" {% endif %}>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <p>{{ timeline.description }}</p>
@@ -62,7 +66,7 @@
                                 </p>
                                 <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
                                 <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
-                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
+                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" style="margin-left:18%;" data-id="{{ timeline.id }}"
                                 data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
                             </div>
                         </div>
