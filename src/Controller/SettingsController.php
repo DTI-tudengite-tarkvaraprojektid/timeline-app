@@ -63,12 +63,15 @@ class SettingsController extends Controller
         return $response->withRedirect($this->path('settings'));
     }
     public function submit2(Request $request, Response $response, $id)
-    {
+    {   
+        $user = $this->auth->getUser();
+        if ($id != $user->id) {
             if ($this->auth->getUser()->inRole('admin')){
                 $user = $this->auth->findUserById($id);                 
             } else {
                 throw new \Exception('Not admin');
-            } 
+            }
+        }
 
         $user = $this->auth->getUser();
         $password1 = $request->getParam('password');
@@ -80,7 +83,7 @@ class SettingsController extends Controller
             $user= $this->auth->update($user, $array);  
             $this->flash('success', 'Parool muudetud edukalt!');
          }else{
-            $this->flash('danger', 'fail');
+            $this->flash('danger', 'Paroolid peavad olema samad!');
          }
             
     return $response->withRedirect($this->path('settings'));
