@@ -7,6 +7,9 @@ $app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('tim
 $app->group('/settings', function () {
     $this->get('/[{id}]', 'controller.settings:settings')->setName('settings');
     $this->post('/[{id}]', 'controller.settings:submit')->setName('submit');
+
+    $this->get('/{id}/cPassword', 'controller.settings:cPassword')->setName('cPassword');
+    $this->post('/{id}/cPassword', 'controller.settings:submit2')->setName('submit2');
 })->add($container['middleware.auth']());
 
 $app->group('', function () {

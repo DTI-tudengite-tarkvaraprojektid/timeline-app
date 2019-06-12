@@ -14,6 +14,8 @@ class User extends EloquentUser
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'firstname',
+        'lastname',
         'email',
         'password',
         'permissions'
