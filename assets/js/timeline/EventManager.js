@@ -34,10 +34,11 @@ export class EventManager {
         }
         console.log('showEvent(): ' + event.title);
         this.card.find('#event-title').text(event.title);
-        this.card.find('#event-time').text(event.time.toLocaleDateString('et'));
+        this.card.find('#event-time').text(event.time.toLocaleDateString('et') + (event.private ? ' - (Privaatne)' : ''));
         this.card.find('#event-edit-title').data('id', event.id);
         this.card.find('#event-edit-title').data('title', event.title);
         this.card.find('#event-edit-title').data('time', moment(event.time).format('YYYY-MM-DD'));
+        this.card.find('#event-edit-title').data('private', event.private);
         this.card.find('#event-editor').text('Loading...');
         this.card.show();
         this.currentEvent = event;

@@ -18,7 +18,8 @@ if (timeline) {
                 event.path_get_content,
                 event.path_save_content,
                 event.path_delete,
-                event.path_save_image
+                event.path_save_image,
+                event.private
             ));
         });
         timelineManager.events = events;
