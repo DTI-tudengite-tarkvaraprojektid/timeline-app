@@ -4,7 +4,7 @@ import 'bootstrap';
 const moment = require('moment');
 require('../scss/app.scss');
 
-$(function() {
+$(function () {
 
   // Show toasts
   $('.toast').toast({delay: 1500}).toast('show');

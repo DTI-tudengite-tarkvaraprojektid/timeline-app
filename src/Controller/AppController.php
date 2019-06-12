@@ -11,7 +11,6 @@ class AppController extends Controller
 {
     public function home(Request $request, Response $response)
     {
-        // TODO: Make default timeline configurable
         $timeline = Timeline::withCount('events')->where('default', 1)->first();
         if ($timeline == null) {
             $timeline = Timeline::withCount('events')->first();

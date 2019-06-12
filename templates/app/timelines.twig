@@ -1,50 +1,48 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-{% if auth.check() %}
-    {% include 'app/_new_timeline_modal.twig' %}
-    {% include 'app/_edit_timeline_modal.twig' %}
-{% endif %}
-<div class="container mt-3">
-  {% if timelines|length > 0 %}
-    <div class="float-right">
-      <form id="tsearch-form" action="{{ path_for('search-timelines') }}">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Otsing" aria-label="Otsing" aria-describedby="basic-addon2" id="tsearch">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit" id="tsearchbutton">Search</button>
-            </div>
-        </div>
-      </form>
-    </div>
-  {% endif %}
-    <div class="row mt-4">
-        <div class="col">
-            <h3>Ajajooned</h3>
-        </div>
-        {% if auth.check() %}
-            <div class="col text-right">
-                <a class="btn btn-dti" href="#" data-toggle="modal" data-target="#new-timeline-modal" >+ Lisa ajajoon</a>
-            </div>
-        {% endif %}
-    </div>
-    <div class="row mt-4">
-        {% if timelines|length == 0 %}
+    {% if auth.check() %}
+        {% include 'app/_new_timeline_modal.twig' %}
+        {% include 'app/_edit_timeline_modal.twig' %}
+    {% endif %}
+    <div class="container mt-3">
+        {% if timelines|length > 0 %}{% endif %}
+        <div class="row mt-4">
             <div class="col">
-                <div class="jumbotron">
-                    <div class="container">
-                        <h1 class="display-4">Pole ühtegi ajajoont :(</h1>
-                        {% if auth.check() %}
-                            <p class="lead">Palun lisa uus ajajoon, et alustada sündmuste lisamist.</p>
-                            <a class="btn btn-dti btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
-                        {% else %}
-                            <p class="lead">Ajajooned lisatakse peatselt.</p>
-                        {% endif %}
+                <h3>Ajajooned</h3>
+            </div>
+            {% if auth.check() %}
+                <div class="col text-right">
+                    <a class="btn btn-dti" data-target="#new-timeline-modal" data-toggle="modal" href="#">+ Lisa ajajoon</a>
+                </div>
+            {% endif %}
+            <div class="col">
+                <form id="tsearch-form" action="{{ path_for('search-timelines') }}">
+                    <div class="input-group mb-3">
+                        <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="tsearch" placeholder="Otsing" type="text">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" id="tsearchbutton" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            {% if timelines|length == 0 %}
+                <div class="col">
+                    <div class="jumbotron">
+                        <div class="container">
+                            <h1 class="display-4">Pole ühtegi ajajoont :(</h1>
+                            {% if auth.check() %}
+                                <p class="lead">Palun lisa uus ajajoon, et alustada sündmuste lisamist.</p>
+                                <a class="btn btn-dti btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
+                            {% else %}
+                                <p class="lead">Ajajooned lisatakse peatselt.</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% else %}
-            {% if auth.check() %}
+            {% else %}
                 {% for timeline in timelines %}
                     <div class="col-4">
                         <div class="card">
@@ -59,46 +57,27 @@
                                 <p>{{ timeline.description }}</p>
                                 <p>
                                     <small>
-                                        Sündmusi: {{ timeline.events_count }}<br>
-                                        Viimati muudetud: {{ timeline.updated_at|date("d.m.Y") }}
-                                    {% if timeline.private == true %}<i>Privaatne</i>{% endif %}
-                                    </small>                           
+                                        Sündmusi:
+                                        {{ timeline.events_count }}<br>
+                                        Viimati muudetud:
+                                        {{ timeline.updated_at|date("d.m.Y") }}
+                                        {% if timeline.private == true %}<br><i>Privaatne</i>
+                                        {% endif %}
+                                    </small>
                                 </p>
-                                <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
-                                <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
-                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" style="margin-left:18%;" data-id="{{ timeline.id }}"
-                                data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
+                                <div class="d-flex flex-row">
+                                    <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                                    {% if auth.check() %}
+                                        <button type="button" class="btn btn-primary m-1 editBtn" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
+                                        <button type="button" class="btn btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
+
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                {% for timeline in timelines %}
-                    {% if timeline.private == false %}
-                        <div class="col-4">
-                        <div class="card">
-                            <div class="card-header">
-                                {{ timeline.name }}
-                            </div>
-                            <div class="card-body">
-                                <p>{{ timeline.description }}</p>
-                                <p>
-                                    <small>
-                                        Sündmusi: {{ timeline.events_count }}<br>
-                                        Viimati muudetud: {{ timeline.updated_at|date("d.m.Y") }}
-                                    </small>                           
-                                </p>
-                                <a href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
-                                <button type="button" class="btn btn-outline-danger float-right deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
-                                <button type="button" id="editTimelineButton" class="btn btn-primary editBtn" data-id="{{ timeline.id }}"
-                                data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
                 {% endfor %}
             {% endif %}
-        {% endif %}
+        </div>
     </div>
-</div>
 {% endblock %}
