@@ -79,7 +79,7 @@ class TimelineController extends Controller
     public function searchtimeline(Request $request, Response $response, $args) {
         $data = Timeline::searchOrderByRelevance($args)->get();
 
-        return $this->render($response, 'app/timelines.twig', [
+        return $this->render($response, 'app/timelines_search.twig', [
             'timelines' => $data
         ]);
     }

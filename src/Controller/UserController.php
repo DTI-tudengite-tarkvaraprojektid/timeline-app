@@ -90,12 +90,12 @@ class UserController extends Controller
         return $this->render($response, 'app/register.twig');
     }
 
-    public function delete2(Request $request, Response $response, $id)
+    /*public function delete2(Request $request, Response $response, $id)
     {
         User::destroy($id);
-        $this->flash('success', 'Ajajoon kustutati');
+        $this->flash('success', 'kasutaja eemaldati');
         return $response->withRedirect($this->path('users'));
-    }
+    }*/
     public function settings(Request $request, Response $response)
     {
         return $this->render($response, 'app/settings.twig');
