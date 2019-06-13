@@ -55,6 +55,7 @@ $app->group('/users', function () {
     $this->post('/', 'controller.user:users')->setName('users')->add($container['middleware.auth']());
    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
     $this->get('/settings', 'controller.user:settings')->setName('settings')->add($container['middleware.auth']());
+    $this->get('/register', 'controller.user:registration')->setName('register')->add($container['middleware.auth']('admin'));
 });
 
 $app->group('/gallery', function (){

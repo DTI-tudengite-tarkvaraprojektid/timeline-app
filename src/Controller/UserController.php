@@ -84,6 +84,12 @@ class UserController extends Controller
     {
         return $this->render($response, 'app/userlist.twig');
     }
+
+    public function registration(Request $request, Response $response)
+    {
+        return $this->render($response, 'app/register.twig');
+    }
+
     public function delete2(Request $request, Response $response, $id)
     {
         User::destroy($id);
