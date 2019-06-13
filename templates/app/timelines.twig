@@ -19,9 +19,9 @@
             <div class="col">
                 <form id="tsearch-form" action="{{ path_for('search-timelines') }}">
                     <div class="input-group mb-3">
-                        <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="tsearch" placeholder="Otsing" type="text">
+                        <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="tsearch" placeholder="Otsi ajajoont" type="text">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" id="tsearchbutton" type="submit">Search</button>
+                            <button class="btn btn-outline-secondary" id="tsearchbutton" type="submit">Otsi</button>
                         </div>
                     </div>
                 </form>
@@ -71,7 +71,7 @@
                                     <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
                                     {% if auth.check() %}
                                         <button type="button" class="btn btn-primary m-1 editBtn" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
-                                        <button type="button" class="btn btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}">Kustuta</button>
+                                        <button type="button" class="btn btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}">Kustuta</button>
 
                                     {% endif %}
                                 </div>

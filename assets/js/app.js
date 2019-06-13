@@ -42,7 +42,8 @@ $(function () {
 
   function deleteTimeline(e) {
     var timeline = $(this).data("id");
-    if(confirm(timeline)){
+    var name = $(this).data("name");
+    if(confirm("Olete kindel, et soovite ajajoont "+"'"+name+"'"+" kustutada?")){
       console.log("delete funkts");
       window.location.replace("/timelines/"+timeline+"/delete");
     }

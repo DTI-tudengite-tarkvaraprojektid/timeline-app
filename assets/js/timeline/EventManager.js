@@ -17,7 +17,7 @@ export class EventManager {
         });
 
         $('#deleteEventButton').on("click", () => {
-            if(confirm(this.currentEvent.title)){
+            if(confirm("Olete kindel, et soovite sündmust "+ "'"+this.currentEvent.title+"'"+ " kustutada?")){
                 event = this.currentEvent.id;
                 this.deleteEvent(event);
             };
