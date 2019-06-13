@@ -127,10 +127,16 @@ class UserController extends Controller
             'lastname' => $request->getParam('lastname'),
             'email' => $request->getParam('email'),
             'password' => $request->getParam('password'),
+            'admin' => $request->getParam('admin'),
             'permissions' => [
                 'user.delete' => 0
             ]
         ]);
+        if (isset($_POST['admin'])) {
+            $role = $this->auth->findRoleByName('admin');
+        }else {
+            $role = $this->auth->findRoleByName('user');
+        }
 
         $role->users()->attach($user);
 

@@ -57,9 +57,13 @@ $(function () {
       $(this).prop('action', uri);
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6552f90ea33f0effeb892b3aaaefd9c85ca543dd
   $('#new-user-form-button').click(() => {
     $('#new-user-form').submit();
-});
+  });
 
 
   function editTimeline(e){
