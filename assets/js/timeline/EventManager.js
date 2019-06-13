@@ -23,7 +23,6 @@ export class EventManager {
             };
         });
     }
-
     showEvent(event, element) {
         if (this.editing) {
             $('#event-editor-container').addClass('card-body');
