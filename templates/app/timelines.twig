@@ -32,13 +32,15 @@
                 <div class="col">
                     <div class="jumbotron">
                         <div class="container">
-                            <h1 class="display-4">Pole ühtegi ajajoont :(</h1>
-                            {% if auth.check() %}
-                                <p class="lead">Palun lisa uus ajajoon, et alustada sündmuste lisamist.</p>
-                                <a class="btn btn-dti btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
-                            {% else %}
-                                <p class="lead">Ajajooned lisatakse peatselt.</p>
-                            {% endif %}
+                            {% block jumbotron %}
+                                <h1 class="display-4">Pole ühtegi ajajoont :(</h1>
+                                {% if auth.check() %}
+                                    <p class="lead">Palun lisa uus ajajoon, et alustada sündmuste lisamist.</p>
+                                    <a class="btn btn-dti btn-lg" data-target="#new-timeline-modal" data-toggle="modal" href="#">Lisa ajajoon</a>
+                                {% else %}
+                                    <p class="lead">Ajajooned lisatakse peatselt.</p>
+                                {% endif %}
+                            {% endblock %}
                         </div>
                     </div>
                 </div>
