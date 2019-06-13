@@ -6,6 +6,7 @@ use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Awurth\Slim\Helper\Controller\Controller;
+use Respect\Validation\Validator as V;
 
 class UserController extends Controller 
 {
@@ -99,5 +100,42 @@ class UserController extends Controller
     public function settings(Request $request, Response $response)
     {
         return $this->render($response, 'app/settings.twig');
+    }
+    public function addUser(Request $request, Response $response)
+    {
+        // Validate input:
+        $this->validator->request($request, [
+            'email' => V::length(1, null),
+            'password' => V::length(1, null)
+        ]);
+
+        if (!$this->validator->isValid()) {
+            if ($this->validator->getFirstError('email')) {
+                $this->flash('danger', 'Kontrolli Emaili');
+            }
+            else if ($this->validator->getFirstError('password')) {
+                $this->flash('danger', 'Kontrolli salasõna');
+            }
+
+            return $response->withRedirect($this->path('userlist'));
+        }
+
+        $role = $this->auth->findRoleByName('User');
+
+        $user = $this->auth->registerAndActivate([
+            'firstname' => $request->getParam('firstname'),
+            'lastname' => $request->getParam('lastname'),
+            'email' => $request->getParam('email'),
+            'password' => $request->getParam('password'),
+            'permissions' => [
+                'user.delete' => 0
+            ]
+        ]);
+
+        $role->users()->attach($user);
+
+        $this->flash('success', 'Toimetaja konto loodud');
+
+        return $response->withRedirect($this->path('userlist'));
     }
 }

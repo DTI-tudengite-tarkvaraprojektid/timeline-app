@@ -62,4 +62,8 @@ $(function () {
       $(this).prop('action', uri);
     }
   }
+  $('#new-user-form-button').click(() => {
+    $('#new-user-form').submit();
+});
+
 });

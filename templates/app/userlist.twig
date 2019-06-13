@@ -1,16 +1,22 @@
 {% extends 'layout.twig' %}
 {% block body %}
+    {% include 'app/_new_user_modal.twig' %}
     <div class="container mt-3">
-            <h1>Kasutajad</h1>
-            <div class="list-group">     
-                {% for user in users %}
-                    <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action">{{ user.firstname }} {{ user.lastname }} – {{ user.email }}
-                    <button type="button"class="btn btn-outline-danger btn-sm float-right">Delete</button></a>
-                {% endfor %}
-                            
+        <div class="row mt-4">
+            <div class="col">
+                <h3>Toimetajad</h3>
             </div>
-        
-    </div>
+            <div class="col text-right">
+                <a class="btn btn-dti" data-target="#new-user-modal" data-toggle="modal" href="#">+ Lisa toimetaja</a>
+            </div>
+        </div>
+        <div class="list-group">     
+        {% for user in users %}
+            <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action">{{ user.firstname }} {{ user.lastname }} – {{ user.email }}
+            <button type="button"class="btn btn-outline-danger btn-sm float-right">Delete</button></a>
+        {% endfor %}
+        </div>
+   </div>
 {% endblock %}
 
 
