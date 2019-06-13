@@ -53,8 +53,8 @@ export class TimelineManager {
         let startGroup = new Group(moment(startTime).format('Do MMM YYYY'), this.events, startTime, endTime);
         let endGroup = new Group(moment(endTime).format('Do MMM YYYY'), [], endTime, endTime);
 
-        let timeline = new Timeline(this.timelineSelector, startGroup, endGroup, (event) => {
-            this.eventManager.showEvent(event);
+        let timeline = new Timeline(this.timelineSelector, startGroup, endGroup, (event, element) => {
+            this.eventManager.showEvent(event, element);
         });
         timeline.render();
     }
@@ -104,8 +104,8 @@ export class TimelineManager {
         //$('#sub-timeline-start').text(year);
         //$('#sub-timeline-end').text(year + 1);
 
-        let timeline = new Timeline(this.subTimelineSelector, group, nextGroup, (event) => {
-            this.eventManager.showEvent(event);
+        let timeline = new Timeline(this.subTimelineSelector, group, nextGroup, (event, element) => {
+            this.eventManager.showEvent(event, element);
         });
         timeline.render();
         this.subTimeline.collapse('show');
