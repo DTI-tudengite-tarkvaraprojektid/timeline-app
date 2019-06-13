@@ -13,8 +13,10 @@ import Header from 'quill/formats/header';
 import Link from 'quill/formats/link';
 import Image from 'quill/formats/image';
 import Video from 'quill/formats/video';
+import ThumbnailImageBlot from './quill/ThumbnailImageBlot';
+import ThumbnailImageUpload from './quill/ThumbnailImageUpload';
 
-import { ImageUpload } from 'quill-image-upload';
+//import { ImageUpload } from 'quill-image-upload';
 
 Image.className = 'img-fluid';
 
@@ -30,8 +32,9 @@ Quill.register({
     'formats/header': Header,
     'formats/link': Link,
     'formats/image': Image,
+    'formats/thumbnailImage': ThumbnailImageBlot,
     'formats/video': Video,
-    'modules/imageUpload': ImageUpload
+    'modules/imageUpload': ThumbnailImageUpload
 });
 
 

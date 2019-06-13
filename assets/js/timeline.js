@@ -57,7 +57,8 @@ function updateTimeline(data) {
             event.path_save_content,
             event.path_delete,
             event.path_save_image,
-            event.private
+            event.private,
+            event.path_get_images
         ));
     });
     timelineManager.events = events;

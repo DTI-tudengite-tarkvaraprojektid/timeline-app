@@ -128,3 +128,11 @@
 .navbar-dark .navbar-nav .nav-link {
   color: #ffffff;
 }
+
+.ql-snow .ql-tooltip.ql-custom {
+    max-width: 100%;
+}
+
+.ql-snow .ql-tooltip.ql-custom::before {
+    content: none;
+}

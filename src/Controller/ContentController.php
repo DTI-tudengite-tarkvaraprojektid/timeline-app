@@ -47,6 +47,21 @@ class ContentController extends Controller
                 ->withHeader("Content-Type", mime_content_type($image->content))
                 ->write(file_get_contents($this->settings['upload_path'] . '/' . $image->content));
         }
+        throw $this->notFoundException();
+    }
+
+    public function getImages(Request $request, Response $response, $id) {
+        $images = Event::find($id)->content()->where('type', 'IMAGE')->get();
+        $data = [];
+        foreach ($images as $image) {
+            $temp = [
+                'id' => $image->id,
+                'thumbnail' => $this->path('get-thumb', ['id' => $id, 'image' => $image->id]),
+                'path' => $this->path('get-image', ['id' => $id, 'image' => $image->id])
+            ];
+            $data[] = $temp;
+        }
+        return $response->withJson($data);
     }
 
     public function getThumb(Request $request, Response $response, $id, $imageId) {

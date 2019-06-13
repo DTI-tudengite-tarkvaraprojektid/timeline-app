@@ -28,9 +28,10 @@ $app->get('/logout', 'controller.auth:logout')
     ->add($container['middleware.auth']())
     ->setName('logout');
 
-$app->group('/event/{id:[0-9]+}/content', function () {
+$app->group('/event/{id:[0-9]+}/content', function () use ($container) {
     $this->get('/', 'controller.content:get')->setName('get-content');
     $this->post('/', 'controller.content:save')->setName('save-content');
+    $this->get('/images', 'controller.content:getImages')->setName('get-images')->add($container['middleware.auth']());
     $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
     $this->get('/thumb/{image:[0-9]+}', 'controller.content:getThumb')->setName('get-thumb');
     $this->post('/image', 'controller.content:uploadImage')->setName('save-image');

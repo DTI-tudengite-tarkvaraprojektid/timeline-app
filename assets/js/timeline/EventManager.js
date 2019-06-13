@@ -56,9 +56,29 @@ export class EventManager {
         var cfg = {};
         var converter = new QuillDeltaToHtmlConverter(ops, cfg);
 
+        converter.renderCustomWith(function(customOp, contextOp){
+            if (customOp.insert.type === 'thumbnailImage') {
+                let val = customOp.insert.value;
+                console.log('adding thumbnail:')
+                console.log(val)
+                var link = $('<a></a>')
+                    .addClass('event-image')
+                    .prop('href', val.path)
+                    .data('fancybox', 'images')
+                    .append(
+                        $('<img></img>')
+                            .addClass('img-fluid')
+                            .prop('src', val.thumbnail)
+                    );
+                return link[0].outerHTML;
+            } else {
+                return 'Unmanaged custom blot!';
+            }
+        });
+
         converter.afterRender(function(groupType, htmlString){
             var elements = $.parseHTML(htmlString)
-            $(elements).find('img').each((index, node) => {
+            $(elements).find('img:not(.img-fluid)').each((index, node) => {
                 console.log(node);
                 var src = $(node).prop('src');
                 var link = $('<a></a>')
@@ -116,10 +136,14 @@ export class EventManager {
                     toolbar: toolbarOptions,
                     imageUpload: {
                         url: this.currentEvent.imageUploadPath,
+                        images: this.currentEvent.imageListPath,
                         name: 'image', // custom form name
                         // personalize successful callback and call next function to insert new url to the editor
                         callbackOK: (serverResponse, next) => {
-                            next(serverResponse.path);
+                            next({
+                                path: serverResponse['path'],
+                                thumbnail: serverResponse['thumbnail-path']
+                            });
                         },
                         // personalize failed callback
                         callbackKO: serverError => {
