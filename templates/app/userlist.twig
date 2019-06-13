@@ -3,14 +3,13 @@
     <div class="container mt-3">
             <h1>Kasutajad</h1>
             <div class="list-group">    
-            {% if auth.user.inRole('admin') %}                      34 
+            {% if auth.user.inRole('admin') %}
                 {% for user in users %}
                     <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action">{{ user.firstname }} {{ user.lastname }} – {{ user.email }}
                     <button type="button"class="btn btn-outline-danger btn-sm float-right">Delete</button></a>
                 {% endfor %}
             {% endif %}                
             </div>
-        
     </div>
 {% endblock %}
 
