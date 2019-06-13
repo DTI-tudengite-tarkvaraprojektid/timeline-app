@@ -39,7 +39,7 @@ export class TimelineManager {
     render() {
         this.timeline.empty();
 
-        if (this.events.length < 20) { // TODO: change to larger number after testing
+        if (this.events.length < 5) { // TODO: change to larger number after testing
             this.renderTimelineUngrouped();
         } else {
             this.renderTimelineGroupedByYears();
