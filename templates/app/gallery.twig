@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <div class="container mt-3">
+    <h1>Galerii</h1>
+    <div class="container">
+      <div class="row">
+        {% for pic in pics %}
+          <div class="col-sm-3">
+            <a href="{{ path_for('get-image', {'id': pic.event.id, 'image': pic.id }) }}" data-fancybox="gallery" data-caption="Sündmus: {{ pic.event.title }}">
+              <img class="img-thumbnail" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" alt=""/>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -9,22 +9,11 @@ let timeline = $('#timeline');
 if (timeline) {
     // Load events
     $.getJSON(timeline.data('url'), function (data) {
-        let events = [];
-        data.forEach(event => {
-            events.push(new Event(
-                event.id,
-                event.title,
-                new Date(event.time),
-                event.path_get_content,
-                event.path_save_content,
-                event.path_delete,
-                event.path_save_image,
-                event.private
-            ));
-        });
-        timelineManager.events = events;
-        timelineManager.render();
+        updateTimeline(data);
     })
+    $(timeline).fancybox({
+        selector : '.event-image'
+    });
 }
 
 $('#new-event-form-button').click(() => {
@@ -41,25 +30,36 @@ $('#new-timeline-form-button').click(() => {
 
 $('#esearch-form').submit(function (e) {
     e.preventDefault();
-    console.log('hello there!');
     var data = $('#esearch').val();
-    if (data == '') {
-
+    if (!data) {
+        var uri = timeline.data('url');
     } else {
-        //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
-        console.log(data);
-        var uri = $(this).prop('action') + data;
-        $.getJSON(uri, function (data) {
-            let events = [];
-            data.forEach(event => {
-                events.push(new Event(event.id, event.title, new Date(event.time)));
-            });
-            timelineManager.events = events;
-            timelineManager.render();
-        })
+        var uri = $(this).prop('action') + '/' + data;
     }
+   
+    $.getJSON(uri, function (data) {
+        updateTimeline(data);
+    })
 });
 
 $('#edit-timeline-form-button').click(() => {
     $('#edit-timeline-form').submit();
 })
+
+function updateTimeline(data) {
+    let events = [];
+    data.forEach(event => {
+        events.push(new Event(
+            event.id,
+            event.title,
+            new Date(event.time),
+            event.path_get_content,
+            event.path_save_content,
+            event.path_delete,
+            event.path_save_image,
+            event.private
+        ));
+    });
+    timelineManager.events = events;
+    timelineManager.render();
+}

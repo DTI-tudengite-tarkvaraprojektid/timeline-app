@@ -16,7 +16,7 @@
                 </div>
             {% endif %}
             <div class="col text-right">
-                <form id="esearch-form" action="{{ path_for('search-events', {'id': timeline.id}) }}">
+                <form id="esearch-form" action="{{ path_for('get-events', {'id': timeline.id}) }}">
                     <div class="input-group mb-3">
                         <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="esearch" placeholder="Otsing" type="text">
                         <div class="input-group-append">

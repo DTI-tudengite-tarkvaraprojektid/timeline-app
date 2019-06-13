@@ -77,9 +77,7 @@ class TimelineController extends Controller
     }
 
     public function searchtimeline(Request $request, Response $response, $args) {
-        $data = Timeline::Where('name', 'like' ,'%' . $args . '%')
-            ->orWhere('description', 'like' , '%' . $args . '%')
-            ->get();
+        $data = Timeline::searchOrderByRelevance($args)->get();
 
         return $this->render($response, 'app/timelines.twig', [
             'timelines' => $data
@@ -93,5 +91,14 @@ class TimelineController extends Controller
         $timeline->save();
         $this->flash('success', 'Ajajoon muudetud edukalt');
         return $response->withRedirect($this->path('timelines'));
+    }
+
+    public function defaultTimeline(Request $request, Response $response, $id){
+        Timeline::where('default', 1)->update(['default' => 0]);
+        $timeline = Timeline::find($id);
+        $timeline->default = true;
+        $timeline->save();
+
+        return $response->withJson(['message' => 'Set timeline ' . $id . ' as default']);
     }
 }

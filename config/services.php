@@ -30,6 +30,6 @@ return [
         'level' => Monolog\Logger::ERROR
     ],
 
-    'upload_path' => $app->getRootDir() . '/var/uploads'
-
+    'upload_path' => $app->getRootDir() . '/var/uploads',
+    'thumbnail_path' => $app->getRootDir() . '/var/uploads/thumbnails'
 ];
