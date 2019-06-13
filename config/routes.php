@@ -50,7 +50,7 @@ $app->group('/timelines', function () use ($container) {
     $this->map(['POST'], '/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
 });
 
-$app->group('/users', function () {
+$app->group('/users', function () use ($container) {
     $this->map(['GET'], '/', 'controller.user:showUsers')->setName('userlist')->add($container['middleware.auth']('admin'));
     $this->post('/', 'controller.user:users')->setName('users')->add($container['middleware.auth']());
    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
