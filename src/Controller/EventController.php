@@ -86,7 +86,7 @@ class EventController extends Controller
     {
         $timeline = Event::find($id)->timeline;
         Event::destroy($id);
-        $this->flash('success', 'Sündmus kustutati');
+        $this->flash('success', 'Sündmus kustutatud');
         return $response->withRedirect($this->path('timeline', [
             'id' => $timeline->id
         ]));
