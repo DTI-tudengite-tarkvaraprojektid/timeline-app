@@ -25,13 +25,7 @@ export class EventManager {
     }
     showEvent(event, element) {
         if (this.editing) {
-            $('#event-editor-container').addClass('card-body');
-            $('#event-editor-container').html(
-                $('<div></div>').prop('id', 'event-editor').addClass('ql-editor').html(this.quill.root.innerHTML)
-            );
-
-            this.quill = null;
-            this.editing = false;
+            this.endEditing();
         }
         console.log('showEvent(): ' + event.title);
         $("div.timeline div").removeClass("active");
@@ -79,7 +73,10 @@ export class EventManager {
         });
 
         converter.afterRender(function(groupType, htmlString){
-            var elements = $.parseHTML(htmlString)
+            
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML= htmlString;
+            var elements = $(wrapper).children();
             $(elements).find('img:not(.img-fluid)').each((index, node) => {
                 console.log(node);
                 var src = $(node).prop('src');
@@ -114,13 +111,18 @@ export class EventManager {
             contentType : 'application/json',
             type: 'POST'
         }).done((data) => {
-            $('#event-editor-container').addClass('card-body');
-            $('#event-editor-container').html(
-                $('<div></div>').prop('id', 'event-editor').addClass('ql-editor').html(this.quill.root.innerHTML)
-            );
-            this.quill = null;
-            this.editing = false;
+            this.endEditing();
         });
+    }
+
+    endEditing() {
+        $('#event-edit').removeClass('list-group-item-success').text('Muuda sisu');
+        $('#event-editor-container').addClass('card-body');
+        $('#event-editor-container').html(
+            $('<div></div>').prop('id', 'event-editor').addClass('ql-editor').html(this.quill.root.innerHTML)
+        );
+        this.quill = null;
+        this.editing = false;
     }
 
     toggleEdit() {
@@ -129,6 +131,7 @@ export class EventManager {
             this.saveContent();
             this.loadContent();
         } else {
+            $('#event-edit').addClass('list-group-item-success').text('Salvesta sisu');
             $('#event-editor-container').removeClass('card-body');
             var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], ['link', 'image', 'video']];
             $('#event-editor').html('');
@@ -149,7 +152,7 @@ export class EventManager {
                         },
                         // personalize failed callback
                         callbackKO: serverError => {
-                            alert(serverError);
+                            alert(JSON.parse(serverError.body).message);
                         },
                         // optional
                         // add callback when a image have been chosen

@@ -46,16 +46,18 @@
                 </div>
             {% else %}
                 {% for timeline in timelines %}
-                    <div class="col-4">
+                    <div class="col-md-6 col-lg-4">
                         <div class="card" style="margin-top:5%;">
-                            <div class="card-header">
-                                {{ timeline.name }}
-                                <div class="custom-control" style="float:right;">
+                            <div class="card-header d-flex justify-content-between align-items-baseline">
+                                <span>{{ timeline.name }}</span>
                                 {% if auth.check() %}
-                                    <label>Vaikimisi</label>
-                                    <input type="radio" name="default" class="default-checkbox" data-path="{{ path_for('default-timeline', {'id': timeline.id }) }}" value="1" {% if timeline.default == true %} checked="checked" {% endif %}>
+                                    <div class="form-check">
+                                        <input class="form-check-input default-checkbox" type="radio" name="default" data-path="{{ path_for('default-timeline', {'id': timeline.id }) }}" value="1" {% if timeline.default == true %} checked="checked" {% endif %}>
+                                        <label class="form-check-label">
+                                            Vaikimisi
+                                        </label>
+                                    </div>
                                 {% endif %}
-                                </div>
                             </div>
                             <div class="card-body">
                                 <p>{{ timeline.description }}</p>
@@ -69,11 +71,11 @@
                                         {% endif %}
                                     </small>
                                 </p>
-                                <div class="d-flex flex-row">
+                                <div class="d-flex flex-row flex-wrap ">
                                     <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
                                     {% if auth.check() %}
-                                        <button type="button" class="btn btn-primary m-1 editBtn" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
-                                        <button type="button" class="btn btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}">Kustuta</button>
+                                        <button type="button" class="btn btn-sm btn-dti m-1 editBtn" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}">Kustuta</button>
 
                                     {% endif %}
                                 </div>

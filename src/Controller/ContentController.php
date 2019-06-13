@@ -79,7 +79,7 @@ class ContentController extends Controller
             new PathResolver\Simple($this->settings['upload_path']),
             new FileSystem\Simple(),
             [
-                new FileUpload\Validator\MimeTypeValidator(['image/gif','image/png', 'image/jpg', 'image/jpeg'])
+                new FileUpload\Validator\MimeTypeValidator(['image/gif','image/png', 'image/jpg', 'image/jpeg', 'image/bmp', 'image/x-windows-bmp'])
             ],
             new FileUpload\FileNameGenerator\Random(32)
         );
@@ -106,7 +106,7 @@ class ContentController extends Controller
             ]);
         } else {
             return $response->withStatus(400)->withJson([
-                'message' => 'Failed to upload image: ' . $files[0]->error
+                'message' => 'Pildi üleslaadimine ebaõnnestus: ' . $files[0]->error
             ]);
         }
 
@@ -116,14 +116,17 @@ class ContentController extends Controller
     public function createThumbnail($file, $thumbnailpath, $size){
 
       $imageFileType = $file->getMimeType();
-        if($imageFileType == "image/jpg" or $imageFileType == "image/jpeg"){
+        if($imageFileType == "image/jpg" || $imageFileType == "image/jpeg"){
           $myTempImage = imagecreatefromjpeg($file->getRealPath());
         }
-        else if($imageFileType == "image/png"){
+        else if ($imageFileType == "image/png"){
           $myTempImage = imagecreatefrompng($file->getRealPath());
         }
-        else if($imageFileType == "image/gif"){
+        else if ($imageFileType == "image/gif"){
           $myTempImage = imagecreatefromgif($file->getRealPath());
+        }
+        else if ($imageFileType == "image/bmp" || $imageFileType == "image/x-windows-bmp"){
+          $myTempImage = imagecreatefrombmp($file->getRealPath());
         }
 
 				$imageWidth = imagesx($myTempImage);
@@ -141,15 +144,17 @@ class ContentController extends Controller
 				$myThumbnail = imagecreatetruecolor($size, $size);
 				imagecopyresampled($myThumbnail, $myTempImage, 0, 0, $cutX, $cutY, $size, $size, $cutSize, $cutSize);
 				//salvestan
-				if ($imageFileType == "image/jpg" or $imageFileType == "image/jpeg"){
+				if ($imageFileType == "image/jpg" || $imageFileType == "image/jpeg"){
 					imagejpeg($myThumbnail, $thumbnailpath, 90);
-
 				}
-				if ($imageFileType == "image/png"){
+				else if ($imageFileType == "image/png"){
 					imagepng($myThumbnail, $thumbnailpath, 6);
 				}
-				if ($imageFileType == "image/gif"){
+				else if ($imageFileType == "image/gif"){
 					imagegif($myThumbnail, $thumbnailpath);
+				}
+				else if ($imageFileType == "image/bmp" || $imageFileType == "image/x-windows-bmp"){
+					imagebmp($myThumbnail, $thumbnailpath);
 				}
 			}
 
