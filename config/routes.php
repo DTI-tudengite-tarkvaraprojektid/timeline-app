@@ -43,21 +43,23 @@ $app->group('/user', function () {
 })->add($container['middleware.guest']);
 
 $app->group('/timelines', function () use ($container) {
-    $this->map(['GET'], '/', 'controller.timeline:timelines')->setName('timelines');
-    $this->map(['GET'], '/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
-    $this->map(['POST'], '/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
+
+    $this->get('/', 'controller.timeline:timelines')->setName('timelines');
+    $this->get('/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
-    $this->map(['POST'], '/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
-    $this->map(['POST'], '/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
+
+    $this->post('/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
+    $this->post('/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
+    $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
+
 });
 
 $app->group('/users', function () use ($container) {
-    $this->map(['GET'], '/', 'controller.user:showUsers')->setName('userlist')->add($container['middleware.auth']('admin'));
-    $this->post('/', 'controller.user:users')->setName('users')->add($container['middleware.auth']());
-    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
+    $this->get('/', 'controller.user:users')->setName('users')->add($container['middleware.auth']('admin'));
     $this->get('/settings', 'controller.user:settings')->setName('settings')->add($container['middleware.auth']());
     $this->get('/register', 'controller.user:registration')->setName('register')->add($container['middleware.auth']('admin'));
-    $this->map(['POST'], '/addusers', 'controller.user:addUser')->setName('add-user')->add($container['middleware.auth']());
+    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
+    $this->post('/addusers', 'controller.user:addUser')->setName('add-user')->add($container['middleware.auth']());
 });
 
 $app->group('/gallery', function (){

@@ -73,10 +73,9 @@ export class EventManager {
         });
 
         converter.afterRender(function(groupType, htmlString){
-            
             var wrapper = document.createElement('div');
             wrapper.innerHTML= htmlString;
-            var elements = $(wrapper).children();
+            var elements = $(wrapper);
             $(elements).find('img:not(.img-fluid)').each((index, node) => {
                 console.log(node);
                 var src = $(node).prop('src');

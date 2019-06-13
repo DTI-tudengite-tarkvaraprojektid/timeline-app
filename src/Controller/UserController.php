@@ -72,18 +72,12 @@ class UserController extends Controller
         return $response->withJson(['message' => 'User deleted!']);
     }
 
-    public function showUsers(Request $request, Response $response)
+    public function users(Request $request, Response $response)
     {
-
         $users = User::all();
         return $this->render($response, 'app/userlist.twig', [
             'users' => $users
         ]);
-    }
-
-    public function users(Request $request, Response $response)
-    {
-        return $this->render($response, 'app/userlist.twig');
     }
 
     public function registration(Request $request, Response $response)
@@ -117,7 +111,7 @@ class UserController extends Controller
                 $this->flash('danger', 'Kontrolli salasõna');
             }
 
-            return $response->withRedirect($this->path('userlist'));
+            return $response->withRedirect($this->path('users'));
         }
 
         $role = $this->auth->findRoleByName('User');
@@ -142,6 +136,6 @@ class UserController extends Controller
 
         $this->flash('success', 'Toimetaja konto loodud');
 
-        return $response->withRedirect($this->path('userlist'));
+        return $response->withRedirect($this->path('users'));
     }
 }
