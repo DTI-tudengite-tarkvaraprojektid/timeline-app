@@ -63,7 +63,7 @@ export class EventManager {
                     .data('fancybox', 'images')
                     .append(
                         $('<img></img>')
-                            .addClass('img-fluid')
+                            .addClass('img-thumbnail m-1 event-thumbnail')
                             .prop('src', val.thumbnail)
                     );
                 return link[0].outerHTML;
@@ -76,7 +76,7 @@ export class EventManager {
             var wrapper = document.createElement('div');
             wrapper.innerHTML= htmlString;
             var elements = $(wrapper);
-            $(elements).find('img:not(.img-fluid)').each((index, node) => {
+            $(elements).find('img:not(.img-thumbnail)').each((index, node) => {
                 console.log(node);
                 var src = $(node).prop('src');
                 var link = $('<a></a>')
@@ -132,7 +132,7 @@ export class EventManager {
         } else {
             $('#event-edit').addClass('list-group-item-success').text('Salvesta sisu');
             $('#event-editor-container').removeClass('card-body');
-            var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], ['link', 'image', 'video']];
+            var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image', 'video']];
             $('#event-editor').html('');
             this.quill = new Quill('#event-editor', {
                 theme: 'snow',

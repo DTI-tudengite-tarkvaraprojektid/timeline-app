@@ -150,3 +150,12 @@
 .ql-snow .ql-tooltip.ql-custom::before {
     content: none;
 }
+
+.existing-image {
+    max-width: 100px;
+}
+
+.ql-snow .ql-editor img.event-thumbnail,
+.event-thumbnail {
+    max-width: 150px;
+}

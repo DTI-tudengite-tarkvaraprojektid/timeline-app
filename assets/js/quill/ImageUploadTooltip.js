@@ -33,13 +33,13 @@ class ImageUploadTooltip extends Tooltip {
             data.forEach((image, index) => {
                 var element = $('<a></a>').addClass('existing-image-link').prop('href', index).append(
                     $('<img></img>')
-                        .addClass('existing-image img-fluid img-thumbnail m-1')
+                        .addClass('existing-image img-fluid img-thumbnail')
                         .data('path', image.path)
                         .prop('src', image.thumbnail)
                 );
                 $(this.imageListElement).append(
                     $('<div></div>')
-                        .css('width', '100px')
+                        .addClass('m-1')
                         .append(element)
                 );
 

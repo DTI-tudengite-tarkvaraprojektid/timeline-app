@@ -3,6 +3,7 @@ import Image from 'quill/formats/image';
 class ThumbnailImageBlot extends Image {
     static create(value) {
         let node = super.create();
+        node.classList.add('img-thumbnail', 'm-1');
         node.setAttribute('src', this.sanitize(value.thumbnail));
         node.dataset.path = this.sanitize(value.path);
         return node;

@@ -11,6 +11,7 @@ import Underline from 'quill/formats/underline';
 import Strike from 'quill/formats/strike';
 import Header from 'quill/formats/header';
 import Link from 'quill/formats/link';
+import List, { ListItem } from 'quill/formats/list';
 import Image from 'quill/formats/image';
 import Video from 'quill/formats/video';
 import ThumbnailImageBlot from './quill/ThumbnailImageBlot';
@@ -31,6 +32,8 @@ Quill.register({
     'formats/strike': Strike,
     'formats/header': Header,
     'formats/link': Link,
+    'formats/list': List,
+    'formats/list-item': ListItem,
     'formats/image': Image,
     'formats/thumbnailImage': ThumbnailImageBlot,
     'formats/video': Video,
