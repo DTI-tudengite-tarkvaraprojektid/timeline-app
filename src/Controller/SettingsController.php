@@ -89,6 +89,6 @@ class SettingsController extends Controller
             $this->flash('danger', 'Paroolid peavad olema samad!');
          }
             
-    return $response->withRedirect($this->path('settings'));
+    return $response->withRedirect($this->path('cPassword', ['id' => $id]));
     }
 }
