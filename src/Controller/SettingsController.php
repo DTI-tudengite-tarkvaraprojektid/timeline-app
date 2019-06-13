@@ -76,7 +76,10 @@ class SettingsController extends Controller
         $user = $this->auth->getUser();
         $password1 = $request->getParam('password');
         $password2 = $request->getParam('newpassword');
-        if($password1 == $password2){
+        if(empty($password1)){
+            $this->flash('danger', 'Paroolid väljad ei tohi olla tühjad');
+        }
+        elseif($password1 == $password2){
             $array = ['password' =>$request->getParam('password'),
             'newpassword' =>$request->getParam('newpassword')
             ];

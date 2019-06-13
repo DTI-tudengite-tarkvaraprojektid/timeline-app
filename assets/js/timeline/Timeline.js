@@ -27,7 +27,7 @@ export class Timeline {
                 e.preventDefault();
                 e.stopPropagation();
                 if (this.onEventClick != null) {
-                    this.onEventClick(event);
+                    this.onEventClick(event, e.target);
                 }
             });
 
@@ -56,7 +56,7 @@ export class Timeline {
         container.addClass('d-flex justify-content-between');
         container.append($('<span></span>').text(startTitle));
         container.append($('<span></span>').text(endTitle));
-        
+
         this.anchor.prepend(container);
     }
 

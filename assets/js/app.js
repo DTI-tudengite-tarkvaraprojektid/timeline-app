@@ -22,16 +22,10 @@ $(function () {
     $('#edit-event-privacy').prop( "checked", $('#event-edit-title').data('private') == 1 ? true : false);
     $('#edit-event-modal').modal('show');
   });
+
+  $('.editBtn').on("click", editTimeline);
   $('.deleteTimelineButton').on("click", deleteTimeline);
   $('#tsearch-form').submit(searchtimelines);
-  $('.editBtn').click((e) => {
-    e.preventDefault();
-    $('#edit-timeline-id').val($('.editBtn').data('id'));
-    $('#edit-timeline-name').val($('.editBtn').data('name'));
-    $('#edit-timeline-description').val($('.editBtn').data('description'));
-    $('#edit-timeline-privacy').prop( "checked", $('.editBtn').data('private') == 1 ? true : false);
-    $('#edit-timeline-modal').modal('show');
-  });
 
   $('.default-checkbox').click(function (e) {
     var path = $(this).data('path');
@@ -42,7 +36,8 @@ $(function () {
 
   function deleteTimeline(e) {
     var timeline = $(this).data("id");
-    if(confirm(timeline)){
+    var name = $(this).data("name");
+    if(confirm("Olete kindel, et soovite ajajoont "+"'"+name+"'"+" kustutada?")){
       console.log("delete funkts");
       window.location.replace("/timelines/"+timeline+"/delete");
     }
@@ -62,8 +57,20 @@ $(function () {
       $(this).prop('action', uri);
     }
   }
+<<<<<<< HEAD
   $('#new-user-form-button').click(() => {
     $('#new-user-form').submit();
 });
 
+=======
+
+  function editTimeline(e){
+    e.preventDefault();
+    $('#edit-timeline-id').val($(this).data('id'));
+    $('#edit-timeline-name').val($(this).data('name'));
+    $('#edit-timeline-description').val($(this).data('description'));
+    $('#edit-timeline-privacy').prop( "checked", $(this).data('private') == 1 ? true : false);
+    $('#edit-timeline-modal').modal('show');
+  }
+>>>>>>> 08b880820dbe1cb6bdcaafe1b55e5e857dbb1928
 });
