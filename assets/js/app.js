@@ -57,12 +57,10 @@ $(function () {
       $(this).prop('action', uri);
     }
   }
-<<<<<<< HEAD
   $('#new-user-form-button').click(() => {
     $('#new-user-form').submit();
 });
 
-=======
 
   function editTimeline(e){
     e.preventDefault();
@@ -72,5 +70,4 @@ $(function () {
     $('#edit-timeline-privacy').prop( "checked", $(this).data('private') == 1 ? true : false);
     $('#edit-timeline-modal').modal('show');
   }
->>>>>>> 08b880820dbe1cb6bdcaafe1b55e5e857dbb1928
 });
