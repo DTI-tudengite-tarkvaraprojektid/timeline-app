@@ -51,4 +51,5 @@ $app->group('/users', function () {
     $this->post('/', 'controller.user:users')->setName('users');
    // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
     $this->get('/settings', 'controller.user:settings')->setName('settings');
+    $this->get('/register', 'controller.user:registration')->setName('register');
 })->add($container['middleware.auth']());
