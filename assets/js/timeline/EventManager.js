@@ -17,23 +17,25 @@ export class EventManager {
         });
 
         $('#deleteEventButton').on("click", () => {
-            if(confirm(this.currentEvent.title)){
+            if(confirm("Olete kindel, et soovite sündmust "+ "'"+this.currentEvent.title+"'"+ " kustutada?")){
                 event = this.currentEvent.id;
                 this.deleteEvent(event);
             };
         });
     }
-
-    showEvent(event) {
+    showEvent(event, element) {
         if (this.editing) {
             $('#event-editor-container').addClass('card-body');
             $('#event-editor-container').html(
                 $('<div></div>').prop('id', 'event-editor').addClass('ql-editor').html(this.quill.root.innerHTML)
             );
+
             this.quill = null;
             this.editing = false;
         }
         console.log('showEvent(): ' + event.title);
+        $("div.timeline div").removeClass("active");
+        element.classList.add("active");
         this.card.find('#event-title').text(event.title);
         this.card.find('#event-time').text(event.time.toLocaleDateString('et') + (event.private ? ' - (Privaatne)' : ''));
         this.card.find('#event-edit-title').data('id', event.id);

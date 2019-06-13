@@ -6,6 +6,7 @@ use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Awurth\Slim\Helper\Controller\Controller;
+use Respect\Validation\Validator as V;
 
 class UserController extends Controller 
 {
@@ -90,14 +91,57 @@ class UserController extends Controller
         return $this->render($response, 'app/register.twig');
     }
 
-    public function delete2(Request $request, Response $response, $id)
+    /*public function delete2(Request $request, Response $response, $id)
     {
         User::destroy($id);
-        $this->flash('success', 'Ajajoon kustutati');
+        $this->flash('success', 'kasutaja eemaldati');
         return $response->withRedirect($this->path('users'));
-    }
+    }*/
     public function settings(Request $request, Response $response)
     {
         return $this->render($response, 'app/settings.twig');
+    }
+    public function addUser(Request $request, Response $response)
+    {
+        // Validate input:
+        $this->validator->request($request, [
+            'email' => V::length(1, null),
+            'password' => V::length(1, null)
+        ]);
+
+        if (!$this->validator->isValid()) {
+            if ($this->validator->getFirstError('email')) {
+                $this->flash('danger', 'Kontrolli Emaili');
+            }
+            else if ($this->validator->getFirstError('password')) {
+                $this->flash('danger', 'Kontrolli salasõna');
+            }
+
+            return $response->withRedirect($this->path('userlist'));
+        }
+
+        $role = $this->auth->findRoleByName('User');
+
+        $user = $this->auth->registerAndActivate([
+            'firstname' => $request->getParam('firstname'),
+            'lastname' => $request->getParam('lastname'),
+            'email' => $request->getParam('email'),
+            'password' => $request->getParam('password'),
+            'admin' => $request->getParam('admin'),
+            'permissions' => [
+                'user.delete' => 0
+            ]
+        ]);
+        if (isset($_POST['admin'])) {
+            $role = $this->auth->findRoleByName('admin');
+        }else {
+            $role = $this->auth->findRoleByName('user');
+        }
+
+        $role->users()->attach($user);
+
+        $this->flash('success', 'Toimetaja konto loodud');
+
+        return $response->withRedirect($this->path('userlist'));
     }
 }
