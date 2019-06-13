@@ -1,8 +1,10 @@
 require('./timeline.js');
 
 import 'bootstrap';
+import '@fancyapps/fancybox';
 const moment = require('moment');
 require('../scss/app.scss');
+
 
 $(function () {
 
@@ -18,7 +20,7 @@ $(function () {
     $('#edit-event-name').val($('#event-edit-title').data('title'));
     $('#edit-event-date').val($('#event-edit-title').data('time'));
     $('#edit-event-privacy').prop( "checked", $('#event-edit-title').data('private') == 1 ? true : false);
-    $('#edit-event-modal').modal('show');        
+    $('#edit-event-modal').modal('show');
   });
   $('.deleteTimelineButton').on("click", deleteTimeline);
   $('#tsearch-form').submit(searchtimelines);
@@ -30,6 +32,13 @@ $(function () {
     $('#edit-timeline-privacy').prop( "checked", $('.editBtn').data('private') == 1 ? true : false);
     $('#edit-timeline-modal').modal('show');
   });
+
+  $('.default-checkbox').click(function (e) {
+    var path = $(this).data('path');
+    $.post(path, () => {
+      console.log('Updated default timeline.');
+    });
+  })
 
   function deleteTimeline(e) {
     var timeline = $(this).data("id");

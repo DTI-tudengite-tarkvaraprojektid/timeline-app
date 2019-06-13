@@ -7,6 +7,9 @@ $app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('tim
 $app->group('/settings', function () {
     $this->get('/[{id}]', 'controller.settings:settings')->setName('settings');
     $this->post('/[{id}]', 'controller.settings:submit')->setName('submit');
+
+    $this->get('/{id}/cPassword', 'controller.settings:cPassword')->setName('cPassword');
+    $this->post('/{id}/cPassword', 'controller.settings:submit2')->setName('submit2');
 })->add($container['middleware.auth']());
 
 $app->group('', function () {
@@ -15,11 +18,10 @@ $app->group('', function () {
 
 
 $app->group('/events', function () use ($container) {
-    $this->get('/[{id}]', 'controller.event:events')->setName('get-events');
+    $this->get('/{id}[/{query}]', 'controller.event:events')->setName('get-events');
     $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
-    $this->get('/{id}/search/[{query:.*}]', 'controller.event:searchEvent')->setName('search-events');
 });
 
 $app->get('/logout', 'controller.auth:logout')
@@ -30,6 +32,7 @@ $app->group('/event/{id:[0-9]+}/content', function () {
     $this->get('/', 'controller.content:get')->setName('get-content');
     $this->post('/', 'controller.content:save')->setName('save-content');
     $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
+    $this->get('/thumb/{image:[0-9]+}', 'controller.content:getThumb')->setName('get-thumb');
     $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
 });
 
@@ -44,6 +47,7 @@ $app->group('/timelines', function () use ($container) {
     $this->map(['POST'], '/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
     $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
     $this->map(['POST'], '/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
+    $this->map(['POST'], '/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
 });
 
 $app->group('/users', function () {
@@ -53,3 +57,7 @@ $app->group('/users', function () {
     $this->get('/settings', 'controller.user:settings')->setName('settings');
     $this->get('/register', 'controller.user:registration')->setName('register');
 })->add($container['middleware.auth']());
+
+$app->group('/gallery', function (){
+  $this->get('/', 'controller.gallery:gallery')->setName('gallery');
+});

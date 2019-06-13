@@ -48,6 +48,10 @@
                         <div class="card">
                             <div class="card-header">
                                 {{ timeline.name }}
+                                <div class="custom-control" style="float:right;">
+                                    <label>Vaikimisi</label>
+                                    <input type="radio" name="default" class="default-checkbox" data-path="{{ path_for('default-timeline', {'id': timeline.id }) }}" value="1" {% if timeline.default == true %} checked="checked" {% endif %}>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <p>{{ timeline.description }}</p>

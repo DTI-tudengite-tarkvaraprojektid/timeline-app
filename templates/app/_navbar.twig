@@ -9,7 +9,7 @@
                 <a class="nav-link" href="{{ path_for('timelines') }}">Ajajooned</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Galerii</a>
+                <a class="nav-link" href="{{ path_for('gallery')}}">Galerii</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Failid</a>
@@ -18,16 +18,32 @@
         <ul class="navbar-nav ml-auto">
             {% if auth.check() %}
                 <li class="navbar-text">
-                    {{ auth.user.firstname }} {{ auth.user.lastname }}
+                    <ul id="menu-primary-navigation" class="nav pull-left">
+                    
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path_for('settings') }}">Konto seaded</a>
-                </li>
-                {% if auth.user.inRole('admin') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path_for('users') }}">Kasutajate nimekiri</a>
-                </li>
-                {% endif %}
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-dti">
+  <a class="navbar-brand" href="#"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ auth.user.firstname }} {{ auth.user.lastname }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="{{ path_for('settings') }}">Konto seaded</a>
+            {% if auth.user.inRole('admin') %}
+            <a class="dropdown-item" href="{{ path_for('users') }}">Kasutajate nimekiri</a>                   
+             {% endif %}
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path_for('logout') }}">Logi välja</a>
                 </li>

@@ -45,42 +45,97 @@ class ContentController extends Controller
         if ($image != null) {
             return $response
                 ->withHeader("Content-Type", mime_content_type($image->content))
-                ->write(file_get_contents($image->content));
+                ->write(file_get_contents($this->settings['upload_path'] . '/' . $image->content));
+        }
+    }
+
+    public function getThumb(Request $request, Response $response, $id, $imageId) {
+        $image = Content::find($imageId);
+        if ($image != null) {
+            return $response
+                ->withHeader("Content-Type", mime_content_type($image->content))
+                ->write(file_get_contents($this->settings['thumbnail_path'] . '/' . $image->content));
         }
     }
 
     public function uploadImage(Request $request, Response $response, $id)
     {
         $factory = new FileUploadFactory(
-            new PathResolver\Simple($this->settings['upload_path']), 
-            new FileSystem\Simple(), 
+            new PathResolver\Simple($this->settings['upload_path']),
+            new FileSystem\Simple(),
             [
-                new FileUpload\Validator\MimeTypeValidator(['image/png', 'image/jpg'])
+                new FileUpload\Validator\MimeTypeValidator(['image/gif','image/png', 'image/jpg', 'image/jpeg'])
             ],
             new FileUpload\FileNameGenerator\Random(32)
         );
-        
+
         $fileupload = $factory->create($_FILES['image'], $_SERVER);
+
 
         list($files, $headers) = $fileupload->processAll();
 
         if ($files[0]->completed) {
+
+            $thumb = $this->createThumbnail($files[0], $this->settings['thumbnail_path'] . '/' . $files[0]->getFilename(), 200);
+
             $event = Event::find($id);
             $content = new Content();
             $content->type = 'IMAGE';
-            $content->content = $files[0]->getRealPath();
+            $content->content = $files[0]->getFilename();
             $event->content()->save($content);
-    
+
             return $response->withJson([
                 'message' => 'Image uploaded',
+                'thumbnail-path' => $this->path('get-thumb', ['id' => $id, 'image' => $content->id]),
                 'path' => $this->path('get-image', ['id' => $id, 'image' => $content->id])
             ]);
         } else {
             return $response->withStatus(400)->withJson([
-                'message' => 'Failed to upload image'
+                'message' => 'Failed to upload image: ' . $files[0]->error
             ]);
         }
 
-        
+
     }
+
+    public function createThumbnail($file, $thumbnailpath, $size){
+
+      $imageFileType = $file->getMimeType();
+        if($imageFileType == "image/jpg" or $imageFileType == "image/jpeg"){
+          $myTempImage = imagecreatefromjpeg($file->getRealPath());
+        }
+        else if($imageFileType == "image/png"){
+          $myTempImage = imagecreatefrompng($file->getRealPath());
+        }
+        else if($imageFileType == "image/gif"){
+          $myTempImage = imagecreatefromgif($file->getRealPath());
+        }
+
+				$imageWidth = imagesx($myTempImage);
+				$imageHeight = imagesy($myTempImage);
+				if($imageWidth > $imageHeight){
+					$cutSize = $imageHeight;
+					$cutX = round(($imageWidth-$cutSize) / 2);
+					$cutY = 0;
+				} else {
+					$cutSize = $imageWidth;
+					$cutX = 0;
+					$cutY = (($imageHeight-$cutSize) / 2);
+				}
+				//loome pildiobjeki
+				$myThumbnail = imagecreatetruecolor($size, $size);
+				imagecopyresampled($myThumbnail, $myTempImage, 0, 0, $cutX, $cutY, $size, $size, $cutSize, $cutSize);
+				//salvestan
+				if ($imageFileType == "image/jpg" or $imageFileType == "image/jpeg"){
+					imagejpeg($myThumbnail, $thumbnailpath, 90);
+
+				}
+				if ($imageFileType == "image/png"){
+					imagepng($myThumbnail, $thumbnailpath, 6);
+				}
+				if ($imageFileType == "image/gif"){
+					imagegif($myThumbnail, $thumbnailpath);
+				}
+			}
+
 }

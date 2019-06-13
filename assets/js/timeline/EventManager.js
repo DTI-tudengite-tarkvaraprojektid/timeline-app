@@ -1,5 +1,5 @@
 import Quill from "../quill";
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 const moment = require("moment");
 
 export class EventManager {
@@ -9,6 +9,7 @@ export class EventManager {
         this.editing = false;
         this.quill = null;
         this.currentEvent = null;
+        this.content = null;
 
         $('#event-edit').on('click', (e) => {
             e.preventDefault();
@@ -22,7 +23,7 @@ export class EventManager {
             };
         });
     }
-    
+
     showEvent(event) {
         if (this.editing) {
             $('#event-editor-container').addClass('card-body');
@@ -58,8 +59,18 @@ export class EventManager {
         converter.afterRender(function(groupType, htmlString){
             var elements = $.parseHTML(htmlString)
             $(elements).find('img').each((index, node) => {
-                console.log("Changing image");
-                $(node).addClass('img-fluid')
+                console.log(node);
+                var src = $(node).prop('src');
+                var link = $('<a></a>')
+                    .addClass('event-image')
+                    .prop('href', src)
+                    .data('fancybox', 'images')
+                    .append(
+                        $('<img></img>')
+                            .addClass('img-fluid')
+                            .prop('src', src)
+                    );
+                $(node).replaceWith(link);
             })
             return $(elements).html();
         });
@@ -69,7 +80,8 @@ export class EventManager {
 
     loadContent() {
         $.getJSON(this.currentEvent.contentPath, (data) => {
-            this.card.find('#event-editor').html(this.convertDeltas(data.content));
+            this.content = data.content;
+            this.card.find('#event-editor').html(this.convertDeltas(this.content));
         });
     }
 
@@ -93,9 +105,11 @@ export class EventManager {
         if (this.editing) {
             console.log(this.quill.getContents().ops);
             this.saveContent();
+            this.loadContent();
         } else {
             $('#event-editor-container').removeClass('card-body');
             var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], ['link', 'image', 'video']];
+            $('#event-editor').html('');
             this.quill = new Quill('#event-editor', {
                 theme: 'snow',
                 modules: {
@@ -120,6 +134,7 @@ export class EventManager {
                     }
                 }
             });
+            this.quill.setContents(this.content);
             this.editing = true;
         }
     }
