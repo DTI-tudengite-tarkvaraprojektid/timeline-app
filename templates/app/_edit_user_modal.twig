@@ -8,31 +8,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-user-form" action="{{ path_for('edit-user') }}" method="POST">
+                <form id="edit-user-form" action="{{ path_for('users', {'id': user.id}) }}"method="POST">
                     <div class="form-group">
                         <label for="edit-user-email">Email</label>
-                        <input class="form-control" id="edit-user-email" type="text" name="name">
+                        <input class="form-control" type="email" name="email" value="{{ user.email }}">
                     </div>
                     <div class="form-group">
                         <label for="edit-user-firstname">Eesnimi</label>
-                        <input class="form-control" id="edit-user-firstname" type="text" name="name">
+                        <input class="form-control" type="text" name="firstname" value="{{ user.firstname }}">
                     </div>
                     <div class="form-group">
                         <label for="edit-user-lastname">Perenimi</label>
-                        <input class="form-control" id="edit-user-firstname" type="text" name="name">
+                        <input class="form-control"type="text" name="lastname" value="{{ user.lastname }}">
                     </div>
                     <div class="custom-checkbox form-group">
                         <label for="isAdminCheckbox">Admin</label>
-                        <input id="edit-user-role" type="checkbox" name="isAdminCheckbox" value="1">
+                        <input id="edit-user-role" type="checkbox" name="admin" value="admin">
                     </div>
-                    <input type="hidden" name="id" id="edit-user-id"></input>
-                </form>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger deleteUserButton">Kustuta kasutaja</button>
                 <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
-                <button id="edit-user-form-button" class="btn btn-primary" type="button">Muuda</button>
+                <button class="btn btn-primary" type="submit" name="editUser">Muuda</button>
             </div>
+                </form>
+            </div>
+            
         </div>
     </div>
 </div>

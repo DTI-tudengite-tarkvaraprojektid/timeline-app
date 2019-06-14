@@ -55,9 +55,9 @@ class SettingsController extends Controller
         $array = [
             'email' =>$request->getParam('email'),
             'firstname' =>$request->getParam('firstname'),
-            'lastname' =>$request->getParam('lastname')
+            'lastname' =>$request->getParam('lastname'),
         ];
-        $user= $this->auth->update($user, $array);  
+        $user= $this->auth->update($user, $array); 
         $this->flash('success', 'Kasutaja muudetud edukalt');
         return $response->withRedirect($this->path('settings', ['id' => $user->id]));
     }

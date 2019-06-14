@@ -138,4 +138,25 @@ class UserController extends Controller
 
         return $response->withRedirect($this->path('users'));
     }
+
+    public function editUser(Request $request, Response $response, $id=null){
+        if ($id == null) {
+            $user = $this->auth->getUser();
+        }   
+        else {
+            if ($this->auth->getUser()->inRole('admin')){
+                $user = $this->auth->findUserById($id);                 
+            } else {
+                throw new \Exception('Not admin');
+            }
+        }
+        $array = [
+            'email' =>$request->getParam('email'),
+            'firstname' =>$request->getParam('firstname'),
+            'lastname' =>$request->getParam('lastname'),
+        ];
+        $user= $this->auth->update($user, $array); 
+        $this->flash('success', 'Kasutaja muudetud edukalt');
+        return $response->withRedirect($this->path('userss', ['id' => $user->id]));
+    }
 }

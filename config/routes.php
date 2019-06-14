@@ -22,6 +22,7 @@ $app->group('/events', function () use ($container) {
     $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
+    $this->get('/', 'controller.event:showEvents')->setName('showEvents');
 });
 
 $app->get('/logout', 'controller.auth:logout')
@@ -60,9 +61,13 @@ $app->group('/users', function () use ($container) {
     $this->get('/register', 'controller.user:registration')->setName('register')->add($container['middleware.auth']('admin'));
     // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
     $this->post('/addusers', 'controller.user:addUser')->setName('add-user')->add($container['middleware.auth']());
-    $this->post('/edituser', 'controller.timeline:editUser')->setName('edit-user')->add($container['middleware.auth']());
+    $this->post('/[{id}]', 'controller.user:editUser')->setName('editUser');
+    
 });
 
 $app->group('/gallery', function (){
   $this->get('/', 'controller.gallery:gallery')->setName('gallery');
 });
+
+
+  
