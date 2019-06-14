@@ -26,6 +26,22 @@ class TimelineController extends Controller
         ]);
     }
 
+    public function embeddedTimeline(Request $request, Response $response, $id)
+    {
+        $timeline = Timeline::withCount('events')->find($id);
+        if ($timeline === null) {
+            throw $this->notFoundException($request, $response);
+        }
+
+        if (!$this->auth->check() && $timeline->private){
+           return $response->withRedirect($this->path('home'));
+        }
+
+        return $this->render($response, 'app/embedded.twig', [
+            'timeline' => $timeline
+        ]);
+    }
+
 
     public function timelines(Request $request, Response $response)
     {     
@@ -42,8 +58,8 @@ class TimelineController extends Controller
     public function delete(Request $request, Response $response, $id)
     {
         Timeline::destroy($id);
-        $this->flash('success', 'Ajajoon kustutati');
-        return $response->withRedirect($this->path('timelines'));
+        $this->flash('success', 'Ajajoon kustutatud');
+        return $response->withRedirect($this->path('home'));
     }
     public function addTimeline(Request $request, Response $response)
     {
@@ -61,7 +77,7 @@ class TimelineController extends Controller
                 $this->flash('danger', 'Kontrolli kirjeldust');
             }
 
-            return $response->withRedirect($this->path('timelines'));
+            return $response->withRedirect($this->path('home'));
         }
 
         $timeline = new Timeline();
@@ -73,7 +89,7 @@ class TimelineController extends Controller
 
         $this->flash('success', 'Ajajoon loodud');
 
-        return $response->withRedirect($this->path('timelines'));
+        return $response->withRedirect($this->path('home'));
     }
 
     public function searchtimeline(Request $request, Response $response, $args) {
@@ -90,15 +106,6 @@ class TimelineController extends Controller
         $timeline->private = $request->getParam('private');
         $timeline->save();
         $this->flash('success', 'Ajajoon muudetud edukalt');
-        return $response->withRedirect($this->path('timelines'));
-    }
-
-    public function defaultTimeline(Request $request, Response $response, $id){
-        Timeline::where('default', 1)->update(['default' => 0]);
-        $timeline = Timeline::find($id);
-        $timeline->default = true;
-        $timeline->save();
-
-        return $response->withJson(['message' => 'Set timeline ' . $id . ' as default']);
+        return $response->withRedirect($this->path('home'));
     }
 }

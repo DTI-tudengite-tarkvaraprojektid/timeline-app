@@ -1,8 +1,13 @@
 <?php
 
-$app->get('/', 'controller.app:home')->setName('home');
+$app->get('/', 'controller.timeline:timelines')->setName('home');
 
-$app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
+$app->group('/timeline' , function() {
+    $this->get('/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
+    $this->get('/{id:[0-9]+}/embeddable' , 'controller.timeline:embeddedTimeline')->setName('embeddable');
+});
+
+/*$app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');*/
 
 $app->group('/settings', function () {
     $this->get('/[{id}]', 'controller.settings:settings')->setName('settings');
@@ -22,6 +27,7 @@ $app->group('/events', function () use ($container) {
     $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
+    $this->get('/', 'controller.event:showEvents')->setName('showEvents');
 });
 
 $app->get('/logout', 'controller.auth:logout')
@@ -44,16 +50,14 @@ $app->group('/user', function () {
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
 })->add($container['middleware.guest']);
 
-$app->group('/timelines', function () use ($container) {
-
+$app->group('/home', function () use ($container) {
     $this->get('/', 'controller.timeline:timelines')->setName('timelines');
     $this->get('/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
-
+    //$this->get('/{id:[0-9]+}/embeddable', 'controller.timeline:embeddedTimeline')->setName('embeddable')->add($container['middleware.auth']());
     $this->post('/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
-    $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
-
+    // $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
 });
 
 $app->group('/users', function () use ($container) {
@@ -62,8 +66,12 @@ $app->group('/users', function () use ($container) {
     $this->get('/register', 'controller.user:registration')->setName('register')->add($container['middleware.auth']('admin'));
     // $this->post(['/'], '/{id:[0-9]+}/delete', 'controller.user:delete2')->setName('delete-user2')->add($container['middleware.auth']());
     $this->post('/addusers', 'controller.user:addUser')->setName('add-user')->add($container['middleware.auth']());
+    $this->post('/edituser', 'controller.user:editUser')->setName('edit-user')->add($container['middleware.auth']());
 });
 
 $app->group('/gallery', function (){
   $this->get('/', 'controller.gallery:gallery')->setName('gallery');
 });
+
+
+  

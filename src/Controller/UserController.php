@@ -69,6 +69,7 @@ class UserController extends Controller
     public function delete(Request $request, Response $response, $args)
     {
         User::destroy($args['id']);
+        $this->flash('success', 'Kasutaja kustutatud');
         return $response->withJson(['message' => 'User deleted!']);
     }
 
@@ -136,6 +137,31 @@ class UserController extends Controller
 
         $this->flash('success', 'Toimetaja konto loodud');
 
+        return $response->withRedirect($this->path('users'));
+    }
+
+    public function editUser(Request $request, Response $response){
+
+        if (!$this->auth->getUser()->inRole('admin')){
+            throw new \Exception('Not admin');
+        }
+        $user = $this->auth->findUserById($request->getParam('id'));
+        
+        if ($request->getParam('admin') === null) {
+            $role = $this->auth->findRoleByName('admin');
+        }else {
+            $role = $this->auth->findRoleByName('user');
+        }
+
+        $array = [
+            'email' =>$request->getParam('email'),
+            'firstname' =>$request->getParam('firstname'),
+            'lastname' =>$request->getParam('lastname'),
+        ];
+        $this->auth->update($user, $array); 
+        $user->roles()->detach();
+        $role->users()->attach($user);
+        $this->flash('success', 'Kasutajakonto muudetud edukalt');
         return $response->withRedirect($this->path('users'));
     }
 }

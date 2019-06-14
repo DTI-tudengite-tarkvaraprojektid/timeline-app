@@ -104,4 +104,8 @@ class EventController extends Controller
             'id' => $event->timeline->id
         ]));
     }
+    public function showEvents(Request $request, Response $response, $id =null)
+    {
+        return $this->render($response, 'app/events.twig');
+    }
 }
