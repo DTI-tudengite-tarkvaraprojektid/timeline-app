@@ -1,6 +1,7 @@
 {% extends 'layout.twig' %}
 {% block body %}
     {% include 'app/_new_user_modal.twig' %}
+    {% include 'app/_edit_user_modal.twig' %}
     <div class="container mt-3">
         <div class="row mt-4">
             <div class="col">
@@ -16,7 +17,8 @@
         {% for user in users %}
             <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-baseline">
                 <span>{{ user.firstname }} {{ user.lastname }} – {{ user.email }}</span>
-                <button type="button" data-id={{ user.id }} data-fname={{ user.firstname }} data-lname={{ user.lastname }} class="btn btn-outline-danger btn-sm delete-user-btn">Delete</button>
+                <button type="button" class="btn btn-sm btn-dti m-1 editBtn" data-target="#edit-user-modal"  data-toggle="modal" data-id="{{ user.id }}" data-email="{{ user.email }}" data-firstname="{{ user.firstname }}" data-lastname="{{ user.lastname }}" data-permissions="{{ user.permissions }}">Halda</button>
+                {# <button type="button" class="btn btn-outline-danger btn-sm">Delete</button> #}
             </a>
         {% endfor %}
         </div>
