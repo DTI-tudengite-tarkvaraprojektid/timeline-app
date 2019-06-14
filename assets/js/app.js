@@ -61,6 +61,10 @@ $(function () {
         $('#new-user-form').submit();
     });
 
+    $('#edit-user-form-button').click(() => {
+        $('#edit-user-form').submit();
+    });
+
 
     function editTimeline(e) {
         e.preventDefault();
