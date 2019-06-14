@@ -141,12 +141,26 @@ class UserController extends Controller
     }
 
     public function editUser(Request $request, Response $response){
-        $user = User::find($request->getParam('id'));
-        $user->email = $request->getParam('email');
-        $user->firstname = $request->getParam('firstname');
-        $user->lastname = $request->getParam('lastname');
-        //$user->admin = $request->getParam('admin');
-        $user->save();
+
+        if (!$this->auth->getUser()->inRole('admin')){
+            throw new \Exception('Not admin');
+        }
+        $user = $this->auth->findUserById($request->getParam('id'));
+        
+        if ($request->getParam('admin') === null) {
+            $role = $this->auth->findRoleByName('admin');
+        }else {
+            $role = $this->auth->findRoleByName('user');
+        }
+
+        $array = [
+            'email' =>$request->getParam('email'),
+            'firstname' =>$request->getParam('firstname'),
+            'lastname' =>$request->getParam('lastname'),
+        ];
+        $this->auth->update($user, $array); 
+        $user->roles()->detach();
+        $role->users()->attach($user);
         $this->flash('success', 'Kasutajakonto muudetud edukalt');
         return $response->withRedirect($this->path('users'));
     }
