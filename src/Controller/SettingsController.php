@@ -52,7 +52,6 @@ class SettingsController extends Controller
                 throw new \Exception('Not admin');
             }
         }
-        $user = $this->auth->getUser();
         $array = [
             'email' =>$request->getParam('email'),
             'firstname' =>$request->getParam('firstname'),
@@ -60,7 +59,7 @@ class SettingsController extends Controller
         ];
         $user= $this->auth->update($user, $array);  
         $this->flash('success', 'Kasutaja muudetud edukalt');
-        return $response->withRedirect($this->path('settings'));
+        return $response->withRedirect($this->path('settings', ['id' => $user->id]));
     }
     public function submit2(Request $request, Response $response, $id)
     {   

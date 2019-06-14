@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container mt-3">
         <h1>Konto seaded</h1>
-        <form method="POST" class="mt-4" action="{{ path_for('settings') }}">
+        <form method="POST" class="mt-4" action="{{ path_for('settings', {'id': user.id}) }}">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
@@ -23,6 +23,10 @@
                 <div class="col-sm-10">
                     <input type="text" name="lastname" class="form-control" value="{{ user.lastname }}">
                 </div>
+            </div>
+             <div class="custom-checkbox">
+                <label for="admin">Administraator</label>
+                 <input id="new-user-role" type="checkbox" name="admin" value="admin">
             </div>
 
             <div class="form-group row">
