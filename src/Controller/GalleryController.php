@@ -17,8 +17,13 @@ class GalleryController extends Controller
   {
     // code...
     $pics = Content::where('type','IMAGE')->get();
+    $groups = [];
+    for ($i=0; $i < count($pics); $i++) { 
+        $groups[$pics[$i]->event->timeline_id][] = $pics[$i];
+    }
+
     return $this->render($response, 'app/gallery.twig', [
-        'pics' => $pics
+        'groups' => $groups
     ]);
   }
 

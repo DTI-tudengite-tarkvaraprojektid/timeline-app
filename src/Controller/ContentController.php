@@ -129,33 +129,32 @@ class ContentController extends Controller
           $myTempImage = imagecreatefrombmp($file->getRealPath());
         }
 
-				$imageWidth = imagesx($myTempImage);
-				$imageHeight = imagesy($myTempImage);
-				if($imageWidth > $imageHeight){
-					$cutSize = $imageHeight;
-					$cutX = round(($imageWidth-$cutSize) / 2);
-					$cutY = 0;
-				} else {
-					$cutSize = $imageWidth;
-					$cutX = 0;
-					$cutY = (($imageHeight-$cutSize) / 2);
-				}
-				//loome pildiobjeki
-				$myThumbnail = imagecreatetruecolor($size, $size);
-				imagecopyresampled($myThumbnail, $myTempImage, 0, 0, $cutX, $cutY, $size, $size, $cutSize, $cutSize);
-				//salvestan
-				if ($imageFileType == "image/jpg" || $imageFileType == "image/jpeg"){
-					imagejpeg($myThumbnail, $thumbnailpath, 90);
-				}
-				else if ($imageFileType == "image/png"){
-					imagepng($myThumbnail, $thumbnailpath, 6);
-				}
-				else if ($imageFileType == "image/gif"){
-					imagegif($myThumbnail, $thumbnailpath);
-				}
-				else if ($imageFileType == "image/bmp" || $imageFileType == "image/x-windows-bmp"){
-					imagebmp($myThumbnail, $thumbnailpath);
-				}
-			}
-
+        $imageWidth = imagesx($myTempImage);
+        $imageHeight = imagesy($myTempImage);
+        if($imageWidth > $imageHeight){
+            $cutSize = $imageHeight;
+            $cutX = round(($imageWidth-$cutSize) / 2);
+            $cutY = 0;
+        } else {
+            $cutSize = $imageWidth;
+            $cutX = 0;
+            $cutY = (($imageHeight-$cutSize) / 2);
+        }
+        //loome pildiobjeki
+        $myThumbnail = imagecreatetruecolor($size, $size);
+        imagecopyresampled($myThumbnail, $myTempImage, 0, 0, $cutX, $cutY, $size, $size, $cutSize, $cutSize);
+        //salvestan
+        if ($imageFileType == "image/jpg" || $imageFileType == "image/jpeg"){
+            imagejpeg($myThumbnail, $thumbnailpath, 90);
+        }
+        else if ($imageFileType == "image/png"){
+            imagepng($myThumbnail, $thumbnailpath, 6);
+        }
+        else if ($imageFileType == "image/gif"){
+            imagegif($myThumbnail, $thumbnailpath);
+        }
+        else if ($imageFileType == "image/bmp" || $imageFileType == "image/x-windows-bmp"){
+            imagebmp($myThumbnail, $thumbnailpath);
+        }
+    }
 }
