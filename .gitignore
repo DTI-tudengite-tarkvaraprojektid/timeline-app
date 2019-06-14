@@ -8,6 +8,8 @@ var/log/*
 !var/log/.gitkeep
 public/assets/*
 !public/assets/.gitkeep
+public/files/*
+!public/files/.gitkeep
 var/uploads/*
 !var/uploads/thumbnails/
 var/uploads/thumbnails/*

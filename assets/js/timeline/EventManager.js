@@ -1,5 +1,5 @@
-import Quill from "../quill";
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import getQuill from '../quill';
 const moment = require("moment");
 
 export class EventManager {
@@ -40,6 +40,7 @@ export class EventManager {
         this.card.show();
         this.currentEvent = event;
         this.loadContent();
+        window.location.hash = 'event-' + event.id;
     }
 
     deleteEvent(event) {
@@ -53,10 +54,9 @@ export class EventManager {
         var converter = new QuillDeltaToHtmlConverter(ops, cfg);
 
         converter.renderCustomWith(function(customOp, contextOp){
+            console.log(customOp.insert.type);
             if (customOp.insert.type === 'thumbnailImage') {
                 let val = customOp.insert.value;
-                console.log('adding thumbnail:')
-                console.log(val)
                 var link = $('<a></a>')
                     .addClass('event-image')
                     .prop('href', val.path)
@@ -67,12 +67,43 @@ export class EventManager {
                             .prop('src', val.thumbnail)
                     );
                 return link[0].outerHTML;
+            } else if (customOp.insert.type === 'customImage') {
+                let val = customOp.insert.value;
+                var link = $('<a></a>')
+                    .addClass('event-image')
+                    .prop('href', val.path)
+                    .data('fancybox', 'images')
+                    .append(
+                        $('<img></img>')
+                            .addClass('img-fluid')
+                            .prop('src', val.path)
+                    );
+                return link[0].outerHTML;
             } else {
                 return 'Unmanaged custom blot!';
             }
         });
 
-        converter.afterRender(function(groupType, htmlString){
+        converter.beforeRender(function(groupType, data){
+            if (groupType == 'block') {
+               /*  data.ops.forEach(op => {
+                    console.log(op)
+                    if (op.attributes.file != undefined) {
+                        var file = op.attributes.file;
+                        var element = $('<a></a>')
+                            .addClass('event-file')
+                            .prop('href', file.path)
+                            .prop('download', file.name)
+                            .data('id', file.id)
+                            .text(op.insert.value);
+                        return element[0].outerHTML;
+                    }
+                }); */
+                
+            }
+        });
+
+        /* converter.afterRender(function(groupType, htmlString){
             var wrapper = document.createElement('div');
             wrapper.innerHTML= htmlString;
             var elements = $(wrapper);
@@ -91,7 +122,7 @@ export class EventManager {
                 $(node).replaceWith(link);
             })
             return $(elements).html();
-        });
+        }); */
 
         return converter.convert();
     }
@@ -132,36 +163,8 @@ export class EventManager {
         } else {
             $('#event-edit').addClass('list-group-item-success').text('Salvesta sisu');
             $('#event-editor-container').removeClass('card-body');
-            var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image', 'video']];
             $('#event-editor').html('');
-            this.quill = new Quill('#event-editor', {
-                theme: 'snow',
-                modules: {
-                    toolbar: toolbarOptions,
-                    imageUpload: {
-                        url: this.currentEvent.imageUploadPath,
-                        images: this.currentEvent.imageListPath,
-                        name: 'image', // custom form name
-                        // personalize successful callback and call next function to insert new url to the editor
-                        callbackOK: (serverResponse, next) => {
-                            next({
-                                path: serverResponse['path'],
-                                thumbnail: serverResponse['thumbnail-path']
-                            });
-                        },
-                        // personalize failed callback
-                        callbackKO: serverError => {
-                            alert(JSON.parse(serverError.body).message);
-                        },
-                        // optional
-                        // add callback when a image have been chosen
-                        checkBeforeSend: (file, next) => {
-                            console.log(file);
-                            next(file); // go back to component and send to the server
-                        }
-                    }
-                }
-            });
+            this.quill = getQuill('#event-editor', this.currentEvent);
             this.quill.setContents(this.content);
             this.editing = true;
         }

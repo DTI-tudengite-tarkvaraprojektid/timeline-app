@@ -35,6 +35,8 @@ $app->group('/event/{id:[0-9]+}/content', function () use ($container) {
     $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
     $this->get('/thumb/{image:[0-9]+}', 'controller.content:getThumb')->setName('get-thumb');
     $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
+    $this->post('/file', 'controller.content:uploadFile')->setName('save-file');
+    $this->delete('/{content:[0-9]+}', 'controller.content:delete')->setName('delete-content');
 });
 
 $app->group('/user', function () {

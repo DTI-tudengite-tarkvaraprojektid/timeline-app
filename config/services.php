@@ -31,5 +31,7 @@ return [
     ],
 
     'upload_path' => $app->getRootDir() . '/var/uploads',
-    'thumbnail_path' => $app->getRootDir() . '/var/uploads/thumbnails'
+    'thumbnail_path' => $app->getRootDir() . '/var/uploads/thumbnails',
+    'file_upload_path' => $app->getRootDir() . '/public/files',
+    'file_upload_uri' => $_SERVER['APP_FILES_PATH']
 ];

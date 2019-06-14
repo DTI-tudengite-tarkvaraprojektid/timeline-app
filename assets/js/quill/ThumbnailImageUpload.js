@@ -49,7 +49,7 @@ class ThumbnailImageUpload extends ImageUpload {
             
             this.quill.insertEmbed(index, 'thumbnailImage', data, 'user');
         } else {
-            this.quill.insertEmbed(index, 'image', data.path, 'user');
+            this.quill.insertEmbed(index, 'customImage', data, 'user');
         }
 		
         this.tooltip.hide();

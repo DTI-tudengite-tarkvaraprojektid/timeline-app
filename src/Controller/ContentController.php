@@ -73,6 +73,21 @@ class ContentController extends Controller
         }
     }
 
+    public function delete(Request $request, Response $response, $id, $contentId) {
+        $content = Content::find($imageId);
+        if ($content != null) {
+            if ($content->type == 'IMAGE') {
+                unlink($this->settings['thumbnail_path'] . '/' . $content->content);
+                unlink($this->settings['upload_path'] . '/' . $content->content);
+            } else if ($content->type == 'FILE') {
+                $file = json_decode($content->content);
+                unlink($this->settings['upload_path'] . '/' . $file['path']);
+            }
+            $content->delete();
+        }
+        return $response->withJson(['message' => 'Content deleted']);
+    }
+
     public function uploadImage(Request $request, Response $response, $id)
     {
         $factory = new FileUploadFactory(
@@ -101,12 +116,52 @@ class ContentController extends Controller
 
             return $response->withJson([
                 'message' => 'Image uploaded',
+                'id' => $content->id,
                 'thumbnail-path' => $this->path('get-thumb', ['id' => $id, 'image' => $content->id]),
                 'path' => $this->path('get-image', ['id' => $id, 'image' => $content->id])
             ]);
         } else {
             return $response->withStatus(400)->withJson([
                 'message' => 'Pildi üleslaadimine ebaõnnestus: ' . $files[0]->error
+            ]);
+        }
+
+
+    }
+
+    public function uploadFile(Request $request, Response $response, $id)
+    {
+        $factory = new FileUploadFactory(
+            new PathResolver\Simple($this->settings['file_upload_path']),
+            new FileSystem\Simple(),
+            [],
+            new FileUpload\FileNameGenerator\Random(32)
+        );
+
+        $fileupload = $factory->create($_FILES['file'], $_SERVER);
+
+
+        list($files, $headers) = $fileupload->processAll();
+
+        if ($files[0]->completed) {
+            $event = Event::find($id);
+            $content = new Content();
+            $content->type = 'FILE';
+            $content->content = json_encode([
+                'path' => $files[0]->getFilename(),
+                'name' => $files[0]->getClientFileName()
+            ]);
+            $event->content()->save($content);
+
+            return $response->withJson([
+                'message' => 'File uploaded',
+                'id' => $content->id,
+                'name' => $files[0]->getClientFileName(),
+                'path' => $this->settings['file_upload_uri'] . '/' . $files[0]->getFilename()
+            ]);
+        } else {
+            return $response->withStatus(400)->withJson([
+                'message' => 'Faili üleslaadimine ebaõnnestus: ' . $files[0]->error
             ]);
         }
 

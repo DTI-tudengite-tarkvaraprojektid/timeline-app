@@ -41,6 +41,5 @@ Manager::schema()->create('contents', function (Blueprint $table) {
     $table->enum('type', ['TEXT', 'IMAGE', 'AUDIO', 'VIDEO', 'URL', 'FILE']);
     $table->text('content');
     $table->timestamps();
-    $table->softDeletes();
     $table->foreign('event_id')->references('id')->on('events');
 });

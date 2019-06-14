@@ -76,7 +76,7 @@ class EventController extends Controller
         for ($i=0; $i < count($events); $i++) {
             $events[$i]['path_get_content'] = $this->path('get-content', ['id' => $events[$i]['id']]);
             $events[$i]['path_save_content'] = $this->path('save-content', ['id' => $events[$i]['id']]);
-            $events[$i]['path_get_images'] = $this->path('get-images', ['id' => $events[$i]['id']]);
+            $events[$i]['path_save_file'] = $this->path('save-file', ['id' => $events[$i]['id']]);
             $events[$i]['path_save_image'] = $this->path('save-image', ['id' => $events[$i]['id']]);
             $events[$i]['path_delete'] = $this->path('delete-event', ['id' => $events[$i]['id']]);
         }
