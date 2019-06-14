@@ -34,12 +34,14 @@ $(function () {
         });
     })
 
+    $('.edit-user-btn').click(editUser);
+
     function deleteTimeline(e) {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
-        if (confirm("Olete kindel, et soovite ajajoont " + "'" + name + "'" + " kustutada?")) {
+        if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
             console.log("delete funkts");
-            window.location.replace("/timelines/" + timeline + "/delete");
+            window.location.replace("/home/" + timeline + "/delete");
         }
 
         //window.location.reload();
@@ -65,7 +67,6 @@ $(function () {
         $('#edit-user-form').submit();
     });
 
-
     function editTimeline(e) {
         e.preventDefault();
         $('#edit-timeline-id').val($(this).data('id'));
@@ -73,5 +74,15 @@ $(function () {
         $('#edit-timeline-description').val($(this).data('description'));
         $('#edit-timeline-privacy').prop("checked", $(this).data('private') == 1 ? true : false);
         $('#edit-timeline-modal').modal('show');
+    }
+
+    function editUser(e) {
+        console.log('click')
+        e.preventDefault();
+        $('#edit-user-id').val($(this).data('id'));
+        $('#edit-user-email').val($(this).data('email'));
+        $('#edit-user-firstname').val($(this).data('firstname'));
+        $('#edit-user-lastname').val($(this).data('lastname'));
+        $('#edit-user-modal').modal('show');
     }
 });

@@ -69,6 +69,7 @@ class UserController extends Controller
     public function delete(Request $request, Response $response, $args)
     {
         User::destroy($args['id']);
+        $this->flash('success', 'Kasutaja kustutatud');
         return $response->withJson(['message' => 'User deleted!']);
     }
 
@@ -139,24 +140,14 @@ class UserController extends Controller
         return $response->withRedirect($this->path('users'));
     }
 
-    public function editUser(Request $request, Response $response, $id=null){
-        if ($id == null) {
-            $user = $this->auth->getUser();
-        }   
-        else {
-            if ($this->auth->getUser()->inRole('admin')){
-                $user = $this->auth->findUserById($id);                 
-            } else {
-                throw new \Exception('Not admin');
-            }
-        }
-        $array = [
-            'email' =>$request->getParam('email'),
-            'firstname' =>$request->getParam('firstname'),
-            'lastname' =>$request->getParam('lastname'),
-        ];
-        $user= $this->auth->update($user, $array); 
-        $this->flash('success', 'Kasutaja muudetud edukalt');
-        return $response->withRedirect($this->path('userss', ['id' => $user->id]));
+    public function editUser(Request $request, Response $response){
+        $user = User::find($request->getParam('id'));
+        $user->email = $request->getParam('email');
+        $user->firstname = $request->getParam('firstname');
+        $user->lastname = $request->getParam('lastname');
+        //$user->admin = $request->getParam('admin');
+        $user->save();
+        $this->flash('success', 'Kasutajakonto muudetud edukalt');
+        return $response->withRedirect($this->path('users'));
     }
 }
