@@ -41,7 +41,7 @@ module.exports = {
                     },
                     "sass-loader"
                 ]
-            }, 
+            },
             {
                 test: /\.svg$/,
                 use: {
@@ -50,7 +50,46 @@ module.exports = {
                         minimize: true
                     }
                 }
-            }
+            },
+            {
+                test: /\.(jpe?g|png|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: (url, resourcePath, context) => {
+                                if (/icon\.png|tile\.png|tile-wide\.png/.test(resourcePath)) {
+                                    return url;
+                                }
+                                else {
+                                    return `images/${url}`;
+                                }
+                            },
+                            name: '[name].[ext]',
+                        },
+                    },
+                    {
+                      loader: 'image-webpack-loader',
+                      options: {
+                        disable: process.env.NODE_ENV !== 'production', // Disable during development
+                        mozjpeg: {
+                          progressive: true,
+                          quality: 75
+                        },
+                      },
+                    }
+                ],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot)(\?[a-z0-9=.]+)?$/,
+                loader: 'file-loader',
+                options: {
+                    outputPath: 'fonts',
+                    name: '[name].[ext]',
+                },
+                exclude: /node_modules/,
+            },
         ]
     },
     plugins: [

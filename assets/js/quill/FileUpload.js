@@ -36,7 +36,7 @@ export default class FileUpload {
         const index =
 			(this.quill.getSelection() || {}).index || this.quill.getLength();
 
-        this.quill.insert(index, 'file', data, 'user');
+        this.quill.insertEmbed(index, 'file', data, 'user');
     }
     
     /**

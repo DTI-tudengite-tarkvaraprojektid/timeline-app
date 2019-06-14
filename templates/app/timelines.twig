@@ -8,16 +8,16 @@
     <div class="container mt-3">
         {% if timelines|length > 0 %}{% endif %}
         <div class="row mt-4">
-            <div class="col">
-                <h3>Ajajooned</h3>
+            <div class="col-sm-auto">
+                <h3>Ajajooned{% block header %}{% endblock %}</h3>
             </div>
             {% if auth.check() %}
-                <div class="col text-right">
+                <div class="col-sm text-right">
                     <a class="btn btn-dti" data-target="#new-timeline-modal" data-toggle="modal" href="#">+ Lisa ajajoon</a>
                 </div>
             {% endif %}
-            <div class="col">
-                <form id="tsearch-form" action="{{ path_for('search-timelines') }}">
+            <div class="col-sm">
+                <form id="tsearch-form" action="{{ path_for('timelines') }}">
                     <div class="input-group mb-3">
                         <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="tsearch" placeholder="Otsi ajajoont" type="text">
                         <div class="input-group-append">
@@ -47,31 +47,33 @@
             {% else %}
                 {% for timeline in timelines %}
                     <div class="col-md-6 col-lg-4">
-                        <div class="card mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-baseline">
-                                <span>{{ timeline.name }}</span>
-                            </div>
-                            <div class="card-body">
-                                <p>{{ timeline.description }}</p>
-                                <p>
-                                    <small>
-                                        Sündmusi:
-                                        {{ timeline.events_count }}<br>
-                                        Viimati muudetud:
-                                        {{ timeline.updated_at|date("d.m.Y") }}
-                                        {% if timeline.private == true %}<br><i>Privaatne</i>
-                                        {% endif %}
-                                    </small>
-                                </p>
-                                <div class="d-flex flex-row flex-wrap ">
-                                    <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                        <a class="clickable-card" href="{{ path_for('timeline', {'id': timeline.id}) }}">
+                            <div class="card mb-4">
+                                <div class="card-header d-flex align-items-baseline">
+                                    <span>{{ timeline.name }}</span>
                                     {% if auth.check() %}
-                                        <button type="button" class="btn btn-sm btn-dti m-1 editBtn" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">Muuda</button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger m-1 deleteTimelineButton" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}">Kustuta</button>
+                                        <button type="button" class="btn btn-light btn-sm ml-auto editBtn" data-toggle="tooltip" data-placement="bottom" title="Muuda pealkirja" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}"><i class="far fa-edit"></i></button>
+                                        <button type="button" class="btn btn-light btn-sm ml-2 deleteTimelineButton text-danger" data-toggle="tooltip" data-placement="bottom" title="Kustuta" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}"><i class="far fa-trash-alt"></i></button>
                                     {% endif %}
                                 </div>
+                                <div class="card-body">
+                                    <p>{{ timeline.description }}</p>
+                                    <p>
+                                        <small>
+                                            Sündmusi:
+                                            {{ timeline.events_count }}<br>
+                                            Viimati muudetud:
+                                            {{ timeline.updated_at|date("d.m.Y") }}
+                                            {% if timeline.private == true %}<br><i>Privaatne</i>
+                                            {% endif %}
+                                        </small>
+                                    </p>
+                                    <div class="d-flex flex-row flex-wrap ">
+                                        <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             {% endif %}

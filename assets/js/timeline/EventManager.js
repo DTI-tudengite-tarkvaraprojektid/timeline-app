@@ -79,6 +79,21 @@ export class EventManager {
                             .prop('src', val.path)
                     );
                 return link[0].outerHTML;
+            } else if (customOp.insert.type === 'file') {
+                let val = customOp.insert.value;
+                console.log(val);
+                var link = $('<span></span>')
+                    .addClass('event-file border p-1')
+                    .append(
+                        $('<i></i>').addClass('fas fa-download mr-2')
+                    )
+                    .append(
+                        $('<a></a>')
+                            .prop('href', val.path)
+                            .prop('download', val.name)
+                            .text(val.name)
+                    );
+                return link[0].outerHTML;
             } else {
                 return 'Unmanaged custom blot!';
             }
@@ -166,6 +181,8 @@ export class EventManager {
             $('#event-editor').html('');
             this.quill = getQuill('#event-editor', this.currentEvent);
             this.quill.setContents(this.content);
+            $('.ql-file').addClass('').html('<i class="far fa-file text-center"></i>');
+            
             this.editing = true;
         }
     }

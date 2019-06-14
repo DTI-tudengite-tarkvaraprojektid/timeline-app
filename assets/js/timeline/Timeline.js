@@ -21,7 +21,7 @@ export class Timeline {
             let delta = event.time.getTime() - this.timelineStart;
             let location = delta / timelineDelta * 100;
 
-            let point = this.getTimelinePoint(i, event.title, location);
+            let point = this.getTimelinePoint(i, event, location);
 
             point.on('click', (e) => {
                 e.preventDefault();
@@ -60,10 +60,10 @@ export class Timeline {
         this.anchor.prepend(container);
     }
 
-    getTimelinePoint(index, name, left=0, width=null) {
+    getTimelinePoint(index, event, left=0, width=null) {
         let point = $('<div></div>');
         point.addClass('timeline-point point-event')
-            .prop('title', name)
+            .prop('title', event.time.toLocaleDateString('et') + '\n' + event.title)
             .data('event', index)
             .data('toggle', 'tooltip')
             .data('placement', 'bottom')

@@ -34,6 +34,33 @@ class ContentController extends Controller
     {
         $event = Event::find($id);
         $event->content = $request->getBody();
+        $deltas = json_decode($request->getBody());
+        $content = [];
+
+        foreach ($deltas as $op) {
+            if (isset($op->insert->file)) {
+                $content[] = $op->insert->file->id;
+            } else if (isset($op->insert->thumbnailImage)) {
+                $content[] = $op->insert->thumbnailImage->id;
+            } else if (isset($op->insert->customImage)) {
+                $content[] = $op->insert->customImage->id;
+            }
+        }
+
+        $query = $event->content()->whereNotIn('id', $content);
+        $deletables = $query->get();
+        foreach ($deletables as $row) {
+            if ($row->type == 'IMAGE') {
+                unlink($this->settings['thumbnail_path'] . '/' . $row->content);
+                unlink($this->settings['upload_path'] . '/' . $row->content);
+            } else if ($row->type == 'FILE') {
+                $file = json_decode($row->content);
+                unlink($this->settings['upload_path'] . '/' . $file['path']);
+            }
+        }
+
+        $query->delete();
+
         $event->save();
         return $response->withJson([
             'message' => 'Content saved'
@@ -50,20 +77,6 @@ class ContentController extends Controller
         throw $this->notFoundException();
     }
 
-    public function getImages(Request $request, Response $response, $id) {
-        $images = Event::find($id)->content()->where('type', 'IMAGE')->get();
-        $data = [];
-        foreach ($images as $image) {
-            $temp = [
-                'id' => $image->id,
-                'thumbnail' => $this->path('get-thumb', ['id' => $id, 'image' => $image->id]),
-                'path' => $this->path('get-image', ['id' => $id, 'image' => $image->id])
-            ];
-            $data[] = $temp;
-        }
-        return $response->withJson($data);
-    }
-
     public function getThumb(Request $request, Response $response, $id, $imageId) {
         $image = Content::find($imageId);
         if ($image != null) {
@@ -71,21 +84,6 @@ class ContentController extends Controller
                 ->withHeader("Content-Type", mime_content_type($image->content))
                 ->write(file_get_contents($this->settings['thumbnail_path'] . '/' . $image->content));
         }
-    }
-
-    public function delete(Request $request, Response $response, $id, $contentId) {
-        $content = Content::find($imageId);
-        if ($content != null) {
-            if ($content->type == 'IMAGE') {
-                unlink($this->settings['thumbnail_path'] . '/' . $content->content);
-                unlink($this->settings['upload_path'] . '/' . $content->content);
-            } else if ($content->type == 'FILE') {
-                $file = json_decode($content->content);
-                unlink($this->settings['upload_path'] . '/' . $file['path']);
-            }
-            $content->delete();
-        }
-        return $response->withJson(['message' => 'Content deleted']);
     }
 
     public function uploadImage(Request $request, Response $response, $id)

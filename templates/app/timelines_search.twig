@@ -1,5 +1,9 @@
 {% extends 'app/timelines.twig' %}
 
+{% block header %}
+    <small class="text-muted">Leitud {{ found_count }} ajajoon{% if found_count != 1 %}t{% endif %} {{ count }}-st</small>
+{% endblock %}
+
 {% block jumbotron %}
     <h1 class="display-4">Ei leidnud ühtegi ajajoont :(</h1>
    

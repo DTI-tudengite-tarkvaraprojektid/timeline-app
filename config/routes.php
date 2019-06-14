@@ -37,12 +37,10 @@ $app->get('/logout', 'controller.auth:logout')
 $app->group('/event/{id:[0-9]+}/content', function () use ($container) {
     $this->get('/', 'controller.content:get')->setName('get-content');
     $this->post('/', 'controller.content:save')->setName('save-content');
-    $this->get('/images', 'controller.content:getImages')->setName('get-images')->add($container['middleware.auth']());
     $this->get('/image/{image:[0-9]+}', 'controller.content:getImage')->setName('get-image');
     $this->get('/thumb/{image:[0-9]+}', 'controller.content:getThumb')->setName('get-thumb');
     $this->post('/image', 'controller.content:uploadImage')->setName('save-image');
     $this->post('/file', 'controller.content:uploadFile')->setName('save-file');
-    $this->delete('/{content:[0-9]+}', 'controller.content:delete')->setName('delete-content');
 });
 
 $app->group('/user', function () {
@@ -50,14 +48,12 @@ $app->group('/user', function () {
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
 })->add($container['middleware.guest']);
 
-$app->group('/home', function () use ($container) {
-    $this->get('/', 'controller.timeline:timelines')->setName('timelines');
+$app->group('/timelines', function () use ($container) {
+    $this->get('/[{query:.*}]', 'controller.timeline:timelines')->setName('timelines');
     $this->get('/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
-    $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
     //$this->get('/{id:[0-9]+}/embeddable', 'controller.timeline:embeddedTimeline')->setName('embeddable')->add($container['middleware.auth']());
     $this->post('/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
-    // $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
 });
 
 $app->group('/users', function () use ($container) {

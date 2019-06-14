@@ -2,8 +2,13 @@ require('./timeline.js');
 
 import 'bootstrap';
 import '@fancyapps/fancybox';
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
 const moment = require('moment');
 require('../scss/app.scss');
+
 
 
 $(function () {
@@ -85,4 +90,6 @@ $(function () {
         $('#edit-user-lastname').val($(this).data('lastname'));
         $('#edit-user-modal').modal('show');
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
 });

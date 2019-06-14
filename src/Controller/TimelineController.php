@@ -43,16 +43,27 @@ class TimelineController extends Controller
     }
 
 
-    public function timelines(Request $request, Response $response)
+    public function timelines(Request $request, Response $response, $query = null)
     {     
         if ($this->auth->check()) {
-            $timelines = Timeline::withCount('events')->get();
+            $timelines = Timeline::withCount('events');
         } else {
-            $timelines = Timeline::withCount('events')->where('private', 0)->get();
+            $timelines = Timeline::withCount('events')->where('private', 0);
         }
-        return $this->render($response, 'app/timelines.twig', [
-            'timelines' => $timelines
-        ]);
+        $fullCount = $timelines->count();
+
+        if ($query == null) {
+            return $this->render($response, 'app/timelines.twig', [
+                'timelines' => $timelines->get()
+            ]);
+        } else {
+            $timelines = $timelines->search($query)->get();
+            return $this->render($response, 'app/timelines_search.twig', [
+                'timelines' => $timelines,
+                'found_count' => $timelines->count(),
+                'count' => $fullCount
+            ]);
+        }
     }
 
     public function delete(Request $request, Response $response, $id)
@@ -92,13 +103,6 @@ class TimelineController extends Controller
         return $response->withRedirect($this->path('home'));
     }
 
-    public function searchtimeline(Request $request, Response $response, $args) {
-        $data = Timeline::searchOrderByRelevance($args)->get();
-
-        return $this->render($response, 'app/timelines_search.twig', [
-            'timelines' => $data
-        ]);
-    }
     public function editTimeline(Request $request, Response $response){
         $timeline = Timeline::find($request->getParam('id'));
         $timeline->name = $request->getParam('name');

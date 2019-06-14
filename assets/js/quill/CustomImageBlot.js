@@ -4,7 +4,7 @@ class CustomImageBlot extends Image {
     static create(value) {
         let node = super.create();
         node.setAttribute('src', this.sanitize(value.path));
-        node.dataset.id = this.sanitize(value.id);
+        node.dataset.id = value.id;
         node.dataset.thumbnail = this.sanitize(value.thumbnail);
         return node;
     }
@@ -19,6 +19,6 @@ class CustomImageBlot extends Image {
 }
 CustomImageBlot.blotName = 'customImage';
 CustomImageBlot.tagName = 'img';
-CustomImageBlot.className = 'event-image'
+CustomImageBlot.className = 'event-full-image'
 
 export default CustomImageBlot;

@@ -38,7 +38,7 @@ $('#esearch-form').submit(function (e) {
     }
    
     $.getJSON(uri, function (data) {
-        updateTimeline(data);
+        updateTimeline(data, true);
     })
 });
 
@@ -46,7 +46,7 @@ $('#edit-timeline-form-button').click(() => {
     $('#edit-timeline-form').submit();
 })
 
-function updateTimeline(data) {
+function updateTimeline(data, searching = false) {
     let events = [];
     data.forEach(event => {
         events.push(new Event(
@@ -61,6 +61,22 @@ function updateTimeline(data) {
             event.path_save_file
         ));
     });
-    timelineManager.events = events;
-    timelineManager.render();
+    if (events.length == 0) {
+        if (searching) {
+            timeline.html(
+                '<div class="alert alert-info" role="alert">' +
+                    'Ei leidnud ühtegi sündmust :(' +
+                '</div>'
+            );
+        } else {
+            timeline.html(
+                '<div class="alert alert-info" role="alert">' +
+                    'Valitud ajajoonel ei ole ühtegi sündmust :(' +
+                '</div>'
+            );
+        }
+    } else {
+        timelineManager.events = events;
+        timelineManager.render();
+    }
 }
