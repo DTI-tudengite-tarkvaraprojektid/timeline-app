@@ -37,9 +37,9 @@ $(function () {
     function deleteTimeline(e) {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
-        if (confirm("Olete kindel, et soovite ajajoont " + "'" + name + "'" + " kustutada?")) {
+        if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
             console.log("delete funkts");
-            window.location.replace("/timelines/" + timeline + "/delete");
+            window.location.replace("/home/" + timeline + "/delete");
         }
 
         //window.location.reload();

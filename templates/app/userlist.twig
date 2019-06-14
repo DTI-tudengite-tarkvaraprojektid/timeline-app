@@ -12,11 +12,11 @@
             </div>
             {% endif %}
         </div>
-        <div class="list-group mt-4">     
+        <div class="list-group mt-4">
         {% for user in users %}
             <a href="{{ path_for('settings', { 'id': user.id }) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-baseline">
                 <span>{{ user.firstname }} {{ user.lastname }} – {{ user.email }}</span>
-                <button type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+                <button type="button" data-id={{ user.id }} data-fname={{ user.firstname }} data-lname={{ user.lastname }} class="btn btn-outline-danger btn-sm delete-user-btn">Delete</button>
             </a>
         {% endfor %}
         </div>

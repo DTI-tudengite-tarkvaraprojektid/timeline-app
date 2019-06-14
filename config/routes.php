@@ -1,6 +1,6 @@
 <?php
 
-$app->get('/', 'controller.app:home')->setName('home');
+$app->get('/', 'controller.timeline:timelines')->setName('home');
 
 $app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
 
@@ -42,16 +42,14 @@ $app->group('/user', function () {
     $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
 })->add($container['middleware.guest']);
 
-$app->group('/timelines', function () use ($container) {
-
+$app->group('/home', function () use ($container) {
     $this->get('/', 'controller.timeline:timelines')->setName('timelines');
     $this->get('/{id:[0-9]+}/delete', 'controller.timeline:delete')->setName('delete-timeline')->add($container['middleware.auth']());
     $this->get('/search/[{query:.*}]', 'controller.timeline:searchtimeline')->setName('search-timelines');
 
     $this->post('/', 'controller.timeline:addTimeline')->setName('add-timeline')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.timeline:editTimeline')->setName('edit-timeline')->add($container['middleware.auth']());
-    $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
-
+    // $this->post('/{id:[0-9]+}/default', 'controller.timeline:defaultTimeline')->setName('default-timeline')->add($container['middleware.auth']());
 });
 
 $app->group('/users', function () use ($container) {

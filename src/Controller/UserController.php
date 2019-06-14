@@ -69,6 +69,7 @@ class UserController extends Controller
     public function delete(Request $request, Response $response, $args)
     {
         User::destroy($args['id']);
+        $this->flash('success', 'Kasutaja kustutatud');
         return $response->withJson(['message' => 'User deleted!']);
     }
 
