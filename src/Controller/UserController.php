@@ -139,4 +139,15 @@ class UserController extends Controller
 
         return $response->withRedirect($this->path('users'));
     }
+
+    public function editUser(Request $request, Response $response){
+        $user = User::find($request->getParam('id'));
+        $user->email = $request->getParam('email');
+        $user->firstname = $request->getParam('firstname');
+        $user->lastname = $request->getParam('lastname');
+        //$user->admin = $request->getParam('admin');
+        $user->save();
+        $this->flash('success', 'Kasutajakonto muudetud edukalt');
+        return $response->withRedirect($this->path('users'));
+    }
 }

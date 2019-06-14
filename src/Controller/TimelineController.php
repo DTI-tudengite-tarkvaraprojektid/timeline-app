@@ -26,6 +26,22 @@ class TimelineController extends Controller
         ]);
     }
 
+    public function embeddedTimeline(Request $request, Response $response, $id)
+    {
+        $timeline = Timeline::withCount('events')->find($id);
+        if ($timeline === null) {
+            throw $this->notFoundException($request, $response);
+        }
+
+        if (!$this->auth->check() && $timeline->private){
+           return $response->withRedirect($this->path('home'));
+        }
+
+        return $this->render($response, 'app/embedded.twig', [
+            'timeline' => $timeline
+        ]);
+    }
+
 
     public function timelines(Request $request, Response $response)
     {     
