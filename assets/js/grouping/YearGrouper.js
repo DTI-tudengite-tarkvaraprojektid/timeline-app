@@ -3,65 +3,80 @@ import { Group } from "../timeline/Group";
 
 export default class YearGrouper extends BaseGrouper {
     
-    constructor (span) {
+    constructor (maxGroups) {
         super();
-        this.span = span; // 5
+        this.maxGroups = maxGroups;
     }
 
-    canGroup(events) {
-        return events[0].time.getFullYear() != events[events.length - 1].time.getFullYear()
+    canGroup(lastGroup) {
+        return lastGroup.startTime.getFullYear() != lastGroup.endTime.getFullYear()
     }
 
-    getGroups(events) {
+    getGroups(lastGroup) {
 
-        let startYear = events[0].time.getFullYear();
-        let endYear = events[events.length - 1].time.getFullYear();
+        let startYear = lastGroup.startTime.getFullYear();
+        let endYear = lastGroup.endTime.getFullYear();
         let totalYears = endYear - startYear + 2 // + 2 because we want to include both, start and end year, as well
-        var step = Math.floor(this.getBaseLog(this.span, totalYears)) + 1;
+        var step = Math.ceil(totalYears / this.maxGroups);
         console.log("Step: " + step);
 
         let timelineStart = new Date(startYear, 0, 1).getTime();
         let timelineEnd = new Date(endYear + 1, 0, 1).getTime();
-        let timelineDelta = timelineEnd - timelineStart;
+        //let timelineDelta = timelineEnd - timelineStart;
 
+        let startOffset = (totalYears % step);
+        if (startOffset == 0) {
+            startOffset = step;
+        }
+        console.log("totalYears = " + totalYears + " | start offset: " + startOffset + " | startYear: " + startYear);
         let groups = [];
-        let lastYear = 0;
-        let group = null;
+        let lastYear = startYear;
+        let lastEndYear = lastYear + startOffset;
+        let group = new Group(this.getNameByYears(lastYear, lastEndYear), [], new Date(lastYear, 0, 1), new Date(lastEndYear - 1, 11, 31));
+        groups.push(group);
 
-        events.forEach(event => {
+        lastGroup.events.forEach(event => {
             let year = event.time.getFullYear();
-            console.log('year: ' + year + ' | Lastyear: ' + lastYear);
-            if (year >= lastYear + step) {
-                if (group != null) {
-                    let tempYear = lastYear + step;
-                    // If empty years in between, add them as empty groups
-                    console.log('Checking if empty ');
-                    // 2012
-                    // 2015
-                    while (year > tempYear + step) {
-                        groups.push(new Group(tempYear, [], new Date(tempYear, 0, 1), new Date(tempYear + step, 0, 1)));
-                        lastYear = tempYear;
-                        tempYear += step;
-                    }
+            console.log('year: ' + year + ' | Lastyear: ' + lastYear + " | LastEndYear: " + lastEndYear);
+            if (year >= lastEndYear) {
+
+                let tempYear = lastEndYear;
+                let tempEndYear = lastEndYear + step;
+                // If empty years in between, add them as empty groups
+                console.log('Checking if empty ');
+                while (year > tempEndYear) {
+                    console.log('Next group would be empty. Filling it up... ');
                     
+                    groups.push(new Group(this.getName(tempYear, step), [], new Date(tempYear, 0, 1), new Date(tempEndYear - 1, 11, 31)));
+                    lastYear = tempEndYear;
+                    lastEndYear = tempEndYear;
+                    tempYear += step;
+                    tempEndYear += step
                 }
-                if (lastYear == 0) {
-                    lastYear = year;
-                } else {
-                    lastYear = lastYear + step;
-                }
-                group = new Group(lastYear, [], new Date(lastYear, 0, 1), new Date(year + step, 0, 1));
+
+                lastYear = lastEndYear;
+                lastEndYear = lastYear + step;
+
+                group = new Group(this.getName(lastYear, step), [], new Date(lastYear, 0, 1), new Date(lastEndYear - 1, 11, 31));
                 groups.push(group);
             }
             group.events.push(event);
         });
         // Add the end year
-        groups.push(new Group(lastYear + step, [], new Date(lastYear + step, 0, 1), new Date(lastYear + step, 0, 1)));
+        //groups.push(new Group(lastYear + step, [], new Date(lastYear + step, 0, 1), new Date(lastYear + step - 1, 11, 31)));
 
         return groups;
     }
 
-    getBaseLog(x, y) {
-        return Math.log(y) / Math.log(x);
+    getName(startYear, step) {
+        if (step > 1) {
+            return startYear + ' - ' + (startYear + step - 1);
+        } else {
+            return startYear;
+        }
+    }
+
+    getNameByYears(startYear, endYear) {
+        return this.getName(startYear, endYear - startYear);
     }
 }

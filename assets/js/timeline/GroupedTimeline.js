@@ -8,18 +8,18 @@ export class GroupedTimeline {
     render () {
         
         let count = this.groups.length;
-        let groupWidth = 100 / (count - 1);
+        let groupWidth = 100 / (count);
         let timeline = this.initTimeline();
 
         for (let i = 0; i < count; i++) {
             let group = this.groups[i];
             let groupDelta = group.endTime.getTime() - group.startTime.getTime();
 
-            let point = this.getGroupTimelinePoint(i, group.name, null, groupWidth * i, (i == count - 1 ? 0 : groupWidth));
+            let point = this.getGroupTimelinePoint(i, group.name, null, groupWidth * i, groupWidth);
 
             timeline.append(point);
 
-            if (i < count - 1) {
+           //if (i < count - 1) {
                 point.on('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -34,11 +34,12 @@ export class GroupedTimeline {
                     let location = (groupWidth * i) + delta / groupDelta * groupWidth;
                     timeline.append(this.getSmallTimelinePoint(location, event.title));
                 });
-            }
+            //}
 
-            
-            
         }
+        // Add last point
+        let point = this.getGroupTimelinePoint(-1, '', null, 100);
+        timeline.append(point);
     }
 
     initTimeline() {

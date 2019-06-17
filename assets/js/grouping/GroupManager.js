@@ -3,39 +3,38 @@ const moment = require("moment");
 moment.locale('et');
 
 export default class GroupManager {
-    constructor (rules, groupers) {
+    constructor (rules) {
         this.rules = rules;
-        this.groupers = groupers;
     }
 
-    group(events) {
+    group(lastGroup) {
         for (let i = 0; i < this.rules.length; i++) {
             const rule = this.rules[i];
-            if (rule.shouldGroup(events)) {
-                let groups = this.createGroups(events);
+            if (rule.shouldGroup(lastGroup)) {
+                let groups = this.createGroups(lastGroup, rule.groupers);
                 return groups;
             }
         }
         return false;
     }
 
-    createGroups(events) {
-        for (let i = 0; i < this.groupers.length; i++) {
-            const grouper = this.groupers[i];
-            if (grouper.canGroup(events)) {
-                console.log(events);
-                let groups = grouper.getGroups(events);
+    createGroups(lastGroup, groupers) {
+        for (let i = 0; i < groupers.length; i++) {
+            const grouper = groupers[i];
+            if (grouper.canGroup(lastGroup)) {
+                console.log(lastGroup);
+                let groups = grouper.getGroups(lastGroup);
                 return groups;
             }
         }
         return false;
     }
 
-    getSimpleGroups(events) {
-        let startTime = events[0].time;
-        let endTime = events[events.length - 1].time;
+    getSimpleGroups(lastGroup) {
+        let startTime = lastGroup.startTime;
+        let endTime = lastGroup.endTime;
 
-        let startGroup = new Group(moment(startTime).format('Do MMM YYYY'), events, startTime, endTime);
+        let startGroup = new Group(moment(startTime).format('Do MMM YYYY'), lastGroup.events, startTime, endTime);
         let endGroup = new Group(moment(endTime).format('Do MMM YYYY'), [], endTime, endTime);
         return [startGroup, endGroup]
     }

@@ -85,8 +85,18 @@ class EventController extends Controller
 
     public function delete(Request $request, Response $response, $id)
     {
-        $timeline = Event::find($id)->timeline;
+        $event = Event::find($id);
+        $timeline = $event->timeline;
+
+        $query = $event->content();
+        foreach ($event->content as $row) {
+            $this->deleteContentFile($row);
+        }
+
+        $event->content()->delete();
+
         Event::destroy($id);
+
         $this->flash('success', 'Sündmus kustutatud');
         return $response->withRedirect($this->path('timeline', [
             'id' => $timeline->id
@@ -104,8 +114,19 @@ class EventController extends Controller
             'id' => $event->timeline->id
         ]));
     }
+    
     public function showEvents(Request $request, Response $response, $id =null)
     {
         return $this->render($response, 'app/events.twig');
+    }
+
+    protected function deleteContentFile($content) {
+        if ($content->type == 'IMAGE') {
+            unlink($this->settings['thumbnail_path'] . '/' . $content->content);
+            unlink($this->settings['upload_path'] . '/' . $content->content);
+        } else if ($content->type == 'FILE') {
+            $file = json_decode($content->content);
+            unlink($this->settings['upload_path'] . '/' . $file['path']);
+        }
     }
 }
