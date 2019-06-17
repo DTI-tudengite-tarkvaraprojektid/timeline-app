@@ -86,7 +86,7 @@ class EventController extends Controller
     public function delete(Request $request, Response $response, $id)
     {
         $event = Event::find($id);
-        $timeline = $event->timeline;
+        $timelineId = $event->timeline->id;
 
         $query = $event->content();
         foreach ($event->content as $row) {
@@ -99,7 +99,7 @@ class EventController extends Controller
 
         $this->flash('success', 'Sündmus kustutatud');
         return $response->withRedirect($this->path('timeline', [
-            'id' => $timeline->id
+            'id' => $timelineId
         ]));
     }
 
