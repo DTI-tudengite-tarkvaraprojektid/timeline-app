@@ -1,8 +1,9 @@
-export class Event {
+import { BaseEvent } from "./BaseEvent";
+
+export class Event extends BaseEvent {
     constructor(id, title, time, contentPath, contentSavePath, deletePath, imageUploadPath, privacy, fileUploadPath) {
+        super(title, time);
         this.id = id
-        this.title = title;
-        this.time = time;
         this.private = privacy;
         this.contentPath = contentPath;
         this.contentSavePath = contentSavePath;

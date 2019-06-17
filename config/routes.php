@@ -45,10 +45,9 @@ $app->group('/event/{id:[0-9]+}/content', function () use ($container) {
     $this->post('/file', 'controller.content:uploadFile')->setName('save-file');
 });
 
-$app->group('/user', function () {
-    $this->map(['GET', 'POST'], '/register', 'controller.user:register')->setName('register');
-    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
-})->add($container['middleware.guest']);
+$app->group('/user', function () use ($container) {
+    $this->get('/{id:[0-9]+}/delete', 'controller.user:delete')->setName('delete-user')->add($container['middleware.auth']('admin'));
+});
 
 $app->group('/timelines', function () use ($container) {
     $this->get('/[{query:.*}]', 'controller.timeline:timelines')->setName('timelines');
