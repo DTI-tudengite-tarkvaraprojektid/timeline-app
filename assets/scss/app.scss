@@ -38,7 +38,7 @@
     transition: background-color 0.2s;
     height: 25px;
 
-    &.active::before{
+    &.active::before {
       background-color: #20c997;
     }
 
@@ -75,7 +75,7 @@
     &.point-small {
         pointer-events: none;
 
-        &.active{
+        &.active {
           background-color: #20c997;
         }
 
@@ -121,11 +121,11 @@
     top: 0;
 }
 
-.bg-dti{
+.bg-dti {
   background-color: #6bcaba;
 }
 
-.btn-dti{
+.btn-dti {
   color: #ffffff;
   background-color: #6bcaba;
   //background-color: #b71234;
