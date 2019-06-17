@@ -40,8 +40,9 @@ $(function () {
     })
 
     $('.edit-user-btn').click(editUser);
+    $('.deleteUser').click(deleteUser);
 
-    function deleteTimeline(e) {
+    function deleteTimeline() {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
         if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
@@ -81,6 +82,7 @@ $(function () {
         $('#edit-timeline-modal').modal('show');
     }
 
+    var fname, lname;
     function editUser(e) {
         console.log('click')
         e.preventDefault();
@@ -88,7 +90,18 @@ $(function () {
         $('#edit-user-email').val($(this).data('email'));
         $('#edit-user-firstname').val($(this).data('firstname'));
         $('#edit-user-lastname').val($(this).data('lastname'));
+        $('#user-delete-btn').prop('href', $(this).data('delete-url'));
         $('#edit-user-modal').modal('show');
+        fname = $('#edit-user-firstname').val();
+        lname = $('#edit-user-lastname').val();
+    }
+
+    function deleteUser(){
+        var user = $('#edit-user-id').val();
+        // var url = $(this).data('url');
+        if (confirm("Kindel, et soovite kasutaja '" + fname + " " + lname + "' kustutada?")){
+            window.location.replace("/user/" + user + "/delete");
+        }
     }
 
     $('[data-toggle="tooltip"]').tooltip();

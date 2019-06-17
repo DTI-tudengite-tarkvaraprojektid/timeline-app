@@ -76,6 +76,4 @@ export class Timeline {
         point.tooltip();
         return point;
     }
-
-
 }

@@ -66,11 +66,15 @@ class UserController extends Controller
         return $this->render($response, 'auth/register.twig');
     }
 
-    public function delete(Request $request, Response $response, $args)
+    public function delete(Request $request, Response $response, $id)
     {
-        User::destroy($args['id']);
-        $this->flash('success', 'Kasutaja kustutatud');
-        return $response->withJson(['message' => 'User deleted!']);
+        if ($this->auth->getUser()->id == $id) {
+            $this->flash('danger', 'Enda kasutajat ei saa kustutada');
+        } else {
+            User::destroy($id);
+            $this->flash('success', 'Kasutaja kustutatud');
+        }
+        return $response->withRedirect($this->path('users'));
     }
 
     public function users(Request $request, Response $response)
