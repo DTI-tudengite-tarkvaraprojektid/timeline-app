@@ -1,5 +1,8 @@
 export default class BaseRule {
-    shouldGroup(events) {
+    constructor(groupers) {
+        this.groupers = groupers
+    }
+    shouldGroup(group) {
         return false;
     }
 }

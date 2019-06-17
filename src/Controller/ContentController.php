@@ -50,13 +50,7 @@ class ContentController extends Controller
         $query = $event->content()->whereNotIn('id', $content);
         $deletables = $query->get();
         foreach ($deletables as $row) {
-            if ($row->type == 'IMAGE') {
-                unlink($this->settings['thumbnail_path'] . '/' . $row->content);
-                unlink($this->settings['upload_path'] . '/' . $row->content);
-            } else if ($row->type == 'FILE') {
-                $file = json_decode($row->content);
-                unlink($this->settings['file_upload_path'] . '/' . $file->path);
-            }
+            $this->deleteContentFile($row);
         }
 
         $query->delete();
@@ -65,6 +59,16 @@ class ContentController extends Controller
         return $response->withJson([
             'message' => 'Content saved'
         ]);
+    }
+
+    protected function deleteContentFile($content) {
+        if ($content->type == 'IMAGE') {
+            unlink($this->settings['thumbnail_path'] . '/' . $content->content);
+            unlink($this->settings['upload_path'] . '/' . $content->content);
+        } else if ($content->type == 'FILE') {
+            $file = json_decode($content->content);
+            unlink($this->settings['file_upload_path'] . '/' . $file->path);
+        }
     }
 
     public function getImage(Request $request, Response $response, $id, $imageId) {
