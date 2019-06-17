@@ -5,12 +5,12 @@
     <h1>Galerii</h1>
     <div class="container">
       {% for group in groups %}
-        <h5>{{ group[0].event.timeline.name }}</h5>
+        <h3 class="bg-dti p-2 mt-4 text-light rounded">{{ group[0].event.timeline.name }}</h3>
         <div class="row">
           {% for pic in group %}
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <a href="{{ path_for('get-image', {'id': pic.event.id, 'image': pic.id }) }}" data-fancybox="gallery" data-caption="Sündmus: {{ pic.event.title }}">
-              <img class="img-thumbnail" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" alt=""/>
+              <img class="img-thumbnail mb-3" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" alt=""/>
               </a>
             </div>
           {% endfor %}

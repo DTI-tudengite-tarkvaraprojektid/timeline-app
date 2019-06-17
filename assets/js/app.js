@@ -32,6 +32,7 @@ $(function () {
     $('.editBtn').on("click", editTimeline);
     $('.deleteTimelineButton').on("click", deleteTimeline);
     $('#tsearch-form').submit(searchtimelines);
+    $('#fsearch-form').submit(searchfiles);
 
     $('.default-checkbox').click(function (e) {
         var path = $(this).data('path');
@@ -41,8 +42,9 @@ $(function () {
     })
 
     $('.edit-user-btn').click(editUser);
+    $('.deleteUser').click(deleteUser);
 
-    function deleteTimeline(e) {
+    function deleteTimeline() {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
         if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
@@ -51,6 +53,19 @@ $(function () {
         }
 
         //window.location.reload();
+    }
+
+    function searchfiles() {
+        var data = $('#fsearch').val();
+        if (data == '') {
+
+        } else {
+            console.log(data);
+            //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
+            //console.log(data);
+            var uri = $(this).prop('action') + data;
+            $(this).prop('action', uri);
+        }
     }
 
     function searchtimelines() {
@@ -82,6 +97,7 @@ $(function () {
         $('#edit-timeline-modal').modal('show');
     }
 
+    var fname, lname;
     function editUser(e) {
         console.log('click')
         e.preventDefault();
@@ -89,8 +105,22 @@ $(function () {
         $('#edit-user-email').val($(this).data('email'));
         $('#edit-user-firstname').val($(this).data('firstname'));
         $('#edit-user-lastname').val($(this).data('lastname'));
+<<<<<<< HEAD
         $('#edit-user-role').prop("checked", $(this).data('admin'));
+=======
+        $('#user-delete-btn').prop('href', $(this).data('delete-url'));
+>>>>>>> d4245c85a53b7ac8232f4a4c342341f102d28d44
         $('#edit-user-modal').modal('show');
+        fname = $('#edit-user-firstname').val();
+        lname = $('#edit-user-lastname').val();
+    }
+
+    function deleteUser(){
+        var user = $('#edit-user-id').val();
+        // var url = $(this).data('url');
+        if (confirm("Kindel, et soovite kasutaja '" + fname + " " + lname + "' kustutada?")){
+            window.location.replace("/user/" + user + "/delete");
+        }
     }
 
     $('[data-toggle="tooltip"]').tooltip();

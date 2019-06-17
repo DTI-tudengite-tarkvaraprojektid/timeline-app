@@ -4,6 +4,7 @@
     {% if auth.check() %}
         {% include 'app/_new_event_modal.twig' %}
         {% include 'app/_edit_event_modal.twig' %}
+        {% include 'app/_share_timeline_modal.twig' %}
     {% endif %}
     <div class="container mt-3">
         <div class="row mt-4">
@@ -13,7 +14,8 @@
             {% if auth.check() %}
                 <div class="col text-right">
                     <a class="btn btn-dti" data-target="#new-event-modal" data-toggle="modal" href="#">+ Lisa sündmus</a>
-                    <a class="btn btn-dti btn-share-timeline ml-3" data-target="#share-event-modal" data-toggle="modal" href="#" data-embed="{{ path_for('embeddable', {'id': timeline.id}) }}">Jaga</a>
+                    {# <a class="btn btn-dti btn-share-timeline ml-3" data-target="#share-event-modal" data-toggle="modal" href="#" data-embed="{{ path_for('embeddable', {'id': timeline.id}) }}">Jaga</a> #}
+                    <a class="btn btn-dti ml-3" data-target="#share-timeline-modal" data-toggle="modal" href="#">Jaga</a>
                 </div>
             {% endif %}
             <div class="col text-right">

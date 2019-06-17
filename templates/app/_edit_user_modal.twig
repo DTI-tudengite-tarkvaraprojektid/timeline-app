@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-user-form" action="{{ path_for('edit-user') }}"method="POST">
+                <form id="edit-user-form" action="{{ path_for('edit-user') }}" method="POST">
                     <div class="form-group">
                         <label for="edit-user-email">Email</label>
                         <input class="form-control" id="edit-user-email" type="email" name="email">
@@ -27,7 +27,7 @@
                     </div>
                     <input type="hidden" name="id" id="edit-user-id"></input>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger">Kustuta kasutaja</button>
+                        <a href="#" id="user-delete-btn" class="btn btn-outline-danger">Kustuta kasutaja</a>
                         <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
                         <button class="btn btn-dti" type="submit" name="editUser">Muuda</button>
                     </div>
