@@ -104,8 +104,34 @@ class EventController extends Controller
             'id' => $event->timeline->id
         ]));
     }
+
     public function showEvents(Request $request, Response $response, $id =null)
     {
         return $this->render($response, 'app/events.twig');
+    }
+
+    public function exportEvents(Request $request, Response $response, $id)
+    {
+        $timeline = Timeline::with('events')->findOrFail($id);
+        $events = $timeline->events;
+        $output ="Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private,";
+        for ($i=0; $i < count($events); $i++) {
+            $event = $events[$i];
+            $output .= '"' . addslashes($event->title) . '",';
+            $output .= date('d/m/Y', strtotime($event->time));
+            $output .= ",,,";
+            $output .= addslashes($event->content);
+            $output .= ",,";
+            if($event->private==1){
+                $output .= "True,";
+            } else {
+                $output .= "False,";
+            }     
+            $output .= "\n";
+        }
+        return $response
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment; filename="tlu-timeline-events.csv"')
+            ->write($output);
     }
 }

@@ -6,6 +6,7 @@ $app->group('/timeline' , function() {
     $this->get('/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
     $this->get('/{id:[0-9]+}/embeddable' , 'controller.timeline:embeddedTimeline')->setName('embeddable');
     $this->get('/share', 'controller.timeline:shareTimeline')->setName('share');
+    $this->get('/{id:[0-9]+}/export', 'controller.event:exportEvents')->setName('exportEvents');
 });
 
 /*$app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');*/
