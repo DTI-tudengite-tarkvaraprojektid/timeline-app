@@ -31,6 +31,7 @@ $(function () {
     $('.editBtn').on("click", editTimeline);
     $('.deleteTimelineButton').on("click", deleteTimeline);
     $('#tsearch-form').submit(searchtimelines);
+    $('#fsearch-form').submit(searchfiles);
 
     $('.default-checkbox').click(function (e) {
         var path = $(this).data('path');
@@ -50,6 +51,19 @@ $(function () {
         }
 
         //window.location.reload();
+    }
+
+    function searchfiles() {
+        var data = $('#fsearch').val();
+        if (data == '') {
+
+        } else {
+            console.log(data);
+            //data = data.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'');
+            //console.log(data);
+            var uri = $(this).prop('action') + data;
+            $(this).prop('action', uri);
+        }
     }
 
     function searchtimelines() {

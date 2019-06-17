@@ -69,5 +69,8 @@ $app->group('/gallery', function (){
   $this->get('/', 'controller.gallery:gallery')->setName('gallery');
 });
 
-
-  
+$app->group('/files', function (){
+  $this->get('/[{query:.*}]', 'controller.files:files')->setName('files');
+  $this->get('/file/{file:[0-9]+}', 'controller.files:getFile')->setName('get-file');
+  $this->get('/filename/{file:[0-9]+}', 'controller.files:getfilename')->setName('get-filename');
+});

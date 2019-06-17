@@ -43,3 +43,5 @@ Manager::schema()->create('contents', function (Blueprint $table) {
     $table->timestamps();
     $table->foreign('event_id')->references('id')->on('events');
 });
+
+Manager::statement('ALTER TABLE contents ADD FULLTEXT fulltext_index (content)');
