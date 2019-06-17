@@ -5,6 +5,7 @@ $app->get('/', 'controller.timeline:timelines')->setName('home');
 $app->group('/timeline' , function() {
     $this->get('/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
     $this->get('/{id:[0-9]+}/embeddable' , 'controller.timeline:embeddedTimeline')->setName('embeddable');
+    $this->get('/share', 'controller.timeline:shareTimeline')->setName('share');
 });
 
 /*$app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');*/
@@ -68,5 +69,8 @@ $app->group('/gallery', function (){
   $this->get('/', 'controller.gallery:gallery')->setName('gallery');
 });
 
-
-  
+$app->group('/files', function (){
+  $this->get('/[{query:.*}]', 'controller.files:files')->setName('files');
+  $this->get('/file/{file:[0-9]+}', 'controller.files:getFile')->setName('get-file');
+  $this->get('/filename/{file:[0-9]+}', 'controller.files:getfilename')->setName('get-filename');
+});
