@@ -105,11 +105,8 @@ $(function () {
         $('#edit-user-email').val($(this).data('email'));
         $('#edit-user-firstname').val($(this).data('firstname'));
         $('#edit-user-lastname').val($(this).data('lastname'));
-<<<<<<< HEAD
         $('#edit-user-role').prop("checked", $(this).data('admin'));
-=======
         $('#user-delete-btn').prop('href', $(this).data('delete-url'));
->>>>>>> d4245c85a53b7ac8232f4a4c342341f102d28d44
         $('#edit-user-modal').modal('show');
         fname = $('#edit-user-firstname').val();
         lname = $('#edit-user-lastname').val();
