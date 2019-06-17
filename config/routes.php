@@ -5,6 +5,7 @@ $app->get('/', 'controller.timeline:timelines')->setName('home');
 $app->group('/timeline' , function() {
     $this->get('/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');
     $this->get('/{id:[0-9]+}/embeddable' , 'controller.timeline:embeddedTimeline')->setName('embeddable');
+    $this->get('/share', 'controller.timeline:shareTimeline')->setName('share');
 });
 
 /*$app->get('/timeline/{id:[0-9]+}', 'controller.timeline:timeline')->setName('timeline');*/
@@ -43,10 +44,9 @@ $app->group('/event/{id:[0-9]+}/content', function () use ($container) {
     $this->post('/file', 'controller.content:uploadFile')->setName('save-file');
 });
 
-$app->group('/user', function () {
-    $this->map(['GET', 'POST'], '/register', 'controller.user:register')->setName('register');
-    $this->map(['DELETE'], '/{id:[0-9]+}', 'controller.user:delete')->setName('delete-user');
-})->add($container['middleware.guest']);
+$app->group('/user', function () use ($container) {
+    $this->get('/{id:[0-9]+}/delete', 'controller.user:delete')->setName('delete-user')->add($container['middleware.auth']('admin'));
+});
 
 $app->group('/timelines', function () use ($container) {
     $this->get('/[{query:.*}]', 'controller.timeline:timelines')->setName('timelines');
@@ -69,5 +69,8 @@ $app->group('/gallery', function (){
   $this->get('/', 'controller.gallery:gallery')->setName('gallery');
 });
 
-
-  
+$app->group('/files', function (){
+  $this->get('/[{query:.*}]', 'controller.files:files')->setName('files');
+  $this->get('/file/{file:[0-9]+}', 'controller.files:getFile')->setName('get-file');
+  $this->get('/filename/{file:[0-9]+}', 'controller.files:getfilename')->setName('get-filename');
+});

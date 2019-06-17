@@ -67,7 +67,7 @@ class ContentController extends Controller
             unlink($this->settings['upload_path'] . '/' . $content->content);
         } else if ($content->type == 'FILE') {
             $file = json_decode($content->content);
-            unlink($this->settings['upload_path'] . '/' . $file['path']);
+            unlink($this->settings['file_upload_path'] . '/' . $file->path);
         }
     }
 

@@ -9,4 +9,5 @@ return [
     'timeline' => App\Controller\TimelineController::class,
     'settings' => App\Controller\SettingsController::class,
     'gallery' => App\Controller\GalleryController::class,
+    'files' => App\Controller\FilesController::class,
 ];

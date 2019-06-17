@@ -114,10 +114,17 @@ class EventController extends Controller
             'id' => $event->timeline->id
         ]));
     }
-    
+
     public function showEvents(Request $request, Response $response, $id =null)
     {
-        return $this->render($response, 'app/events.twig');
+        if(!$this->auth->check()){
+            $events = Event::where('private', 0)->get();
+        } else {
+            $events = Event::all();
+        }
+        return $this->render($response, 'app/events.twig', [
+            'events' => $events
+        ]);
     }
 
     protected function deleteContentFile($content) {
@@ -126,7 +133,7 @@ class EventController extends Controller
             unlink($this->settings['upload_path'] . '/' . $content->content);
         } else if ($content->type == 'FILE') {
             $file = json_decode($content->content);
-            unlink($this->settings['upload_path'] . '/' . $file['path']);
+            unlink($this->settings['file_upload_path'] . '/' . $file->path);
         }
     }
 }
