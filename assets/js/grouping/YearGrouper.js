@@ -50,7 +50,7 @@ export default class YearGrouper extends BaseGrouper {
                 } else {
                     lastYear = lastYear + step;
                 }
-                group = new Group(lastYear, [], new Date(lastYear, 0, 1), new Date(lastYear + step, 0, 1));
+                group = new Group(lastYear, [], new Date(lastYear, 0, 1), new Date(year + step, 0, 1));
                 groups.push(group);
             }
             group.events.push(event);
