@@ -8,11 +8,19 @@
                 </button>
             </div>
             <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="linkBox" class="col-sm-2 col-form-label">Link:</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="linkBox" value="{{ base_url() ~ path_for('embeddable', {'id': timeline.id}) }}">
+                        </div>
+                    </div>
+                </form>
                 <iframe src="{{ path_for('embeddable', {'id': timeline.id}) }}">
                     <p>Teie brauser ei toeta iframe kuvamist</p> 
                 </iframe>
                 <div>
-                <a class="btn btn-dti ml-3" href="{{ path_for('embeddable', {'id': timeline.id}) }}">Link</a>
+                <a class="btn btn-dti ml-3" href="">Kalendrinupp</a>
                 </div>
                 <input type="hidden" name="id" id="edit-event-id"></input>             
             </div>
