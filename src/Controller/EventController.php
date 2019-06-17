@@ -106,6 +106,15 @@ class EventController extends Controller
     }
     public function showEvents(Request $request, Response $response, $id =null)
     {
-        return $this->render($response, 'app/events.twig');
+        if(!$this->auth->check()){
+            $events = Event::where('private', 0)->get();
+        } else {
+            $events = Event::all();
+        }
+        return $this->render($response, 'app/events.twig', [
+            'events' => $events
+        ]);
     }
+
+
 }

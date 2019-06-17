@@ -148,9 +148,9 @@ class UserController extends Controller
         $user = $this->auth->findUserById($request->getParam('id'));
         
         if ($request->getParam('admin') === null) {
-            $role = $this->auth->findRoleByName('admin');
-        }else {
             $role = $this->auth->findRoleByName('user');
+        }else {
+            $role = $this->auth->findRoleByName('admin');
         }
 
         $array = [

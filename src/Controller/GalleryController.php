@@ -27,7 +27,6 @@ class GalleryController extends Controller
     ]);
   }
 
-
   public function showPics(Request $request, Response $response)
   {
 
