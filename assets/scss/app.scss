@@ -3,6 +3,8 @@
 @import "~quill/dist/quill.core.css";
 @import '~quill/dist/quill.snow.css';
 @import '~@fancyapps/fancybox/dist/jquery.fancybox.css';
+@import '~tippy.js/index.css';
+@import '~tippy.js/themes/light-border.css';
 @import 'toasts';
 
 
@@ -118,6 +120,9 @@
             width: 24px;
             height: 24px;
             left: -12px;
+        }
+        &.active-group::before {
+            background-color: #20c997;
         }
     }
 }

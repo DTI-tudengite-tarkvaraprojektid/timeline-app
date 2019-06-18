@@ -88,6 +88,11 @@ export class Timeline {
             .css('left', left + '%')
 
         if (event instanceof Group) {
+            title += '<hr><ul class="text-left">';
+            this.getGroupEventNames(event).forEach(eventName => {
+                title += '<li>' + eventName + '</li>';
+            });
+            title += '</ul>';
             point.addClass('point-grouped');
             tippy(point[0], {
                 interactive: true,
@@ -110,7 +115,12 @@ export class Timeline {
                 theme: 'light-border',
                 arrow: true,
                 placement: 'bottom',
-                onShow(instance) {
+                onShow: (instance) => {
+                    $(instance.popper).click(() => {
+                        this.onEventClick(event, point[0]);
+                        instance.hide();
+                        return false;
+                    });
                     fetch(event.contentPath)
                         .then(response => response.json())
                         .then(data => {
@@ -140,5 +150,17 @@ export class Timeline {
 
         
         return point;
+    }
+
+    getGroupEventNames(group) {
+        let events = [];
+        group.events.forEach(event => {
+            if (event instanceof Group) {
+                events = events.concat(this.getGroupEventNames(event));
+            } else {
+                events.push(event.title);
+            }
+        });
+        return events;
     }
 }

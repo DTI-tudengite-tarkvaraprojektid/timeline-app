@@ -6,8 +6,6 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
-import 'tippy.js/index.css'
-import 'tippy.js/themes/light-border.css'
 const moment = require('moment');
 require('../scss/app.scss');
 

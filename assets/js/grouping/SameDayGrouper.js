@@ -30,13 +30,13 @@ export default class SameDayGrouper extends BaseGrouper {
             const event = lastGroup.events[i];
             let groupable = [];
             let gotGroup = false;
-            groupable.push(this.copyEvent(event));
+            groupable.push(event.constructor.copyEvent(event));
 
             for (let j = i + 1; j < count; j++) {
                 const nextEvent = lastGroup.events[j];
                 if (event.time.getTime() == nextEvent.time.getTime()) {
                     gotGroup = true;
-                    groupable.push(this.copyEvent(nextEvent));
+                    groupable.push(nextEvent.constructor.copyEvent(nextEvent));
                     i = j;
                     console.log('Found same day event');
                 } else {
@@ -74,19 +74,5 @@ export default class SameDayGrouper extends BaseGrouper {
 
     getBaseLog(x, y) {
         return Math.log(y) / Math.log(x);
-    }
-
-    copyEvent(event) {
-        return new Event(
-            event.id,
-            event.title,
-            new Date(event.time.getTime()),
-            event.contentPath,
-            event.contentSavePath,
-            event.deletePath,
-            event.imageUploadPath,
-            event.privacy,
-            event.fileUploadPath
-        );
     }
 }

@@ -2,27 +2,28 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="share-timeline-modal-title">Jaga sündmust</h5>
+                <h5 class="modal-title" id="share-timeline-modal-title">Jaga ajajoont</h5>
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group row">
-                        <label for="linkBox" class="col-sm-2 col-form-label">Link:</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext" id="linkBox" value="{{ base_url() ~ path_for('embeddable', {'id': timeline.id}) }}">
+                    <div class="form-group">
+                        <label for="link">Link</label>
+                        <input type="text" readonly class="form-control" id="link" value="{{ full_url_for('timeline', {'id': timeline.id}) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="embed-link">Embed</label>
+                        <textarea class="form-control" id="embed-link" rows="3" readonly>{{ '<iframe frameborder="0" width="640" height="480" src="' ~ full_url_for('embeddable', {'id': timeline.id}) ~ '"></iframe>' }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="calendar-export">Kalender</label>
+                        <div>
+                            <a class="btn btn-dti" id="calendar-export" href="{{path_for('exportEvents', {'id': timeline.id}) }}">Ekspordi sündmused</a>
                         </div>
                     </div>
-                </form>
-                <iframe src="{{ path_for('embeddable', {'id': timeline.id}) }}">
-                    <p>Teie brauser ei toeta iframe kuvamist</p> 
-                </iframe>
-                <div>
-                <a class="btn btn-dti ml-3" name="exportButton" href="{{path_for('exportEvents', {'id': timeline.id}) }}">Kalendrinupp</a>
-                </div>
-                <input type="hidden" name="id" id="edit-event-id"></input>             
+                </form>           
             </div>
         </div>
     </div>
