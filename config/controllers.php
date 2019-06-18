@@ -7,7 +7,6 @@ return [
     'content' => App\Controller\ContentController::class,
     'user' => App\Controller\UserController::class,
     'timeline' => App\Controller\TimelineController::class,
-    'settings' => App\Controller\SettingsController::class,
     'gallery' => App\Controller\GalleryController::class,
     'files' => App\Controller\FilesController::class,
 ];
