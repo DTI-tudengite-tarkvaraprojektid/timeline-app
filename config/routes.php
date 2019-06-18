@@ -26,11 +26,11 @@ $app->group('', function () {
 
 
 $app->group('/events', function () use ($container) {
-    $this->get('/{id:[0-9]+}[/{query}]', 'controller.event:events')->setName('get-events');
+    $this->get('/search/{id:[0-9]+}[/{query}]', 'controller.event:events')->setName('get-events');
     $this->get('/delete/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
-    $this->get('/', 'controller.event:showEvents')->setName('showEvents');
+    $this->get('/{page:[0-9]+}', 'controller.event:showEvents')->setName('showEvents');
 });
 
 $app->get('/logout', 'controller.auth:logout')
@@ -67,7 +67,7 @@ $app->group('/users', function () use ($container) {
 });
 
 $app->group('/gallery', function (){
-  $this->get('/', 'controller.gallery:gallery')->setName('gallery');
+  $this->get('/{page:[0-9]+}', 'controller.gallery:gallery')->setName('gallery');
 });
 
 $app->group('/files', function (){

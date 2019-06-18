@@ -18,12 +18,12 @@ class FilesController extends Controller
     if ($page == null) {
       $page = 1;
     }
-    $limit = 4;
+    $limit = 10;
     $skip = $limit * ($page - 1);
     if($searchquery == NULL){
       $files = Content::where('type','FILE');
     } else {
-      $files = Content::search($searchquery)->andWhere('type','FILE');
+      $files = Content::search($searchquery)->where('type','FILE');
     }
     $pages = ceil($files->count() / $limit) - 1;
     $files = $files->skip($skip)->limit($limit)->get();

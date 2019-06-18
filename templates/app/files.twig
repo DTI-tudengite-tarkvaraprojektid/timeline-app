@@ -19,17 +19,19 @@
       </div>
     <div class="container">
       {% for group in groups %}
-        <h5 class="list-group bg-dti p-2 mb-3 mt-4 text-light rounded">Ajajoone {{ group[0].event.timeline.name }} failid</h5>
+        <h5 class="list-group bg-dti p-2 mb-2 mt-4 text-light rounded">Ajajoone {{ group[0].event.timeline.name }} failid</h5>
           {% for file in group %}
               <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-baseline mb-1" href="{{ file.content.path }}" data-caption="Sündmus: {{ file.event.title }}" download="{{ file.content.name }}" class="list-group-item-action">
                 <span><i class="fas fa-download mr-2"></i> {{ file.content.name }} </span>
                 <span>{{ file.updated_at}}</span>
               </a>
           {% endfor %}
+        {% if not loop.last %}
         <hr>
+        {% endif %}
       {% endfor %}
       {% set currentPage = page %}
-      <nav aria-label="Pagination" class="d-flex justify-content-center">
+      <nav aria-label="Pagination" class="d-flex justify-content-center mt-4">
         <ul class="pagination">
           {% if page != 1 %}
           <li class="page-item">
