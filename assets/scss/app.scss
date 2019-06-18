@@ -71,6 +71,10 @@
         &:not(:last-child):hover {
             background-color: #6bb7ff3d;
         }
+
+        &.active-group {
+          background-color: #6bcaba96;
+        }
     }
 
     &.point-small {
@@ -119,7 +123,7 @@
 }
 
 .point-header {
-    margin-top: 10px;
+    margin-top: 15px;
     //transform: translate(-50%);
     pointer-events: none;
     /* background: white;
@@ -127,6 +131,10 @@
     border-radius: 5px;
     padding: 5px;
     font-size: 80%;
+}
+
+.active-group .point-header {
+  font-weight: bold;
 }
 
 .timeline-title-start {
@@ -137,6 +145,7 @@
 .bg-dti {
   background-color: #6bcaba;
 }
+
 
 .btn-dti {
   color: #ffffff;
@@ -154,6 +163,10 @@
 
 .navbar-dark .navbar-nav .nav-link {
   color: #ffffff;
+  //border-bottom: 1px solid transparent;
+}
+.navbar-dark .navbar-nav .nav-link:hover{
+  //border-bottom: 1px solid rgba(255, 255, 255, 0.75);
 }
 
 .ql-snow .ql-tooltip.ql-custom {
@@ -196,4 +209,9 @@ span.event-file {
 
 .tooltip-inner {
     white-space:pre-wrap;
+}
+
+body {
+  //background: rgb(107,202,186);
+  //background: linear-gradient(90deg, rgba(107,202,186,1) 0%, rgba(107,202,186,1) 6%, rgba(255,255,255,1) 6%);
 }

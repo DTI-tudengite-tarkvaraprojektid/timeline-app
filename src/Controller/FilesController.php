@@ -13,34 +13,32 @@ use Awurth\Slim\Helper\Controller\Controller;
 class FilesController extends Controller
 {
 
-  public function files(Request $request, Response $response, $searchquery=NULL)
+  public function files(Request $request, Response $response, $page = null, $searchquery = null)
   {
-    // code...
-    if($searchquery == NULL){
-      $files = Content::where('type','FILE')->get();
-      $groups = [];
-      for ($i=0; $i < count($files); $i++) {
-          $files[$i]->content = json_decode($files[$i]->content);
-          $files[$i]->content->path = $this->settings['file_upload_uri'] . '/' . $files[$i]->content->path;
-          $groups[$files[$i]->event->timeline_id][] = $files[$i];
-      }
-
-      return $this->render($response, 'app/files.twig', [
-          'groups' => $groups
-      ]);
-    } else {
-      $files = Content::search($searchquery)->where('type','FILE')->get();
-      $groups = [];
-      for ($i=0; $i < count($files); $i++) {
-          $files[$i]->content = json_decode($files[$i]->content);
-          $files[$i]->content->path = $this->settings['file_upload_uri'] . '/' . $files[$i]->content->path;
-          $groups[$files[$i]->event->timeline_id][] = $files[$i];
-      }
-
-      return $this->render($response, 'app/files.twig', [
-          'groups' => $groups
-      ]);
+    if ($page == null) {
+      $page = 1;
     }
+    $limit = 10;
+    $skip = $limit * ($page - 1);
+    if($searchquery == NULL){
+      $files = Content::where('type','FILE');
+    } else {
+      $files = Content::search($searchquery)->where('type','FILE');
+    }
+    $pages = ceil($files->count() / $limit) - 1;
+    $files = $files->skip($skip)->limit($limit)->get();
+    $groups = [];
+    for ($i=0; $i < count($files); $i++) {
+      $files[$i]->content = json_decode($files[$i]->content);
+      $files[$i]->content->path = $this->settings['file_upload_uri'] . '/' . $files[$i]->content->path;
+      $groups[$files[$i]->event->timeline_id][] = $files[$i];
+    }
+
+    return $this->render($response, 'app/files.twig', [
+        'groups' => $groups,
+        'page' => $page,
+        'pages' => $pages
+    ]);
   }
 
 
@@ -61,6 +59,5 @@ class FilesController extends Controller
       }
       throw $this->notFoundException();
   }*/
-
-
+  
 }

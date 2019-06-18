@@ -48,11 +48,12 @@ $(function () {
     function deleteTimeline() {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
+        var url = $(this).data("url");
         if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
-            console.log("delete funkts");
-            window.location.replace("/home/" + timeline + "/delete");
+            console.log(url);
+            window.location.replace(url);
         }
-
+        return false;
         //window.location.reload();
     }
 
@@ -81,13 +82,6 @@ $(function () {
             $(this).prop('action', uri);
         }
     }
-    $('#new-user-form-button').click(() => {
-        $('#new-user-form').submit();
-    });
-
-    $('#edit-user-form-button').click(() => {
-        $('#edit-user-form').submit();
-    });
 
     function editTimeline(e) {
         e.preventDefault();

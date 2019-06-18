@@ -2,20 +2,42 @@
 
 {% block body %}
   <div class="container mt-3">
-    <h1>Galerii</h1>
+    <h3>Galerii</h3>
     <div class="container">
       {% for group in groups %}
-        <h3 class="bg-dti p-2 mt-4 text-light rounded">{{ group[0].event.timeline.name }}</h3>
+        <h5 class="bg-dti p-2 mt-4 text-light rounded">{{ group[0].event.timeline.name }}</h5>
         <div class="row">
           {% for pic in group %}
             <div class="col-sm-2">
-              <a href="{{ path_for('get-image', {'id': pic.event.id, 'image': pic.id }) }}" data-fancybox="gallery" data-caption="Sündmus: {{ pic.event.title }}">
-              <img class="img-thumbnail mb-3" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" alt=""/>
+              <a href="{{ path_for('get-image', {'id': pic.event.id, 'image': pic.id}) }}" data-fancybox="gallery" data-caption="Sündmus: {{ pic.event.title }}">
+              <img class="img-thumbnail mb-4" src="{{ path_for('get-thumb', {'id': pic.event.id, 'image': pic.id }) }}" alt=""/>
               </a>
             </div>
           {% endfor %}
         </div>
       {% endfor %}
+      {% set currentPage = page %}
+      <nav aria-label="Pagination" class="d-flex justify-content-center">
+        <ul class="pagination">
+          {% if page != 1 %}
+          <li class="page-item">
+            <a class="page-link" href="{{ path_for('gallery', {'page': page - 1}) }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% for i in range(0, pages) %}
+            <li class="page-item {% if page == i + 1  %} active {% endif %}"><a class="page-link" href="{{ path_for('gallery', {'page': (i + 1)}) }}">{{ i + 1 }}</a></li>
+          {% endfor %}
+          {% if page != pages + 1 %}
+          <li class="page-item">
+            <a class="page-link" href="{{ path_for('gallery', {'page': page + 1}) }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
     </div>
   </div>
 {% endblock %}

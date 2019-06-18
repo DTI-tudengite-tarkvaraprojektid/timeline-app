@@ -49,32 +49,32 @@
         {% else %}
             <div class="row mt-4">
                 {% for timeline in timelines %}
-                    <div class="col-md-6 col-lg-4 d-flex mb-4">
-                        <a class="clickable-card card flex-fill" href="{{ path_for('timeline', {'id': timeline.id}) }}">
-                            <div class="card-header d-flex align-items-baseline">
-                                <span>{{ timeline.name }}</span>
-                                {% if auth.check() %}
-                                    <button type="button" class="btn btn-light btn-sm ml-auto editBtn" data-toggle="tooltip" data-placement="bottom" title="Muuda pealkirja" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}">
-                                        <i class="far fa-edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-light btn-sm ml-2 deleteTimelineButton text-danger" data-toggle="tooltip" data-placement="bottom" title="Kustuta" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                {% endif %}
-                            </div>
-                            <div class="card-body">
-                                <p>{{ timeline.description }}</p>
-                                <p>
-                                    <small>
-                                        Sündmusi:
-                                        {{ timeline.events_count }}<br>
-                                        Viimati muudetud:
-                                        {{ timeline.updated_at|date("d.m.Y") }}
-                                        {% if timeline.private == true %}<br><i>Privaatne</i>
-                                        {% endif %}
-                                    </small>
-                                </p>
-                                <div class="mt-2"><u>Ava ajajoon</u></div>
+                    <div class="col-md-6 col-lg-4">
+                        <a class="clickable-card" href="{{ path_for('timeline', {'id': timeline.id}) }}">
+                            <div class="card mb-4">
+                                <div class="card-header d-flex align-items-baseline">
+                                    <span>{{ timeline.name }}</span>
+                                    {% if auth.check() %}
+                                        <button type="button" class="btn btn-light btn-sm ml-auto editBtn" data-toggle="tooltip" data-placement="bottom" title="Muuda pealkirja" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}"><i class="far fa-edit"></i></button>
+                                        <button type="button" class="btn btn-light btn-sm ml-2 deleteTimelineButton text-danger" data-url="{{ path_for('delete-timeline', {'id': timeline.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Kustuta" data-name="{{ timeline.name }}"><i class="far fa-trash-alt"></i></button>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ timeline.description }}</p>
+                                    <p>
+                                        <small>
+                                            Sündmusi:
+                                            {{ timeline.events_count }}<br>
+                                            Viimati muudetud:
+                                            {{ timeline.updated_at|date("d.m.Y") }}
+                                            {% if timeline.private == true %}<br><i>Privaatne</i>
+                                            {% endif %}
+                                        </small>
+                                    </p>
+                                    <div class="d-flex flex-row flex-wrap ">
+                                        <a class="flex-grow-1 mt-2" href="{{ path_for('timeline', {'id': timeline.id}) }}">Ava ajajoon</a>
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     </div>
