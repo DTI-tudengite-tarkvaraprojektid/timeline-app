@@ -77,7 +77,7 @@ class UserController extends Controller
         // Validate input:
         $this->validator->request($request, [
             'email' => V::length(1, null)->email(),
-            'password' => V::length(1, null),
+            'password' => V::length(1, null)
         ]);
 
         if (!$this->validator->isValid()) {
