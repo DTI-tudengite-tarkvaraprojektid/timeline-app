@@ -1,6 +1,7 @@
 <div id="new-user-modal" aria-hidden="true" aria-labelledby="new-user-modal-title" class="modal fade" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
+          <form id="new-user-form" action="{{ path_for('add-user') }}" method="POST">
             <div class="modal-header">
                 <h5 class="modal-title" id="new-user-modal-title">Lisa uus kasutaja</h5>
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
@@ -8,7 +9,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="new-user-form" action="{{ path_for('add-user') }}" method="POST">
                     <div class="form-group">
                         <label for="email">Eesnimi</label>
                         <input class="form-control" id="new-user-firstname" type="text" name="firstname">
@@ -29,13 +29,12 @@
                         <label for="adminCheckBox">Administraator</label>
                         <input id="new-user-role" type="checkbox" name="admin" value="admin">
                     </div>
-
-                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
-                <button id="new-user-form-button" class="btn btn-dti" type="button">Lisa</button>
+                <button id="new-user-form-button" class="btn btn-dti" type="submit">Lisa</button>
             </div>
+          </form>
         </div>
     </div>
 </div>
