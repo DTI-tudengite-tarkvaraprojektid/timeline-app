@@ -104,6 +104,17 @@
         }
 
     }
+
+    &.point-grouped {
+        padding-top: 3px;
+        &::before {
+            background-color: #ff0035;
+            border: 5px solid #b71234;
+            width: 24px;
+            height: 24px;
+            left: -12px;
+        }
+    }
 }
 
 .point-header {

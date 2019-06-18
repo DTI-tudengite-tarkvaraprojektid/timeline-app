@@ -1,3 +1,5 @@
+import { Group } from "./Group";
+
 export class Timeline {
     constructor(anchor, group, nextGroup, onEventClick = null) {
         this.anchor = $(anchor);
@@ -68,6 +70,10 @@ export class Timeline {
             .data('toggle', 'tooltip')
             .data('placement', 'bottom')
             .css('left', left + '%')
+
+        if (event instanceof Group) {
+            point.addClass('point-grouped');
+        }
 
         if (width !== null) {
             point.css('width', width + '%');
