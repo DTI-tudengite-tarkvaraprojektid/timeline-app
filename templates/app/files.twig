@@ -7,7 +7,7 @@
             <h3>Failid</h3>
           </div>
         <div class="col text-right">
-          <form id="fsearch-form" action="{{ path_for('files') }}">
+          <form id="fsearch-form" action="{{ path_for('files', {'page': page }) }}">
             <div class="input-group mb-3">
                       <input aria-describedby="basic-addon2" aria-label="" class="form-control" id="fsearch" placeholder="Otsi faili" type="text">
               <div class="input-group-append">
@@ -19,32 +19,35 @@
       </div>
     <div class="container">
       {% for group in groups %}
-        <h5 class="list-group mb-3">Ajajoone {{ group[0].event.timeline.name }} failid</h5>
-
+        <h5 class="list-group bg-dti p-2 mb-3 mt-4 text-light rounded">Ajajoone {{ group[0].event.timeline.name }} failid</h5>
           {% for file in group %}
-              <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-baseline" href="{{ file.content.path }}" data-caption="Sündmus: {{ file.event.title }}" download="{{ file.content.name }}" class="list-group-item-action">
+              <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-baseline mb-1" href="{{ file.content.path }}" data-caption="Sündmus: {{ file.event.title }}" download="{{ file.content.name }}" class="list-group-item-action">
                 <span><i class="fas fa-download mr-2"></i> {{ file.content.name }} </span>
                 <span>{{ file.updated_at}}</span>
               </a>
           {% endfor %}
         <hr>
       {% endfor %}
-      {% set currentPage = 2 %}
-      <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+      {% set currentPage = page %}
+      <nav aria-label="Pagination" class="d-flex justify-content-center">
         <ul class="pagination">
+          {% if page != 1 %}
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
+            <a class="page-link" href="{{ path_for('files', {'page': page - 1}) }}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">{{ currentPage - 1}}</a></li>
-          <li class="page-item"><a class="page-link" href="#">{{ currentPage }}</a></li>
-          <li class="page-item"><a class="page-link" href="#">{{ currentPage + 1}}</a></li>
+          {% endif %}
+          {% for i in range(0, pages) %}
+            <li class="page-item {% if page == i + 1  %} active {% endif %}"><a class="page-link" href="{{ path_for('files', {'page': (i + 1)}) }}">{{ i + 1 }}</a></li>
+          {% endfor %}
+          {% if page != pages + 1 %}
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+            <a class="page-link" href="{{ path_for('files', {'page': page + 1}) }}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
+          {% endif %}
         </ul>
       </nav>
     </div>
