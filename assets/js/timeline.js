@@ -42,6 +42,7 @@ $('#esearch-form').submit(function (e) {
     })
 });
 
+
 $('#edit-timeline-form-button').click(() => {
     $('#edit-timeline-form').submit();
 })

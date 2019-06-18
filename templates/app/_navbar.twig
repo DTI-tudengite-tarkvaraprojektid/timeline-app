@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dti">
-    <a class="navbar-brand" href="{{ path_for('home') }}"><img src="{{ asset('icon.png') }}" height="30"></a>
+    <a class="navbar-brand ml-2" href="{{ path_for('home') }}"><img src="{{ asset('icon.png') }}" height="30"></a>
     <button aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-collapsible" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,13 +9,13 @@
                 <a class="nav-link" href="{{ path_for('home') }}">Ajajooned</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path_for('gallery')}}">Galerii</a>
+                <a class="nav-link" href="{{ path_for('gallery', {'page': 1}) }}">Galerii</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path_for('files') }}">Failid</a>
+                <a class="nav-link" href="{{ path_for('files', {'page': 1}) }}">Failid</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path_for('showEvents') }}">Sündmused</a>
+                <a class="nav-link" href="{{ path_for('showEvents', {'page': 1}) }}">Sündmused</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">

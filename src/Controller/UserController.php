@@ -8,7 +8,7 @@ use Slim\Http\Response;
 use Awurth\Slim\Helper\Controller\Controller;
 use Respect\Validation\Validator as V;
 
-class UserController extends Controller 
+class UserController extends Controller
 {
     public function register(Request $request, Response $response, $id)
     {
@@ -104,7 +104,7 @@ class UserController extends Controller
     {
         // Validate input:
         $this->validator->request($request, [
-            'email' => V::length(1, null),
+            'email' => V::length(1, null)->email(),
             'password' => V::length(1, null)
         ]);
 
@@ -116,6 +116,11 @@ class UserController extends Controller
                 $this->flash('danger', 'Kontrolli salasõna');
             }
 
+            return $response->withRedirect($this->path('users'));
+        }
+        if ($this->auth->findByCredentials(['login' => $request->getParam('email')])) {
+            $this->validator->addError('email', 'Email already taken.');
+            $this->flash('danger', 'Sisestatud email on juba kasutusel');
             return $response->withRedirect($this->path('users'));
         }
 
@@ -133,13 +138,13 @@ class UserController extends Controller
         ]);
         if (isset($_POST['admin'])) {
             $role = $this->auth->findRoleByName('admin');
+            $this->flash('success', 'Administraatori konto loodud');
         }else {
             $role = $this->auth->findRoleByName('user');
+            $this->flash('success', 'Toimetaja konto loodud');
         }
 
         $role->users()->attach($user);
-
-        $this->flash('success', 'Toimetaja konto loodud');
 
         return $response->withRedirect($this->path('users'));
     }
@@ -150,7 +155,7 @@ class UserController extends Controller
             throw new \Exception('Not admin');
         }
         $user = $this->auth->findUserById($request->getParam('id'));
-        
+
         if ($request->getParam('admin') === null) {
             $role = $this->auth->findRoleByName('user');
         }else {
@@ -162,7 +167,7 @@ class UserController extends Controller
             'firstname' =>$request->getParam('firstname'),
             'lastname' =>$request->getParam('lastname'),
         ];
-        $this->auth->update($user, $array); 
+        $this->auth->update($user, $array);
         $user->roles()->detach();
         $role->users()->attach($user);
         $this->flash('success', 'Kasutajakonto muudetud edukalt');
