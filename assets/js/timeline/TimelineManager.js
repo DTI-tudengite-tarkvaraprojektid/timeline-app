@@ -47,10 +47,10 @@ export class TimelineManager {
     }
 
     initEvents() {
-        this.subTimeline.on('click', (e) => {
+        /*this.subTimeline.on('click', (e) => {
             e.preventDefault();
             $('#new-event-modal').modal('show');
-        });
+        });*/
     }
 
     render() {
@@ -110,7 +110,9 @@ export class TimelineManager {
                 }
             });
         } else {
-            var timeline = new GroupedTimeline(selector, groups, (group, nextGroup) => {
+            var timeline = new GroupedTimeline(selector, groups, (group, nextGroup, element) => {
+                $(".active-group").removeClass("active-group");
+                $(element).addClass("active-group");
                 this.renderTimeline(group, depth + 1, nextGroup);
             });
         }

@@ -77,6 +77,10 @@ export class Timeline {
             .data('placement', 'bottom')
             .css('left', left + '%')
 
+        if (event instanceof Group) {
+            point.addClass('point-grouped');
+        }
+
         if (width !== null) {
             point.css('width', width + '%');
         }

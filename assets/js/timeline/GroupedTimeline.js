@@ -6,7 +6,7 @@ export class GroupedTimeline {
     }
 
     render () {
-        
+
         let count = this.groups.length;
         let groupWidth = 100 / (count);
         let timeline = this.initTimeline();
@@ -24,7 +24,7 @@ export class GroupedTimeline {
                     e.preventDefault();
                     e.stopPropagation();
                     if (this.onGroupClick != null) {
-                        this.onGroupClick(group, this.groups[i + 1]);
+                        this.onGroupClick(group, this.groups[i + 1], e.target);
                     }
                 });
 
@@ -61,7 +61,7 @@ export class GroupedTimeline {
         event.addClass('timeline-point point-year')
             .data('group', index)
             .css('left', left + '%');
-            
+
         if (width > 0) {
             event.css('width', width + '%');
         }

@@ -34,6 +34,7 @@ $(function () {
     $('#tsearch-form').submit(searchtimelines);
     $('#fsearch-form').submit(searchfiles);
 
+
     $('.default-checkbox').click(function (e) {
         var path = $(this).data('path');
         $.post(path, () => {
@@ -47,10 +48,12 @@ $(function () {
     function deleteTimeline() {
         var timeline = $(this).data("id");
         var name = $(this).data("name");
+        var url = $(this).data("url");
         if (confirm("Olete kindel, et soovite ajajoont '" + name + "' kustutada?")) {
-            window.location.replace("/home/" + timeline + "/delete");
+            console.log(url);
+            window.location.replace(url);
         }
-
+        return false;
         //window.location.reload();
     }
 
@@ -118,6 +121,5 @@ $(function () {
             window.location.replace("/user/" + user + "/delete");
         }
     }
-
     $('[data-toggle="tooltip"]').tooltip();
 });
