@@ -1,4 +1,6 @@
 import { Group } from "./Group";
+import { EventManager } from './EventManager';
+import tippy from 'tippy.js'
 
 export class Timeline {
     constructor(anchor, group, nextGroup, onEventClick = null) {
@@ -63,15 +65,23 @@ export class Timeline {
     }
 
     getTimelinePoint(index, event, left=0, width=null) {
-        let title = '\n' + event.title;
+        let title = '<div class="d-flex mt-1" ><span>' + event.title + '</span>';
         if (event instanceof Group) {
-            title = event.time.toLocaleDateString('et') + ' - ' + event.endTime.toLocaleDateString('et') + title;
+            let startDate = new Date(event.startTime.getFullYear(), event.startTime.getMonth(), event.startTime.getDate());
+            let endDate = new Date(event.endTime.getFullYear(), event.endTime.getMonth(), event.endTime.getDate());
+            if (startDate.getTime() != endDate.getTime()) {
+                title += '<span class="ml-4">' + event.startTime.toLocaleDateString('et') + ' - ' + event.endTime.toLocaleDateString('et') + '</span>';
+            } else {
+                title += '<span class="ml-4">' + event.time.toLocaleDateString('et') + '</span>';
+            }
+            
         } else {
-            title = event.time.toLocaleDateString('et') + title;
+            title += '<span class="ml-4">' + event.time.toLocaleDateString('et') + '</span>';
         }
+        title += '</div>';
         let point = $('<div></div>');
         point.addClass('timeline-point point-event')
-            .prop('title', title)
+            //.prop('title', title)
             .data('event', index)
             .data('toggle', 'tooltip')
             .data('placement', 'bottom')
@@ -79,13 +89,56 @@ export class Timeline {
 
         if (event instanceof Group) {
             point.addClass('point-grouped');
+            tippy(point[0], {
+                interactive: true,
+                content: title,
+                animateFill: false,
+                animation: 'fade',
+                flipOnUpdate: true,
+                theme: 'light-border',
+                arrow: true,
+                placement: 'bottom'
+            });
+        } else {
+            title += '<hr>';
+            tippy(point[0], {
+                interactive: true,
+                content: title,
+                animateFill: false,
+                animation: 'fade',
+                flipOnUpdate: true,
+                theme: 'light-border',
+                arrow: true,
+                placement: 'bottom',
+                onShow(instance) {
+                    fetch(event.contentPath)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.content == null || data.content.length == 0) {
+                                data = '<p>(Sisu puudub)</p>';
+                                instance.setContent(title + data);
+                            } else {
+                                if (data.content.length > 5) {
+                                    data.content = data.content.slice(0, 5);
+                                    data.content.push({
+                                        insert: '...'
+                                    });
+                                }
+                                let content = EventManager.convertDeltas(data.content);
+                                console.log(data);
+                                console.log(content);
+                                instance.setContent(title + '<div class="text-left">' + content + '</div>');
+                            }
+                        });
+                },
+            });
         }
 
         if (width !== null) {
             point.css('width', width + '%');
         }
 
-        point.tooltip();
+        
         return point;
     }
 }
