@@ -59,7 +59,7 @@ class EventController extends Controller
 
         $timeline = Timeline::with('events')->findOrFail($id);
         $events = $timeline->events();
-
+                    
         if ($query != null) {
             $events->search($query);
         }
@@ -115,13 +115,19 @@ class EventController extends Controller
         ]));
     }
 
-    public function showEvents(Request $request, Response $response, $id =null)
+    public function showEvents(Request $request, Response $response)
     {
+        $events = Event::query();
+               
         if(!$this->auth->check()){
-            $events = Event::where('private', 0)->get();
-        } else {
-            $events = Event::all();
+            $events = $events->where('private', 0);
         }
+
+        if ($request->getParam('query') != null) {
+            $events->search($request->getParam('query'));
+        }
+        $events = $events->get();
+
         return $this->render($response, 'app/events.twig', [
             'events' => $events
         ]);

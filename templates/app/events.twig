@@ -3,29 +3,37 @@
     <div class="container mt-3">
         <div class="row mt-4">
             <div class="col-sm-auto">
-                <h3>Sündmused{% block header %}{% endblock %}</h3>
+                <h3>Sündmused
+                    {% block header %}{% endblock %}
+                </h3>
             </div>
             <div class="col-sm">
-                <form id="tsearch-form" action="{{ path_for('timelines',  {'id': event.timeline.id }) }}">
+                <form id="msearch-form" action="{{ path_for('showEvents') }}">
                     <div class="input-group mb-3">
-                        <input aria-describedby="basic-addon2" aria-label="Otsing" class="form-control" id="tsearch" placeholder="Otsi sündmust" type="text">
+                        <input class="form-control" id="msearch" name="query" placeholder="Otsi sündmust" type="text">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" id="tsearchbutton" type="submit">Otsi</button>
+                            <button class="btn btn-outline-secondary" type="submit">Otsi</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="list-group mt-4">     
+        <div class="accordion" id="events">
             {% for event in events %}
-                    <div href="#" class="list-group-item d-flex justify-content-between align-items-baseline">
-                        <a href="{{ path_for('timeline', {'id': event.timeline.id }) }}" class="getEvent">
-                            <span>{{ event.title }}</span>
-                        </a>
+                <div class="card">
+                    <a class="card-header text-body d-flex" href="#event-{{event.id}}" data-toggle="collapse">
+                        <span>{{ event.title }}{% if event.private ==1 %} (Privaatne){% endif %}</span>
+                        <span class="ml-auto">{{ event.timeline.name }} | Toimus: {{event.time|date('d/m/Y')}}</span>
+                    </a>
+        
+                    <div id="event-{{event.id}}" class="collapse" data-parent="#events">
+                        <div class="card-body">
+                            {{event.content}}
+                        </div>
                     </div>
+                </div>
             {% endfor %}
         </div>
-   </div>
+
+    </div>
 {% endblock %}
-
-
