@@ -56,16 +56,22 @@ export class Timeline {
     setTitles(startTitle, endTitle) {
         let container = $('<div></div>');
         container.addClass('d-flex justify-content-between');
-        container.append($('<span></span>').text(startTitle));
-        container.append($('<span></span>').text(endTitle));
+        container.append($('<small></small>').text(startTitle));
+        container.append($('<small></small>').text(endTitle));
 
         this.anchor.prepend(container);
     }
 
     getTimelinePoint(index, event, left=0, width=null) {
+        let title = '\n' + event.title;
+        if (event instanceof Group) {
+            title = event.time.toLocaleDateString('et') + ' - ' + event.endTime.toLocaleDateString('et') + title;
+        } else {
+            title = event.time.toLocaleDateString('et') + title;
+        }
         let point = $('<div></div>');
         point.addClass('timeline-point point-event')
-            .prop('title', event.time.toLocaleDateString('et') + '\n' + event.title)
+            .prop('title', title)
             .data('event', index)
             .data('toggle', 'tooltip')
             .data('placement', 'bottom')

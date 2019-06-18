@@ -86,7 +86,7 @@ class EventController extends Controller
     public function delete(Request $request, Response $response, $id)
     {
         $event = Event::find($id);
-        $timeline = $event->timeline;
+        $timelineId = $event->timeline->id;
 
         $query = $event->content();
         foreach ($event->content as $row) {
@@ -99,7 +99,7 @@ class EventController extends Controller
 
         $this->flash('success', 'Sündmus kustutatud');
         return $response->withRedirect($this->path('timeline', [
-            'id' => $timeline->id
+            'id' => $timelineId
         ]));
     }
 
@@ -135,5 +135,30 @@ class EventController extends Controller
             $file = json_decode($content->content);
             unlink($this->settings['file_upload_path'] . '/' . $file->path);
         }
+    }
+
+    public function exportEvents(Request $request, Response $response, $id)
+    {
+        $timeline = Timeline::with('events')->findOrFail($id);
+        $events = $timeline->events;
+        $output ="Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private,";
+        for ($i=0; $i < count($events); $i++) {
+            $event = $events[$i];
+            $output .= '"' . addslashes($event->title) . '",';
+            $output .= date('d/m/Y', strtotime($event->time));
+            $output .= ",,,";
+            $output .= addslashes($event->content);
+            $output .= ",,";
+            if($event->private==1){
+                $output .= "True,";
+            } else {
+                $output .= "False,";
+            }     
+            $output .= "\n";
+        }
+        return $response
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment; filename="tlu-timeline-events.csv"')
+            ->write($output);
     }
 }
