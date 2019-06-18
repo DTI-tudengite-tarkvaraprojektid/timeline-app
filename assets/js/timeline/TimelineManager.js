@@ -7,6 +7,8 @@ import YearGrouper from "../grouping/YearGrouper";
 import MonthGrouper from "../grouping/MonthGrouper";
 import SameDayRule from "../grouping/SameDayRule";
 import SameDayGrouper from "../grouping/SameDayGrouper";
+import NearRule from "../grouping/NearRule";
+import NearGrouper from "../grouping/NearGrouper";
 const moment = require("moment");
 moment.locale('et');
 
@@ -63,6 +65,9 @@ export class TimelineManager {
             new CountRule(10, [
                 new YearGrouper(5),
                 new MonthGrouper(5)
+            ]),
+            new NearRule(0.025, [
+                new NearGrouper(0.025)
             ]),
             new SameDayRule(1, [
                 new SameDayGrouper()

@@ -25,8 +25,8 @@ $app->group('', function () {
 
 
 $app->group('/events', function () use ($container) {
-    $this->get('/{id}[/{query}]', 'controller.event:events')->setName('get-events');
-    $this->get('/{id:[0-9]+}/delete', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
+    $this->get('/{id:[0-9]+}[/{query}]', 'controller.event:events')->setName('get-events');
+    $this->get('/delete/{id:[0-9]+}', 'controller.event:delete')->setName('delete-event')->add($container['middleware.auth']());
     $this->post('/', 'controller.event:addEvent')->setName('add-event')->add($container['middleware.auth']());
     $this->post('/edit', 'controller.event:editEvent')->setName('edit-event')->add($container['middleware.auth']());
     $this->get('/', 'controller.event:showEvents')->setName('showEvents');
