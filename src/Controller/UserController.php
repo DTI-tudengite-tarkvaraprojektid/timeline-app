@@ -118,6 +118,11 @@ class UserController extends Controller
 
             return $response->withRedirect($this->path('users'));
         }
+        if ($this->auth->findByCredentials(['login' => $request->getParam('email')])) {
+            $this->validator->addError('email', 'Email already taken.');
+            $this->flash('danger', 'Sisestatud email on juba kasutusel');
+            return $response->withRedirect($this->path('users'));
+        }
 
         $role = $this->auth->findRoleByName('User');
 
