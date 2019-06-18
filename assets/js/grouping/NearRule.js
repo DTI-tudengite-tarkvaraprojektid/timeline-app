@@ -17,7 +17,7 @@ export default class NearRule extends BaseRule {
                 const eventsDelta = nextEvent.time.getTime() - event.time.getTime();
                 console.log('NearRule - eventsDelta: ' + eventsDelta);
                 console.log('NearRule - part: ' + (eventsDelta / delta));
-                if (eventsDelta / delta < this.minDistance) {
+                if (eventsDelta > 0 && eventsDelta / delta < this.minDistance) {
                     console.log("2 events near each other! will group...");
                     return true;
                 }

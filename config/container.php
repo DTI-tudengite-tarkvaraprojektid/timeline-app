@@ -1,20 +1,21 @@
 <?php
 
-use Awurth\Slim\Helper\Twig\AssetExtension;
-use Awurth\Slim\Helper\Twig\CsrfExtension;
+use Monolog\Logger;
+use Slim\Csrf\Guard;
+use Slim\Views\Twig;
+use nadar\quill\Lexer;
+use Slim\Flash\Messages;
+use Slim\Views\TwigExtension;
+use Monolog\Handler\StreamHandler;
+use Twig\Extension\DebugExtension;
+use Monolog\Processor\UidProcessor;
 use Awurth\SlimValidation\Validator;
+use Illuminate\Database\Capsule\Manager;
+use Awurth\Slim\Helper\Twig\CsrfExtension;
+use Awurth\Slim\Helper\Twig\AssetExtension;
 use Awurth\SlimValidation\ValidatorExtension;
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Cartalyst\Sentinel\Native\SentinelBootstrapper;
-use Illuminate\Database\Capsule\Manager;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Monolog\Processor\UidProcessor;
-use Slim\Csrf\Guard;
-use Slim\Flash\Messages;
-use Slim\Views\Twig;
-use Slim\Views\TwigExtension;
-use Twig\Extension\DebugExtension;
 
 $capsule = new Manager();
 $capsule->addConnection($container['settings']['eloquent']);

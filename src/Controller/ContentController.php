@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
+use FileUpload;
 use App\Model\Event;
 use App\Model\Content;
+use nadar\quill\Debug;
+use nadar\quill\Lexer;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use FileUpload;
-use FileUpload\FileUploadFactory;
+use App\Parser\FileBlot;
+use App\Parser\SizeBlot;
 use FileUpload\FileSystem;
-use Respect\Validation\Validator as V;
+use App\Parser\CustomImage;
 use FileUpload\PathResolver;
+use App\Parser\ThumbnailImage;
+use FileUpload\FileUploadFactory;
+use Respect\Validation\Validator as V;
 use Awurth\Slim\Helper\Controller\Controller;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 
@@ -28,6 +34,30 @@ class ContentController extends Controller
         return $response->withJson([
             'content' => json_decode($event->content)
         ]);
+    }
+
+    public function getHtml(Request $request, Response $response, $id)
+    {
+        $event = Event::find($id);
+        if ($event->content) {
+            $content = json_decode($event->content, true);
+            if (count($content) > 10) {
+                $content = array_slice($content, 0, 4);
+                $content[] = [
+                    'insert' => '[Jätkub...]'
+                ];
+            }
+            $lexer = new Lexer($content);
+            $lexer->registerListener(new ThumbnailImage);
+            $lexer->registerListener(new CustomImage);
+            $lexer->registerListener(new FileBlot);
+            $lexer->registerListener(new SizeBlot);
+            $lexer->render();
+            //$debug = new Debug($lexer);
+            
+            return $response->write($lexer->render()/* $debug->debugPrint() */);
+        }
+        return $response;
     }
 
     public function save(Request $request, Response $response, $id)

@@ -67,6 +67,7 @@ export class TimelineManager {
                 new MonthGrouper(5)
             ]),
             new NearRule(0.025, [
+                new SameDayGrouper(),
                 new NearGrouper(0.025)
             ]),
             new SameDayRule(1, [
@@ -96,16 +97,21 @@ export class TimelineManager {
             nextGroup = null;
         }
         if (groups === false) {
-            //if (nextGroup == null) {
-                groups = groupManager.getSimpleGroups(group);
-                group = groups[0];
-                nextGroup = groups[1];
-            //}
+            groups = groupManager.getSimpleGroups(group);
+            group = groups[0];
+            nextGroup = groups[1];
+
             var timeline = new Timeline(selector, group, nextGroup, (event, element) => {
-                $(element).tooltip('hide');
+                if (depth == 0) {
+                    $(".active-group").removeClass('active-group');
+                }
                 if (event instanceof Group) {
-                    this.renderTimeline(event, depth + 1, null, true);
+                    element.classList.add('active-group');
+                    this.renderTimeline(event, depth + 1, null, false);
                 } else {
+                    if (depth == 0) {
+                        this.subTimeline.collapse('hide');
+                    }
                     this.eventManager.showEvent(event, element);
                 }
             });

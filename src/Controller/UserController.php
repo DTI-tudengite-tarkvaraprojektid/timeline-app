@@ -3,103 +3,75 @@
 namespace App\Controller;
 
 use App\Model\User;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Awurth\Slim\Helper\Controller\Controller;
 use Respect\Validation\Validator as V;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class UserController extends Controller
 {
-    public function register(Request $request, Response $response, $id)
-    {
-        if ($request->isPost()) {
-            $username = $request->getParam('username');
-            $email = $request->getParam('email');
-            $password = $request->getParam('password');
-
-            $this->validator->request($request, [
-                'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
-                'email' => V::noWhitespace()->email(),
-                'password' => [
-                    'rules' => V::noWhitespace()->length(6, 25),
-                    'messages' => [
-                        'length' => 'The password length must be between {{minValue}} and {{maxValue}} characters'
-                    ]
-                ],
-                'password_confirm' => [
-                    'rules' => V::equals($password),
-                    'messages' => [
-                        'equals' => 'Passwords don\'t match'
-                    ]
-                ]
-            ]);
-
-            if ($this->auth->findByCredentials(['login' => $username])) {
-                $this->validator->addError('username', 'This username is already used.');
-            }
-
-            if ($this->auth->findByCredentials(['login' => $email])) {
-                $this->validator->addError('email', 'This email is already used.');
-            }
-
-            if ($this->validator->isValid()) {
-                /** @var \Cartalyst\Sentinel\Roles\EloquentRole $role */
-                $role = $this->auth->findRoleByName('User');
-
-                $user = $this->auth->registerAndActivate([
-                    'username' => $username,
-                    'email' => $email,
-                    'password' => $password,
-                    'permissions' => [
-                        'user.delete' => 0
-                    ]
-                ]);
-
-                $role->users()->attach($user);
-
-                $this->flash('success', 'Your account has been created.');
-
-                return $this->redirect($response, 'login');
-            }
-        }
-
-        return $this->render($response, 'auth/register.twig');
-    }
-
-    public function delete(Request $request, Response $response, $id)
-    {
-        if ($this->auth->getUser()->id == $id) {
-            $this->flash('danger', 'Enda kasutajat ei saa kustutada');
-        } else {
-            User::destroy($id);
-            $this->flash('success', 'Kasutaja kustutatud');
-        }
-        return $response->withRedirect($this->path('users'));
-    }
 
     public function users(Request $request, Response $response)
     {
         $users = User::all();
         return $this->render($response, 'app/userlist.twig', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
-    public function registration(Request $request, Response $response)
+    public function profile(Request $request, Response $response)
     {
-        return $this->render($response, 'app/register.twig');
+        if ($request->isPost()) {
+            $array = [
+                'email' => $request->getParam('email'),
+                'firstname' => $request->getParam('firstname'),
+                'lastname' => $request->getParam('lastname'),
+            ];
+            $this->auth->update($this->auth->getUser(), $array);
+            $this->flash('success', 'Kasutajakonto muudetud edukalt');
+            return $response->withRedirect($this->path('profile'));
+        }
+
+        return $this->render($response, 'app/profile.twig', [
+            'user' => $this->auth->getUser(),
+        ]);
     }
 
-    /*public function delete2(Request $request, Response $response, $id)
+    public function password(Request $request, Response $response, $id)
     {
-        User::destroy($id);
-        $this->flash('success', 'kasutaja eemaldati');
-        return $response->withRedirect($this->path('users'));
-    }*/
-    public function settings(Request $request, Response $response)
-    {
-        return $this->render($response, 'app/settings.twig');
+        $user = $this->auth->getUser();
+        if ($id != $user->id) {
+            if ($this->auth->getUser()->inRole('admin')) {
+                $user = $this->auth->findUserById($id);
+            } else {
+                throw new \Exception('Not admin');
+            }
+        }
+
+        if ($request->isPost()) {
+            $password1 = $request->getParam('password');
+            $password2 = $request->getParam('newpassword');
+
+            if (empty($password1)) {
+                $this->flash('danger', 'Parooli väljad ei tohi olla tühjad');
+            } elseif ($password1 == $password2) {
+                $array = [
+                    'password' => $password1,
+                ];
+                $user = $this->auth->update($user, $array);
+                $this->flash('success', 'Parool muudetud edukalt!');
+            } else {
+                $this->flash('danger', 'Paroolid peavad olema samad!');
+            }
+
+            return $response->withRedirect($this->path('change-password', ['id' => $id]));
+        }
+
+        return $this->render($response, 'app/password.twig', [
+            'user' => $user,
+        ]);
     }
+
     public function addUser(Request $request, Response $response)
     {
         // Validate input:
@@ -111,8 +83,7 @@ class UserController extends Controller
         if (!$this->validator->isValid()) {
             if ($this->validator->getFirstError('email')) {
                 $this->flash('danger', 'Kontrolli Emaili');
-            }
-            else if ($this->validator->getFirstError('password')) {
+            } else if ($this->validator->getFirstError('password')) {
                 $this->flash('danger', 'Kontrolli salasõna');
             }
 
@@ -132,14 +103,11 @@ class UserController extends Controller
             'email' => $request->getParam('email'),
             'password' => $request->getParam('password'),
             'admin' => $request->getParam('admin'),
-            'permissions' => [
-                'user.delete' => 0
-            ]
         ]);
         if (isset($_POST['admin'])) {
             $role = $this->auth->findRoleByName('admin');
             $this->flash('success', 'Administraatori konto loodud');
-        }else {
+        } else {
             $role = $this->auth->findRoleByName('user');
             $this->flash('success', 'Toimetaja konto loodud');
         }
@@ -149,28 +117,45 @@ class UserController extends Controller
         return $response->withRedirect($this->path('users'));
     }
 
-    public function editUser(Request $request, Response $response){
+    public function editUser(Request $request, Response $response)
+    {
 
-        if (!$this->auth->getUser()->inRole('admin')){
+        $user = $this->auth->findUserById($request->getParam('id'));
+        if ($user == null) {
+            $this->flash('danger', 'Ei leidnud valitud kasutajat');
+            return $response->withRedirect($this->path('users'));
+        }
+
+        if (!$this->auth->getUser()->inRole('admin')) {
             throw new \Exception('Not admin');
         }
-        $user = $this->auth->findUserById($request->getParam('id'));
 
         if ($request->getParam('admin') === null) {
             $role = $this->auth->findRoleByName('user');
-        }else {
+        } else {
             $role = $this->auth->findRoleByName('admin');
         }
 
         $array = [
-            'email' =>$request->getParam('email'),
-            'firstname' =>$request->getParam('firstname'),
-            'lastname' =>$request->getParam('lastname'),
+            'email' => $request->getParam('email'),
+            'firstname' => $request->getParam('firstname'),
+            'lastname' => $request->getParam('lastname'),
         ];
         $this->auth->update($user, $array);
         $user->roles()->detach();
         $role->users()->attach($user);
         $this->flash('success', 'Kasutajakonto muudetud edukalt');
+        return $response->withRedirect($this->path('users'));
+    }
+
+    public function delete(Request $request, Response $response, $id)
+    {
+        if ($this->auth->getUser()->id == $id) {
+            $this->flash('danger', 'Enda kasutajat ei saa kustutada');
+        } else {
+            User::destroy($id);
+            $this->flash('success', 'Kasutaja kustutatud');
+        }
         return $response->withRedirect($this->path('users'));
     }
 }

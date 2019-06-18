@@ -3,6 +3,8 @@
 @import "~quill/dist/quill.core.css";
 @import '~quill/dist/quill.snow.css';
 @import '~@fancyapps/fancybox/dist/jquery.fancybox.css';
+@import '~tippy.js/index.css';
+@import '~tippy.js/themes/light-border.css';
 @import 'toasts';
 
 
@@ -119,6 +121,9 @@
             height: 24px;
             left: -12px;
         }
+        &.active-group::before {
+            background-color: #20c997;
+        }
     }
 }
 
@@ -209,6 +214,16 @@ span.event-file {
 
 .tooltip-inner {
     white-space:pre-wrap;
+}
+
+.ql-size-small {
+    font-size: 0.75em;
+}
+.ql-size-huge {
+    font-size: 1.5em;
+}
+.ql-size-large {
+    font-size: 1.25em;
 }
 
 body {
