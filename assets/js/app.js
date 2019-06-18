@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import { userInfo } from 'os';
 const moment = require('moment');
 require('../scss/app.scss');
 
@@ -103,6 +104,7 @@ $(function () {
         $('#edit-user-email').val($(this).data('email'));
         $('#edit-user-firstname').val($(this).data('firstname'));
         $('#edit-user-lastname').val($(this).data('lastname'));
+        $('#edit-user-role').prop("checked", $(this).data('admin'));
         $('#user-delete-btn').prop('href', $(this).data('delete-url'));
         $('#edit-user-modal').modal('show');
         fname = $('#edit-user-firstname').val();

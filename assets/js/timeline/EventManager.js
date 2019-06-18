@@ -17,7 +17,7 @@ export class EventManager {
         });
 
         $('#deleteEventButton').on("click", () => {
-            if(confirm("Olete kindel, et soovite sündmust "+ "'"+this.currentEvent.title+"'"+ " kustutada?")){
+            if(confirm("Olete kindel, et soovite sündmust '" + this.currentEvent.title + "' kustutada?")){
                 event = this.currentEvent.id;
                 this.deleteEvent(event);
             };
@@ -44,9 +44,7 @@ export class EventManager {
     }
 
     deleteEvent(event) {
-        console.log("delete funkts");
-        window.location.replace("/events/"+event+"/delete");
-        //window.location.reload();
+        window.location.replace(this.currentEvent.deletePath);
     }
 
     convertDeltas(ops) {

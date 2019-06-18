@@ -68,15 +68,17 @@ function updateTimeline(data, searching = false) {
                     'Ei leidnud ühtegi sündmust :(' +
                 '</div>'
             );
+            $('#sub-timeline').collapse('hide');
         } else {
             timeline.html(
                 '<div class="alert alert-info" role="alert">' +
                     'Valitud ajajoonel ei ole ühtegi sündmust :(' +
                 '</div>'
             );
+            $('#sub-timeline').collapse('hide');
         }
     } else {
-        timelineManager.events = events;
+        timelineManager.setEvents(events);
         timelineManager.render();
     }
 }

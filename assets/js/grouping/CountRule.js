@@ -1,16 +1,12 @@
 import BaseRule from "./BaseRule";
 
 export default class CountRule extends BaseRule {
-    constructor(count) {
-        super();
+    constructor(count, groupers) {
+        super(groupers);
         this.count = count;
     }
 
-    shouldGroup(events) {
-        return events.length > this.count;
-    }
-
-    getGroupers() {
-
+    shouldGroup(group) {
+        return group.events.length > this.count;
     }
 }

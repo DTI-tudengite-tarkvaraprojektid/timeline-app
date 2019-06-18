@@ -20,7 +20,7 @@
                     <p>Teie brauser ei toeta iframe kuvamist</p> 
                 </iframe>
                 <div>
-                <a class="btn btn-dti ml-3" href="">Kalendrinupp</a>
+                <a class="btn btn-dti ml-3" name="exportButton" href="{{path_for('exportEvents', {'id': timeline.id}) }}">Kalendrinupp</a>
                 </div>
                 <input type="hidden" name="id" id="edit-event-id"></input>             
             </div>

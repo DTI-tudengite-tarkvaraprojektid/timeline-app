@@ -1,11 +1,11 @@
 
 export default class BaseGrouper {
 
-    canGroup(events) {
+    canGroup(group) {
         return true;
     }
 
-    getGroups(events) {
-        return [new Group('', [events], events[0].time, events[events.length - 1].time)];
+    getGroups(group) {
+        return [group];
     }
 }
