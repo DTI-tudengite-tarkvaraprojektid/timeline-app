@@ -43,7 +43,7 @@ $(function () {
     })
 
     $('.edit-user-btn').click(editUser);
-    $('.deleteUser').click(deleteUser);
+    $('#user-delete-btn').click(deleteUser);
 
     function deleteTimeline() {
         var timeline = $(this).data("id");
@@ -115,10 +115,12 @@ $(function () {
 
     function deleteUser(){
         var user = $('#edit-user-id').val();
+        console.log('üritan kustutada');
         // var url = $(this).data('url');
         if (confirm("Kindel, et soovite kasutaja '" + fname + " " + lname + "' kustutada?")){
             window.location.replace("/user/" + user + "/delete");
         }
+        return false;
     }
     $('[data-toggle="tooltip"]').tooltip();
 });

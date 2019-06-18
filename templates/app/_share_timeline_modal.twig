@@ -16,9 +16,14 @@
                         </div>
                     </div>
                 </form>
+
+                <input value="<iframe src='{{ base_url() ~ path_for('embeddable', {'id': timeline.id})}}'width='600px' height ='430px'></iframe>">   
                 <iframe src="{{ path_for('embeddable', {'id': timeline.id}) }}">
+                
                     <p>Teie brauser ei toeta iframe kuvamist</p> 
                 </iframe>
+                
+
                 <div>
                 <a class="btn btn-dti ml-3" name="exportButton" href="{{path_for('exportEvents', {'id': timeline.id}) }}">Kalendrinupp</a>
                 </div>
