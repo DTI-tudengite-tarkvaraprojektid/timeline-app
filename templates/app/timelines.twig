@@ -6,10 +6,11 @@
         {% include 'app/_edit_timeline_modal.twig' %}
     {% endif %}
     <div class="container mt-3">
-        {% if timelines|length > 0 %}{% endif %}
         <div class="row mt-4">
             <div class="col-sm-auto">
-                <h3>Ajajooned{% block header %}{% endblock %}</h3>
+                <h3>Ajajooned
+                    {% block header %}{% endblock %}
+                </h3>
             </div>
             {% if auth.check() %}
                 <div class="col-sm text-right">
@@ -27,8 +28,8 @@
                 </form>
             </div>
         </div>
-        <div class="row mt-4">
-            {% if timelines|length == 0 %}
+        {% if timelines|length == 0 %}
+            <div class="row mt-4">
                 <div class="col">
                     <div class="jumbotron">
                         <div class="container">
@@ -44,7 +45,9 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
+            </div>
+        {% else %}
+            <div class="row mt-4">
                 {% for timeline in timelines %}
                     <div class="col-md-6 col-lg-4">
                         <a class="clickable-card" href="{{ path_for('timeline', {'id': timeline.id}) }}">
@@ -76,7 +79,7 @@
                         </a>
                     </div>
                 {% endfor %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

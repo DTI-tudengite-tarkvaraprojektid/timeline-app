@@ -34,6 +34,7 @@ $(function () {
     $('#tsearch-form').submit(searchtimelines);
     $('#fsearch-form').submit(searchfiles);
 
+
     $('.default-checkbox').click(function (e) {
         var path = $(this).data('path');
         $.post(path, () => {
@@ -120,6 +121,5 @@ $(function () {
             window.location.replace("/user/" + user + "/delete");
         }
     }
-
     $('[data-toggle="tooltip"]').tooltip();
 });
