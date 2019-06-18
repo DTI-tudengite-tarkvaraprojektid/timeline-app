@@ -8,7 +8,7 @@
                 </h3>
             </div>
             <div class="col-sm">
-                <form id="msearch-form" action="{{ path_for('showEvents') }}">
+                <form id="msearch-form" action="{{ path_for('showEvents', {'page': page }) }}">
                     <div class="input-group mb-3">
                         <input class="form-control" id="msearch" name="query" placeholder="Otsi sündmust" type="text">
                         <div class="input-group-append">
@@ -18,14 +18,13 @@
                 </form>
             </div>
         </div>
-        <div class="accordion" id="events">
+        <div class="accordion mb-4" id="events">
             {% for event in events %}
                 <div class="card">
                     <a class="card-header text-body d-flex" href="#event-{{event.id}}" data-toggle="collapse">
                         <span>{{ event.title }}{% if event.private ==1 %} (Privaatne){% endif %}</span>
                         <span class="ml-auto">{{ event.timeline.name }} | Toimus: {{event.time|date('d/m/Y')}}</span>
                     </a>
-        
                     <div id="event-{{event.id}}" class="collapse" data-parent="#events">
                         <div class="card-body">
                             {{event.content}}
@@ -34,6 +33,27 @@
                 </div>
             {% endfor %}
         </div>
-
+        {% set currentPage = page %}
+            <nav aria-label="Pagination" class="d-flex justify-content-center">
+                <ul class="pagination">
+                {% if page != 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path_for('showEvents', {'page': page - 1}) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for i in range(0, pages) %}
+                    <li class="page-item {% if page == i + 1  %} active {% endif %}"><a class="page-link" href="{{ path_for('showEvents', {'page': (i + 1)}) }}">{{ i + 1 }}</a></li>
+                {% endfor %}
+                {% if page != pages + 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path_for('showEvents', {'page': page + 1}) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                </ul>
+            </nav>
     </div>
 {% endblock %}
