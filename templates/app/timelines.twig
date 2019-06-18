@@ -53,7 +53,7 @@
                                     <span>{{ timeline.name }}</span>
                                     {% if auth.check() %}
                                         <button type="button" class="btn btn-light btn-sm ml-auto editBtn" data-toggle="tooltip" data-placement="bottom" title="Muuda pealkirja" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}" data-description="{{ timeline.description }}" data-private="{{ timeline.private }}"><i class="far fa-edit"></i></button>
-                                        <button type="button" class="btn btn-light btn-sm ml-2 deleteTimelineButton text-danger" data-toggle="tooltip" data-placement="bottom" title="Kustuta" data-id="{{ timeline.id }}" data-name="{{ timeline.name }}"><i class="far fa-trash-alt"></i></button>
+                                        <button type="button" class="btn btn-light btn-sm ml-2 deleteTimelineButton text-danger" data-url="{{ path_for('delete-timeline', {'id': timeline.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Kustuta" data-name="{{ timeline.name }}"><i class="far fa-trash-alt"></i></button>
                                     {% endif %}
                                 </div>
                                 <div class="card-body">
