@@ -147,24 +147,49 @@ class EventController extends Controller
     {
         $timeline = Timeline::with('events')->findOrFail($id);
         $events = $timeline->events;
-        $output ="Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private,";
+        /*$output ="Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private,\n";
         for ($i=0; $i < count($events); $i++) {
             $event = $events[$i];
             $output .= '"' . addslashes($event->title) . '",';
             $output .= date('d/m/Y', strtotime($event->time));
-            $output .= ",,,";
-            $output .= addslashes($event->content);
-            $output .= ",,";
+            $output .= ",,,,,";
             if($event->private==1){
                 $output .= "True,";
             } else {
-                $output .= "False,";
+                $output .= "0,";
             }     
             $output .= "\n";
+        */
+
+        $output="BEGIN:VCALENDAR\n";
+        $output.="VERSION:2.0\n";
+        $output.="PRODID:TLU TIMELINE APP\n";
+        for ($i=0; $i < count($events); $i++) {
+            $event = $events[$i];
+            $output .="BEGIN:VEVENT\n";
+            $output .="DTSTART;VALUE=DATE:";
+            $output .=date('Y' ,strtotime($event->time));
+            $output .=date('m' ,strtotime($event->time));
+            $output .=date('d' ,strtotime($event->time));
+            $output .="\n";
+            $output .="SUMMARY:";
+            $output .= $event->title;
+            $output .="\n";
+            $output .="CLASS:";
+            if($event->private==1){
+                $output .= "PRIVATE";
+            } else {
+                $output .= "PUBLIC";
+            }   
+            $output .="\n";  
+            $output .="END:VEVENT\n";
         }
+
+        $output.="END:VCALENDAR";
+
         return $response
             ->withHeader('Content-Type', 'text/csv')
-            ->withHeader('Content-Disposition', 'attachment; filename="tlu-timeline-events.csv"')
-            ->write($output);
+            ->withHeader('Content-Disposition', 'attachment; filename="tlu-timeline-events.ics"')
+            ->write($output);       
     }
 }
