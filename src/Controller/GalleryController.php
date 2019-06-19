@@ -15,12 +15,19 @@ class GalleryController extends Controller
 
   public function gallery(Request $request, Response $response, $page = null)
   {
-    if ($page == null){
+    if ($page == null) {
       $page = 1;
     }
     $limit = 12;
     $skip = $limit * ($page - 1);
-    $pics = Content::where('type','IMAGE');
+    if ($this->auth->check()) {
+        $pics = Content::where('type','IMAGE');
+    } else {
+        $pics = Content::where('type','IMAGE')->whereHas('event', function ($query) {
+            $query->where('private', 0);
+        });
+    }
+    
     $pages = ceil($pics->count() / $limit) - 1;
     $pics = $pics->skip($skip)->limit($limit)->get();
     $groups = [];

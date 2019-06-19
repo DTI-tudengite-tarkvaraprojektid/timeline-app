@@ -20,11 +20,21 @@ class FilesController extends Controller
     }
     $limit = 10;
     $skip = $limit * ($page - 1);
+
+    
+
     if($searchquery == NULL){
       $files = Content::where('type','FILE');
     } else {
       $files = Content::search($searchquery)->where('type','FILE');
     }
+    if ($this->auth->check()) {
+      $files = Content::where('type','FILE');
+    } else {
+      $files = Content::where('type','FILE')->whereHas('event', function ($query) {
+      $query->where('private', 0);
+      });
+  }
     $pages = ceil($files->count() / $limit) - 1;
     $files = $files->skip($skip)->limit($limit)->get();
     $groups = [];
