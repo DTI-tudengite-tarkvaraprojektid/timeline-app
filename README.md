@@ -1,3 +1,44 @@
+# Timeline app
+
+ ![Screenshot](/assets/screenshot.png?raw=true "Screenshot")
+
+#### Eesmärk või lühikirjeldus
+
+Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile.
+
+#### Tallinna Ülikooli Digitehnoloogiate instituut
+Loodud suve praktika raames.
+
+#### Kasutatud tehnoloogiad
+- PHP : versioon 7.2
+- MariaDB : versioon 10.1
+- NodeJs : versioon 11.1
+- Apache 2
+
+**PHP teegid**
+- Slim 3 : versioon 3.0
+- Slim Flash : versioon 0.2.0
+- Slim Validation : versioon
+- Sentinel : versioon 2.0
+- Slim twig view : versioon 2.0
+- Eloquent : versioon 5.4
+
+**NodeJs teegid**
+- webpack : versioon 4.32
+- bootstrap : versioon 4.3
+- jquery : versioon 3.4
+- quill : versioon 1.3
+- tippy.js : versioon 4.3
+
+#### Arendajad
+- Marvin Helstein
+- Roland Vägi
+- David Frederik Erlich
+- Taavi Liivat
+- Steven Saluri
+
+# Paigaldus
+
 # Slim 3 application skeleton
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/297ce2e4-166d-45d5-8d11-ae0651a8c7ac/mini.png)](https://insight.sensiolabs.com/projects/297ce2e4-166d-45d5-8d11-ae0651a8c7ac) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/awurth/Slim/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/awurth/Slim/?branch=master)
@@ -37,14 +78,6 @@ $ npm install
 ```
 This will install Gulp dependencies and Semantic UI in `public/assets/lib/semantic/`.
 
-### Gulp
-This skeleton uses Gulp to manage assets. The CSS and Javascript files are located in `assets/`, so you have to use Gulp after creating your project to generate the minified files in `public/`, which will be ignored by Git.
-
-#### Install Gulp
-You can install Gulp globally on your system with the following command if you haven't done it yet
-``` bash
-$ npm install -g gulp-cli
-```
 
 #### Generate assets
 If you just want to generate the default CSS and JS that comes with this skeleton, run the following command
@@ -65,3 +98,4 @@ First, create a database with the name you set in the `.env` file. Then you can 
 ``` bash
 $ php bin/console db
 ```
+[License for this project](LICENSE)
