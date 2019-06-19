@@ -8,7 +8,6 @@ use App\Model\Content;
 use nadar\quill\Lexer;
 use Slim\Flash\Messages;
 use Slim\Views\TwigExtension;
-use App\Observer\ContentObserver;
 use Monolog\Handler\StreamHandler;
 use Twig\Extension\DebugExtension;
 use Monolog\Processor\UidProcessor;
@@ -31,7 +30,6 @@ $container['database-event-dispatcher'] = function ($c) {
 $capsule = new Manager();
 $capsule->addConnection($container['settings']['eloquent']);
 $capsule->setEventDispatcher($container['database-event-dispatcher']);
-
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
