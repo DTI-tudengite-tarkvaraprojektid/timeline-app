@@ -16,7 +16,7 @@
           {% endfor %}
         </div>
       {% endfor %}
-      {% set currentPage = page %}
+      {% if groups|length > 0 %}
       <nav aria-label="Pagination" class="d-flex justify-content-center">
         <ul class="pagination">
           {% if page != 1 %}
@@ -38,6 +38,7 @@
           {% endif %}
         </ul>
       </nav>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
