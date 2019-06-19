@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import { EventManager } from './timeline/EventManager';
 const moment = require('moment');
 require('../scss/app.scss');
 
@@ -42,6 +43,14 @@ $(function () {
 
     $('.edit-user-btn').click(editUser);
     $('#user-delete-btn').click(deleteUser);
+    $('.event-page-header').click(showEventInfo);
+
+
+    function showEventInfo() {
+      var data = $(this).data('attribute');
+      data = EventManager.convertDeltas(data);
+      $(this).parent().find('.card-body').html(data);
+    }
 
     function deleteTimeline() {
         var timeline = $(this).data("id");

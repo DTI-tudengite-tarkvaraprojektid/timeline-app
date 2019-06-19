@@ -125,7 +125,9 @@ class EventController extends Controller
         $events = Event::query();
                
         if(!$this->auth->check()){
-            $events = $events->where('private', 0);
+            $events = $events->where('private', 0)->whereHas('timeline', function ($query) {
+                $query->where('private', 0);
+            });
         }
 
         if ($request->getParam('query') != null) { 

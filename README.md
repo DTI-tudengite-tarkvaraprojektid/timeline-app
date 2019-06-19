@@ -4,7 +4,7 @@
 
 #### Eesmärk või lühikirjeldus
 
-Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi.
+Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi. Vajadus digiteerida instituudi ajaloo olulisemad sündmused. 
 
 #### Tallinna Ülikooli Digitehnoloogiate instituut
 See projekt on loodud suve praktika raames.

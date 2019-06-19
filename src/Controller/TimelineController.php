@@ -107,6 +107,18 @@ class TimelineController extends Controller
 
     public function editTimeline(Request $request, Response $response){
         $timeline = Timeline::find($request->getParam('id'));
+
+        $this->validator->request($request, [
+            'name' => V::length(1, null),
+        ]);
+
+        if (!$this->validator->isValid()) {
+            if ($this->validator->getFirstError('name')) {
+                $this->flash('danger', 'Kontrolli pealkirja');
+            }
+            return $response->withRedirect($this->path('home'));
+        }
+        
         $timeline->name = $request->getParam('name');
         $timeline->description = $request->getParam('description');
         $timeline->private = $request->getParam('private');

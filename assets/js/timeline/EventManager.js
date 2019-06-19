@@ -111,7 +111,7 @@ export class EventManager {
                         return element[0].outerHTML;
                     }
                 }); */
-                
+
             }
         });
 
@@ -161,7 +161,7 @@ export class EventManager {
         $('#event-edit').removeClass('list-group-item-success').text('Muuda sisu');
         $('#event-editor-container').addClass('card-body');
         $('#event-editor-container').html(
-            $('<div></div>').prop('id', 'event-editor').addClass('ql-editor').html(this.quill.root.innerHTML)
+            $('<div></div>').prop('id', 'event-editor').addClass('ql-editor text-break').html(this.quill.root.innerHTML)
         );
         this.quill = null;
         this.editing = false;
@@ -179,7 +179,7 @@ export class EventManager {
             this.quill = getQuill('#event-editor', this.currentEvent);
             this.quill.setContents(this.content);
             $('.ql-file').addClass('').html('<i class="far fa-file text-center"></i>');
-            
+
             this.editing = true;
         }
     }
