@@ -2,10 +2,10 @@
 
 {% block body %}
   <div class="container mt-3">
-    <h3>Galerii</h3>
+    <h3 class="ml-3">Galerii</h3>
     <div class="container">
       {% for group in groups %}
-        <h5 class="bg-dti p-2 mt-4 text-light">Ajajoone {{ group[0].event.timeline.name }} pildid</h5>
+        <h5 class="bg-dti p-2 mt-4 text-light rounded">Ajajoone {{ group[0].event.timeline.name }} pildid</h5>
         <div class="row">
           {% for pic in group %}
             <div class="col-sm-2">
