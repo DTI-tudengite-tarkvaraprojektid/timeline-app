@@ -18,7 +18,7 @@ class GalleryController extends Controller
     if ($page == null){
       $page = 1;
     }
-    $limit = 12;
+    $limit = 42;
     $skip = $limit * ($page - 1);
     $pics = Content::where('type','IMAGE');
     $pages = ceil($pics->count() / $limit) - 1;
