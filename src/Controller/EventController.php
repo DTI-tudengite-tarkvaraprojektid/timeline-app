@@ -107,7 +107,7 @@ class EventController extends Controller
         $event = Event::find($request->getParam('id'));
         $event->title = $request->getParam('title');
         $event->time = $request->getParam('time');
-        $event->private = $request->getParam('private');
+        $event->private = ($request->getParam('private') ? true : false);
         $event->save();
         $this->flash('success', 'Sündmus muudetud edukalt');
         return $response->withRedirect($this->path('timeline', [

@@ -27,7 +27,6 @@ export class EventManager {
         if (this.editing) {
             this.endEditing();
         }
-        console.log('showEvent(): ' + event.title);
         $("div.timeline div").removeClass("active");
         element.classList.add("active");
         this.card.find('#event-title').text(event.title);
