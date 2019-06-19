@@ -1,13 +1,13 @@
 # Timeline app
 
- ![Screenshot](/assets/screenshot.png?raw=true "Screenshot")
+ ![Screenshot](/assets/screenshot1.png?raw=true "Screenshot")
 
 #### Eesmärk või lühikirjeldus
 
-Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile.
+Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi.
 
 #### Tallinna Ülikooli Digitehnoloogiate instituut
-Loodud suve praktika raames.
+See projekt on loodud suve praktika raames.
 
 #### Kasutatud tehnoloogiad
 - PHP : versioon 7.2
@@ -62,7 +62,7 @@ This is an app skeleton for the Slim PHP Micro-Framework to get started quickly
 
 For more information, check out the project's [website](http://awurth.fr/doc/boilerplate/slim) or the [wiki](https://github.com/awurth/Slim/wiki).
 
-## Installation
+## Paigaldus
 ### Create the project using Composer
 ``` bash
 $ composer create-project awurth/slim-base [project-name]
@@ -98,4 +98,4 @@ First, create a database with the name you set in the `.env` file. Then you can 
 ``` bash
 $ php bin/console db
 ```
-[License for this project](LICENSE)
+[MIT License for this](LICENSE)
