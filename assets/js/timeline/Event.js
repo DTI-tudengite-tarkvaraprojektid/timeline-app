@@ -11,4 +11,18 @@ export class Event extends BaseEvent {
         this.fileUploadPath = fileUploadPath;
         this.deletePath = deletePath;
     }
+
+    static copyEvent(event) {
+        return new Event(
+            event.id,
+            event.title,
+            new Date(event.time.getTime()),
+            event.contentPath,
+            event.contentSavePath,
+            event.deletePath,
+            event.imageUploadPath,
+            event.privacy,
+            event.fileUploadPath
+        );
+    }
 }

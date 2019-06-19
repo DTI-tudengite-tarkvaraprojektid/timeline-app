@@ -3,4 +3,11 @@ export class BaseEvent {
         this.title = title;
         this.time = time;
     }
+
+    static copyEvent(event) {
+        return new BaseEvent(
+            event.title,
+            new Date(event.time.getTime())
+        );
+    }
 }

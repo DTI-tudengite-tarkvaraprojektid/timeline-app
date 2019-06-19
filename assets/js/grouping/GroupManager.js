@@ -19,13 +19,22 @@ export default class GroupManager {
     }
 
     createGroups(lastGroup, groupers) {
+        let groups = lastGroup;
+        let grouped = false;
         for (let i = 0; i < groupers.length; i++) {
             const grouper = groupers[i];
             if (grouper.canGroup(lastGroup)) {
                 console.log(lastGroup);
-                let groups = grouper.getGroups(lastGroup);
+                groups = grouper.getGroups(groups);
+                grouped = true;
+                if (groups instanceof Group) {
+                    continue;
+                }
                 return groups;
             }
+        }
+        if (grouped) {
+            return groups;
         }
         return false;
     }

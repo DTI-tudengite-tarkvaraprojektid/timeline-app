@@ -13,4 +13,15 @@ export class Group extends BaseEvent {
         this.events = events;
         this.onClick = onClick;
     }
+
+    static copyEvent(event) {
+        return new Group(
+            event.name,
+            event.events,
+            new Date(event.startTime.getTime()),
+            new Date(event.endTime.getTime()),
+            event.onClick,
+            new Date(event.time.getTime())
+        );
+    }
 }

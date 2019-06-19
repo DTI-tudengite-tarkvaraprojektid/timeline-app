@@ -38,14 +38,14 @@ export default class NearGrouper extends BaseGrouper {
             const event = lastGroup.events[i];
             let groupable = [];
             let gotGroup = false;
-            groupable.push(this.copyEvent(event));
+            groupable.push(event.constructor.copyEvent(event));
 
             for (let j = i + 1; j < count; j++) {
                 const nextEvent = lastGroup.events[j];
                 const eventsDelta = nextEvent.time.getTime() - event.time.getTime();
                 if (eventsDelta / delta < this.minDistance) {
                     gotGroup = true;
-                    groupable.push(this.copyEvent(nextEvent));
+                    groupable.push(nextEvent.constructor.copyEvent(nextEvent));
                     i = j;
                     console.log('Found near event');
                 } else {
@@ -80,19 +80,5 @@ export default class NearGrouper extends BaseGrouper {
         }
         newGroup.events = newEvents;
         return newGroup;
-    }
-
-    copyEvent(event) {
-        return new Event(
-            event.id,
-            event.title,
-            new Date(event.time.getTime()),
-            event.contentPath,
-            event.contentSavePath,
-            event.deletePath,
-            event.imageUploadPath,
-            event.privacy,
-            event.fileUploadPath
-        );
     }
 }

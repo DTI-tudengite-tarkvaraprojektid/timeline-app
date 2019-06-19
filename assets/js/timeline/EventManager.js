@@ -47,7 +47,7 @@ export class EventManager {
         window.location.replace(this.currentEvent.deletePath);
     }
 
-    convertDeltas(ops) {
+    static convertDeltas(ops) {
         var cfg = {};
         var converter = new QuillDeltaToHtmlConverter(ops, cfg);
 
@@ -143,7 +143,7 @@ export class EventManager {
     loadContent() {
         $.getJSON(this.currentEvent.contentPath, (data) => {
             this.content = data.content;
-            this.card.find('#event-editor').html(this.convertDeltas(this.content));
+            this.card.find('#event-editor').html(EventManager.convertDeltas(this.content));
         });
     }
 
