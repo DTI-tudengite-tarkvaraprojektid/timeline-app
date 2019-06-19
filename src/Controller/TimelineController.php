@@ -48,7 +48,9 @@ class TimelineController extends Controller
         if ($this->auth->check()) {
             $timelines = Timeline::withCount('events');
         } else {
-            $timelines = Timeline::withCount('events')->where('private', 0);
+            $timelines = Timeline::withCount(['events' => function ($query) {
+                $query->where('private', 0);
+            }])->where('private', 0);
         }
         $fullCount = $timelines->count();
 

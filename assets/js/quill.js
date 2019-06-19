@@ -50,6 +50,7 @@ export default function getQuill(element, event) {
     var toolbarOptions = [[{'size': []}, 'bold', 'italic', 'underline', 'strike'], [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image', 'video', 'file']];
     var quill = new Quill(element, {
         theme: 'snow',
+        bounds: element,
         modules: {
             toolbar: toolbarOptions,
             imageUpload: {
