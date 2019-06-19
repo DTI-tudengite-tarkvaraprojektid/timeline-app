@@ -1,6 +1,6 @@
 # Timeline app
 
- ![Screenshot](/assets/screenshot.png?raw=true "Screenshot")
+ ![Screenshot](/assets/screenshot1.png?raw=true "Screenshot")
 
 #### Eesmärk või lühikirjeldus
 
@@ -62,7 +62,7 @@ This is an app skeleton for the Slim PHP Micro-Framework to get started quickly
 
 For more information, check out the project's [website](http://awurth.fr/doc/boilerplate/slim) or the [wiki](https://github.com/awurth/Slim/wiki).
 
-## Installation
+## Paigaldus
 ### Create the project using Composer
 ``` bash
 $ composer create-project awurth/slim-base [project-name]
