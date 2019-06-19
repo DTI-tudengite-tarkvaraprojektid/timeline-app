@@ -20,10 +20,10 @@
             <label for="password">Password</label>
             <input type="password" class="form-control{% if has_error('auth') %} is-invalid{% endif %}" id="password" name="password" placeholder="Sisesta parool">
         </div>
-        <div class="custom-control custom-checkbox">
+        {# <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="remember" id="remember">
             <label class="custom-control-label" for="remember">Jäta meelde</label>
-        </div>
+        </div> #}
         {{ csrf() }}
         <button type="submit" class="btn btn-primary">Logi sisse</button>
     </form>

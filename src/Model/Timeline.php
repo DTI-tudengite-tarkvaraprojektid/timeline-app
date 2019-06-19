@@ -10,6 +10,16 @@ class Timeline extends Model
     use SoftDeletes;
     use FullTextSearchTrait;
     
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($timeline) {
+            $timeline->events->each(function ($event) {
+                $event->delete();
+            });
+        });
+    }
+
     /**
      * The columns of the full text index
      */
