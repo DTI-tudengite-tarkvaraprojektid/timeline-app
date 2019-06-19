@@ -4,10 +4,10 @@
 
 #### Eesmärk või lühikirjeldus
 
-Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile.
+Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi.
 
 #### Tallinna Ülikooli Digitehnoloogiate instituut
-Loodud suve praktika raames.
+See projekt on loodud suve praktika raames.
 
 #### Kasutatud tehnoloogiad
 - PHP : versioon 7.2
@@ -98,4 +98,4 @@ First, create a database with the name you set in the `.env` file. Then you can 
 ``` bash
 $ php bin/console db
 ```
-[License for this project](LICENSE)
+[MIT License for this](LICENSE)
