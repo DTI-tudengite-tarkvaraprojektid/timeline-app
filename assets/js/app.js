@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import { EventManager } from './timeline/EventManager';
 const moment = require('moment');
 require('../scss/app.scss');
 
@@ -41,7 +42,15 @@ $(function () {
     })
 
     $('.edit-user-btn').click(editUser);
-    $('.deleteUser').click(deleteUser);
+    $('#user-delete-btn').click(deleteUser);
+    $('.event-page-header').click(showEventInfo);
+
+
+    function showEventInfo() {
+      var data = $(this).data('attribute');
+      data = EventManager.convertDeltas(data);
+      $(this).parent().find('.card-body').html(data);
+    }
 
     function deleteTimeline() {
         var timeline = $(this).data("id");
@@ -107,10 +116,12 @@ $(function () {
 
     function deleteUser(){
         var user = $('#edit-user-id').val();
+        console.log('üritan kustutada');
         // var url = $(this).data('url');
         if (confirm("Kindel, et soovite kasutaja '" + fname + " " + lname + "' kustutada?")){
             window.location.replace("/user/" + user + "/delete");
         }
+        return false;
     }
     $('[data-toggle="tooltip"]').tooltip();
 });

@@ -100,7 +100,7 @@ class EventController extends Controller
         $event = Event::find($request->getParam('id'));
         $event->title = $request->getParam('title');
         $event->time = $request->getParam('time');
-        $event->private = $request->getParam('private');
+        $event->private = ($request->getParam('private') ? true : false);
         $event->save();
         $this->flash('success', 'Sündmus muudetud edukalt');
         return $response->withRedirect($this->path('timeline', [
@@ -118,7 +118,9 @@ class EventController extends Controller
         $events = Event::query();
                
         if(!$this->auth->check()){
-            $events = $events->where('private', 0);
+            $events = $events->where('private', 0)->whereHas('timeline', function ($query) {
+                $query->where('private', 0);
+            });
         }
 
         if ($request->getParam('query') != null) { 
