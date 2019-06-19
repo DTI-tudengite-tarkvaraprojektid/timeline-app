@@ -65,7 +65,7 @@ export class Timeline {
     }
 
     getTimelinePoint(index, event, left=0, width=null) {
-        let title = '<div class="d-flex mt-1" ><span>' + event.title + '</span>';
+        let title = '<div class="d-flex mt-1" ><span class="text-truncate">' + event.title + '</span>';
         if (event instanceof Group) {
             let startDate = new Date(event.startTime.getFullYear(), event.startTime.getMonth(), event.startTime.getDate());
             let endDate = new Date(event.endTime.getFullYear(), event.endTime.getMonth(), event.endTime.getDate());
@@ -74,7 +74,7 @@ export class Timeline {
             } else {
                 title += '<span class="ml-4">' + event.time.toLocaleDateString('et') + '</span>';
             }
-            
+
         } else {
             title += '<span class="ml-4">' + event.time.toLocaleDateString('et') + '</span>';
         }
@@ -88,7 +88,7 @@ export class Timeline {
             .css('left', left + '%')
 
         if (event instanceof Group) {
-            title += '<hr><ul class="text-left">';
+            title += '<hr><ul class="text-left text-break">';
             this.getGroupEventNames(event).forEach(eventName => {
                 title += '<li>' + eventName + '</li>';
             });
@@ -137,7 +137,7 @@ export class Timeline {
                                 let content = EventManager.convertDeltas(data.content);
                                 console.log(data);
                                 console.log(content);
-                                instance.setContent(title + '<div class="text-left">' + content + '</div>');
+                                instance.setContent(title + '<div class="text-left text-break">' + content + '</div>');
                             }
                         });
                 },
@@ -148,7 +148,7 @@ export class Timeline {
             point.css('width', width + '%');
         }
 
-        
+
         return point;
     }
 
