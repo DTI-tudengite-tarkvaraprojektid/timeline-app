@@ -98,7 +98,7 @@ $ php bin/console user:create --admin
 ``` bash
 $ composer start
 ```
-See käsk käiitab PHP built-in veebiserveri aadressil http://localhost:8080/
+See käsk käivitab PHP built-in veebiserveri aadressil http://localhost:8080/
 
 ## Litsents
 [MIT License](LICENSE)

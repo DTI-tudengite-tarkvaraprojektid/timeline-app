@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use Monolog\Logger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

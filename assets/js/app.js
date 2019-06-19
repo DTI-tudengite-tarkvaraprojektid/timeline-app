@@ -109,6 +109,7 @@ $(function () {
         $('#edit-user-lastname').val($(this).data('lastname'));
         $('#edit-user-role').prop("checked", $(this).data('admin'));
         $('#user-delete-btn').prop('href', $(this).data('delete-url'));
+        $('#user-password-btn').prop('href', $(this).data('password-url'));
         $('#edit-user-modal').modal('show');
         fname = $('#edit-user-firstname').val();
         lname = $('#edit-user-lastname').val();
