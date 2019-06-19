@@ -5,7 +5,7 @@
     <h3>Galerii</h3>
     <div class="container">
       {% for group in groups %}
-        <h5 class="bg-dti p-2 mt-4 text-light rounded">{{ group[0].event.timeline.name }}</h5>
+        <h5 class="bg-dti p-2 mt-4 text-light">Ajajoone {{ group[0].event.timeline.name }} pildid</h5>
         <div class="row">
           {% for pic in group %}
             <div class="col-sm-2">
