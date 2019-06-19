@@ -120,7 +120,7 @@ class EventController extends Controller
         if ($page == null){
             $page = 1;
         }
-        $limit = 3;
+        $limit = 10;
         $skip = $limit * ($page - 1);
         $events = Event::query();
                
