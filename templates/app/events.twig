@@ -21,13 +21,13 @@
         <div class="accordion mb-4" id="events">
             {% for event in events %}
                 <div class="card">
-                    <a class="card-header text-body d-flex" href="#event-{{event.id}}" data-toggle="collapse">
+                    <a class="card-header text-body d-flex event-page-header" href="#event-{{event.id}}" data-toggle="collapse" data-attribute="{{ event.content }}">
                         <span>{{ event.title }}{% if event.private ==1 %} (Privaatne){% endif %}</span>
                         <span class="ml-auto">{{ event.timeline.name }} | Toimus: {{event.time|date('d/m/Y')}}</span>
                     </a>
                     <div id="event-{{event.id}}" class="collapse" data-parent="#events">
                         <div class="card-body">
-                            {{event.content}}
+                          
                         </div>
                     </div>
                 </div>
