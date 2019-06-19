@@ -63,6 +63,8 @@ export class TimelineManager {
 
         var groupManager = new GroupManager([
             new CountRule(10, [
+                new SameDayGrouper(),
+                new NearGrouper(0.025),
                 new YearGrouper(5),
                 new MonthGrouper(5)
             ]),
