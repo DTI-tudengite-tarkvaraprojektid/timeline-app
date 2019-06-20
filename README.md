@@ -8,8 +8,7 @@
 
 Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi. Vajadus digiteerida instituudi ajaloo olulisemad sündmused. 
 
-#### Tallinna Ülikooli Digitehnoloogiate instituut
-See projekt on loodud suve praktika raames.
+See projekt on loodud suve praktika raames Tallinna Ülikooli Digitehnoloogiate instituudis. Koduleht: [www.tlu.ee/dt](https://www.tlu.ee/dt)
 
 ---
 
@@ -23,7 +22,7 @@ See projekt on loodud suve praktika raames.
 
 - Slim 3 : versioon 3.0
 - Slim Flash : versioon 0.2.0
-- Slim Validation : versioon
+- Slim Validation : versioon 3.0
 - Sentinel : versioon 2.0
 - Slim twig view : versioon 2.0
 - Eloquent : versioon 5.4
