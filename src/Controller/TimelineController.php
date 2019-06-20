@@ -41,16 +41,16 @@ class TimelineController extends Controller
             'timeline' => $timeline
         ]);
     }
-
+    
 
     public function timelines(Request $request, Response $response, $query = null)
-    {     
+    {
         if ($this->auth->check()) {
             $timelines = Timeline::withCount('events');
         } else {
             $timelines = Timeline::withCount(['events' => function ($query) {
                 $query->where('private', 0);
-            }])->where('private', 0);
+            }])->where('timelines.private', 0);
         }
         $fullCount = $timelines->count();
 
@@ -118,7 +118,7 @@ class TimelineController extends Controller
             }
             return $response->withRedirect($this->path('home'));
         }
-        
+
         $timeline->name = $request->getParam('name');
         $timeline->description = $request->getParam('description');
         $timeline->private = $request->getParam('private');
