@@ -134,16 +134,19 @@ class UserController extends Controller
         }
         
         if (!$this->validator->isValid()) {
+            $messages = [];
             foreach ($this->validator->getErrors() as $key => $value) {
                 if (\is_array($value)) {
                     foreach ($value as $message) {
-                        $this->flash('danger', $message);
+                        $messages[] = $message;
                     }
                 } else {
-                    $this->flash('danger', $value);
+                    $messages[] = $value;
                 }
             }
-            return $response->withRedirect($this->path('users'));
+            return $response->withStatus(400)->withJson([
+                'messages' => $messages
+            ]);
         }
 
         $role = $this->auth->findRoleByName('User');
@@ -164,7 +167,9 @@ class UserController extends Controller
 
         $role->users()->attach($user);
 
-        return $response->withRedirect($this->path('users'));
+        return $response->withJSON([
+            'messages' => 'User created'
+        ]);
     }
 
     public function editUser(Request $request, Response $response)
@@ -193,16 +198,19 @@ class UserController extends Controller
         }
         
         if (!$this->validator->isValid()) {
+            $messages = [];
             foreach ($this->validator->getErrors() as $key => $value) {
                 if (\is_array($value)) {
                     foreach ($value as $message) {
-                        $this->flash('danger', $message);
+                        $messages[] = $message;
                     }
                 } else {
-                    $this->flash('danger', $value);
+                    $messages[] = $value;
                 }
             }
-            return $response->withRedirect($this->path('users'));
+            return $response->withStatus(400)->withJson([
+                'messages' => $messages
+            ]);
         }
 
         if ($request->getParam('admin') === null) {
@@ -220,7 +228,9 @@ class UserController extends Controller
         $user->roles()->detach();
         $role->users()->attach($user);
         $this->flash('success', 'Kasutajakonto muudetud edukalt');
-        return $response->withRedirect($this->path('users'));
+        return $response->withJSON([
+            'messages' => 'User changed successfully'
+        ]);
     }
 
     public function delete(Request $request, Response $response, $id)

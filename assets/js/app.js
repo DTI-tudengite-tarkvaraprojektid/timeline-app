@@ -41,6 +41,8 @@ $(function () {
         });
     })
 
+    $('#new-user-form-button').click(saveUser);
+    $('#edit-user-form-button').click(saveUser);
     $('.edit-user-btn').click(editUser);
     $('#user-delete-btn').click(deleteUser);
     $('.event-page-header').click(showEventInfo);
@@ -97,6 +99,27 @@ $(function () {
         $('#edit-timeline-description').val($(this).data('description'));
         $('#edit-timeline-privacy').prop("checked", $(this).data('private') == 1 ? true : false);
         $('#edit-timeline-modal').modal('show');
+    }
+
+    function saveUser(e) {
+        e.preventDefault();
+        let form = $(this).parents('form');
+        let url = form.prop('action');
+        form.find('.errors').html('');
+        $.post(url, form.serialize())
+            .done(function(data) {
+                location.reload();
+            })
+            .fail(function(xhr, status, error) {
+                let errors = JSON.parse(xhr.responseText).messages;
+                errors.forEach(message => {
+                    form.find('.errors').append(
+                        '<div class="alert alert-danger" role="alert">' +
+                            message +
+                        '</div>'
+                    );
+                });
+            });
     }
 
     var fname, lname;
