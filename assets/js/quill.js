@@ -24,6 +24,13 @@ import FileUpload from './quill/FileUpload';
 
 Image.className = 'img-fluid';
 
+Link.sanitize = function(url) {
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'http://' + url;
+    }
+    return url;
+}
+
 Quill.register({
     'modules/toolbar': Toolbar,
     'themes/snow': Snow,

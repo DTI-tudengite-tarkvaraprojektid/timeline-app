@@ -77,28 +77,14 @@ class ContentController extends Controller
             }
         }
 
-        $query = $event->content()->whereNotIn('id', $content);
-        $deletables = $query->get();
-        foreach ($deletables as $row) {
-            $this->deleteContentFile($row);
-        }
-
-        $query->delete();
+        $event->contents()->whereNotIn('id', $content)->get()->each(function($content) {
+            $content->delete();
+        });
 
         $event->save();
         return $response->withJson([
             'message' => 'Content saved'
         ]);
-    }
-
-    protected function deleteContentFile($content) {
-        if ($content->type == 'IMAGE') {
-            unlink($this->settings['thumbnail_path'] . '/' . $content->content);
-            unlink($this->settings['upload_path'] . '/' . $content->content);
-        } else if ($content->type == 'FILE') {
-            $file = json_decode($content->content);
-            unlink($this->settings['file_upload_path'] . '/' . $file->path);
-        }
     }
 
     public function getImage(Request $request, Response $response, $id, $imageId) {
@@ -144,7 +130,7 @@ class ContentController extends Controller
             $content = new Content();
             $content->type = 'IMAGE';
             $content->content = $files[0]->getFilename();
-            $event->content()->save($content);
+            $event->contents()->save($content);
 
             return $response->withJson([
                 'message' => 'Image uploaded',
@@ -183,7 +169,7 @@ class ContentController extends Controller
                 'path' => $files[0]->getFilename(),
                 'name' => $files[0]->getClientFileName()
             ]);
-            $event->content()->save($content);
+            $event->contents()->save($content);
 
             return $response->withJson([
                 'message' => 'File uploaded',

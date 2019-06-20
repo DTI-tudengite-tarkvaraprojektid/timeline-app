@@ -11,7 +11,7 @@
                 <form id="edit-user-form" action="{{ path_for('edit-user') }}" method="POST">
                     <div class="form-group">
                         <label for="edit-user-email">Email</label>
-                        <input class="form-control" id="edit-user-email" type="email" name="email">
+                        <input class="form-control" id="edit-user-email" type="email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-user-firstname">Eesnimi</label>
@@ -27,9 +27,10 @@
                     </div>
                     <input type="hidden" name="id" id="edit-user-id"></input>
                     <div class="modal-footer">
-                        <a href="#" id="user-delete-btn" class="btn btn-outline-danger">Kustuta kasutaja</a>
-                        <button class="btn btn-secondary" data-dismiss="modal" type="button">Tühista</button>
-                        <button class="btn btn-dti" type="submit" name="editUser">Muuda</button>
+                        <a href="#" id="user-delete-btn" class="btn btn-sm btn-outline-danger">Kustuta kasutaja</a>
+                        <a href="#" id="user-password-btn" class="btn btn-sm btn-outline-info mr-auto">Muuda parooli</a>
+                        <button class="btn btn-sm btn-secondary" data-dismiss="modal" type="button">Tühista</button>
+                        <button class="btn btn-sm btn-dti" type="submit" name="editUser">Muuda</button>
                     </div>
                 </form>
             </div>

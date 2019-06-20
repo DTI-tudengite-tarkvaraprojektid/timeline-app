@@ -37,6 +37,7 @@
 
 .timeline-point {
     position: absolute;
+    outline: none;
     transition: background-color 0.2s;
     height: 25px;
 
@@ -229,4 +230,14 @@ span.event-file {
 body {
   //background: rgb(107,202,186);
   //background: linear-gradient(90deg, rgba(107,202,186,1) 0%, rgba(107,202,186,1) 6%, rgba(255,255,255,1) 6%);
+}
+
+.tippy-tooltip.light-border-theme .tippy-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    max-height: 350px;
 }

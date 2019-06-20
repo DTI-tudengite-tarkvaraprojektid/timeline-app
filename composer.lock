@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39e48f12144ff9a63a7b2a241d2604a5",
+    "content-hash": "9befd1d9a9da6a36cdee974bb45a0784",
     "packages": [
         {
             "name": "awurth/slim-helpers",

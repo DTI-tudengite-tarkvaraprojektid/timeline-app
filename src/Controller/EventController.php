@@ -88,13 +88,6 @@ class EventController extends Controller
         $event = Event::find($id);
         $timelineId = $event->timeline->id;
 
-        $query = $event->content();
-        foreach ($event->content as $row) {
-            $this->deleteContentFile($row);
-        }
-
-        $event->content()->delete();
-
         Event::destroy($id);
 
         $this->flash('success', 'Sündmus kustutatud');
@@ -141,16 +134,6 @@ class EventController extends Controller
             'page' => $page,
             'pages' => $pages
         ]);
-    }
-
-    protected function deleteContentFile($content) {
-        if ($content->type == 'IMAGE') {
-            unlink($this->settings['thumbnail_path'] . '/' . $content->content);
-            unlink($this->settings['upload_path'] . '/' . $content->content);
-        } else if ($content->type == 'FILE') {
-            $file = json_decode($content->content);
-            unlink($this->settings['file_upload_path'] . '/' . $file->path);
-        }
     }
 
     public function exportEvents(Request $request, Response $response, $id)

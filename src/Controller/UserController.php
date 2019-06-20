@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Model\User;
-use Awurth\Slim\Helper\Controller\Controller;
-use Respect\Validation\Validator as V;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Respect\Validation\Validator as V;
+use Awurth\Slim\Helper\Controller\Controller;
+use Awurth\Slim\Helper\Exception\AccessDeniedException;
 
 class UserController extends Controller
 {
@@ -22,6 +23,32 @@ class UserController extends Controller
     public function profile(Request $request, Response $response)
     {
         if ($request->isPost()) {
+
+            // Email Validation
+            $this->validator->request($request, [
+                'email' => [
+                    'rules' => V::length(1, null)->email(),
+                    'message' => 'Kontrolli emaili'
+                ]
+            ]);
+    
+            if ($this->auth->findByCredentials(['login' => $request->getParam('email')])) {
+                $this->validator->addError('email', 'Sisestatud email on juba kasutusel');
+            }
+            
+            if (!$this->validator->isValid()) {
+                foreach ($this->validator->getErrors() as $key => $value) {
+                    if (\is_array($value)) {
+                        foreach ($value as $message) {
+                            $this->flash('danger', $message);
+                        }
+                    } else {
+                        $this->flash('danger', $value);
+                    }
+                }
+                return $response->withRedirect($this->path('profile'));
+            }
+
             $array = [
                 'email' => $request->getParam('email'),
                 'firstname' => $request->getParam('firstname'),
@@ -44,7 +71,7 @@ class UserController extends Controller
             if ($this->auth->getUser()->inRole('admin')) {
                 $user = $this->auth->findUserById($id);
             } else {
-                throw new \Exception('Not admin');
+                throw new AccessDeniedException($request, $response);
             }
         }
 
@@ -52,17 +79,33 @@ class UserController extends Controller
             $password1 = $request->getParam('password');
             $password2 = $request->getParam('newpassword');
 
-            if (empty($password1)) {
-                $this->flash('danger', 'Parooli väljad ei tohi olla tühjad');
-            } elseif ($password1 == $password2) {
-                $array = [
-                    'password' => $password1,
-                ];
-                $user = $this->auth->update($user, $array);
-                $this->flash('success', 'Parool muudetud edukalt!');
-            } else {
-                $this->flash('danger', 'Paroolid peavad olema samad!');
+            // Validation
+            $this->validator->request($request, [
+                'password' => [
+                    'rules' => V::length(6, null),
+                    'message' => 'Parool peab olema vähemalt 6 tähemärki pikk'
+                ],
+                'newpassword' => [
+                    'rules' => V::equals($password1),
+                    'message' => 'Paroolid ei kattu'
+                ],
+            ]);
+            
+            if (!$this->validator->isValid()) {
+                foreach ($this->validator->getErrors() as $key => $value) {
+                    if (\is_array($value)) {
+                        foreach ($value as $message) {
+                            $this->flash('danger', $message);
+                        }
+                    } else {
+                        $this->flash('danger', $value);
+                    }
+                }
+                return $response->withRedirect($this->path('change-password', ['id' => $id]));
             }
+
+            $user = $this->auth->update($user, ['password' => $password1]);
+            $this->flash('success', 'Parool muudetud edukalt!');
 
             return $response->withRedirect($this->path('change-password', ['id' => $id]));
         }
@@ -74,24 +117,32 @@ class UserController extends Controller
 
     public function addUser(Request $request, Response $response)
     {
-        // Validate input:
+        // Validation
         $this->validator->request($request, [
-            'email' => V::length(1, null)->email(),
-            'password' => V::length(1, null)
+            'email' => [
+                'rules' => V::length(1, null)->email(),
+                'message' => 'Kontrolli emaili'
+            ],
+            'password' => [
+                'rules' => V::length(6, null),
+                'message' => 'Parool peab olema vähemalt 6 tähemärki pikk'
+            ],
         ]);
 
-        if (!$this->validator->isValid()) {
-            if ($this->validator->getFirstError('email')) {
-                $this->flash('danger', 'Kontrolli Emaili');
-            } else if ($this->validator->getFirstError('password')) {
-                $this->flash('danger', 'Kontrolli salasõna');
-            }
-
-            return $response->withRedirect($this->path('users'));
-        }
         if ($this->auth->findByCredentials(['login' => $request->getParam('email')])) {
-            $this->validator->addError('email', 'Email already taken.');
-            $this->flash('danger', 'Sisestatud email on juba kasutusel');
+            $this->validator->addError('email', 'Sisestatud email on juba kasutusel');
+        }
+        
+        if (!$this->validator->isValid()) {
+            foreach ($this->validator->getErrors() as $key => $value) {
+                if (\is_array($value)) {
+                    foreach ($value as $message) {
+                        $this->flash('danger', $message);
+                    }
+                } else {
+                    $this->flash('danger', $value);
+                }
+            }
             return $response->withRedirect($this->path('users'));
         }
 
@@ -102,9 +153,8 @@ class UserController extends Controller
             'lastname' => $request->getParam('lastname'),
             'email' => $request->getParam('email'),
             'password' => $request->getParam('password'),
-            'admin' => $request->getParam('admin'),
         ]);
-        if (isset($_POST['admin'])) {
+        if ($request->getParam('admin')) {
             $role = $this->auth->findRoleByName('admin');
             $this->flash('success', 'Administraatori konto loodud');
         } else {
@@ -127,7 +177,32 @@ class UserController extends Controller
         }
 
         if (!$this->auth->getUser()->inRole('admin')) {
-            throw new \Exception('Not admin');
+            throw new AccessDeniedException($request, $response);
+        }
+
+        // Email Validation
+        $this->validator->request($request, [
+            'email' => [
+                'rules' => V::length(1, null)->email(),
+                'message' => 'Kontrolli emaili'
+            ]
+        ]);
+
+        if ($user->email !== $request->getParam('email') && $this->auth->findByCredentials(['login' => $request->getParam('email')])) {
+            $this->validator->addError('email', 'Sisestatud email on juba kasutusel');
+        }
+        
+        if (!$this->validator->isValid()) {
+            foreach ($this->validator->getErrors() as $key => $value) {
+                if (\is_array($value)) {
+                    foreach ($value as $message) {
+                        $this->flash('danger', $message);
+                    }
+                } else {
+                    $this->flash('danger', $value);
+                }
+            }
+            return $response->withRedirect($this->path('users'));
         }
 
         if ($request->getParam('admin') === null) {

@@ -10,6 +10,16 @@ class Event extends Model
     use SoftDeletes;
     use FullTextSearchTrait;
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($event) {
+            $event->contents->each(function ($content) {
+                $content->delete();
+            });
+        });
+    }
+
     /**
      * The columns of the full text index
      */
@@ -28,7 +38,7 @@ class Event extends Model
         return $this->belongsTo('App\Model\Timeline');
     }
 
-    public function content()
+    public function contents()
     {
         return $this->hasMany('App\Model\Content');
     }

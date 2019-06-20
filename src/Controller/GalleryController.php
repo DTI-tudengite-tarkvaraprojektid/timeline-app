@@ -18,7 +18,7 @@ class GalleryController extends Controller
     if ($page == null) {
       $page = 1;
     }
-    $limit = 12;
+    $limit = 42;
     $skip = $limit * ($page - 1);
     if ($this->auth->check()) {
         $pics = Content::where('type','IMAGE');

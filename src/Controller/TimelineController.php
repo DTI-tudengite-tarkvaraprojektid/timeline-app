@@ -41,7 +41,7 @@ class TimelineController extends Controller
             'timeline' => $timeline
         ]);
     }
-
+    
 
     public function timelines(Request $request, Response $response, $query = null)
     {
