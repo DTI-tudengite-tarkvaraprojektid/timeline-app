@@ -24,7 +24,6 @@ export default class GroupManager {
         for (let i = 0; i < groupers.length; i++) {
             const grouper = groupers[i];
             if (grouper.canGroup(lastGroup)) {
-                console.log(lastGroup);
                 groups = grouper.getGroups(groups);
                 grouped = true;
                 if (groups instanceof Group) {

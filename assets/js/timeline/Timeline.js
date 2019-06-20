@@ -135,8 +135,6 @@ export class Timeline {
                                     });
                                 }
                                 let content = EventManager.convertDeltas(data.content);
-                                console.log(data);
-                                console.log(content);
                                 instance.setContent(title + '<div class="text-left text-break">' + content + '</div>');
                             }
                         });

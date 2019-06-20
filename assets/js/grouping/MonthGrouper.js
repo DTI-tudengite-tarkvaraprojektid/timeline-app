@@ -24,18 +24,14 @@ export default class MonthGrouper extends BaseGrouper {
 
         let groups = [];
         let lastMonth = startMonth;
-        console.log()
         // Create first month
         let group = group = new Group(moment(lastMonth + 1, 'M').format('MMMM'), [], new Date(year, lastMonth, 1), new Date(year, lastMonth + 1, 1));
         groups.push(group);
 
         lastGroup.events.forEach(event => {
             let month = event.time.getMonth();
-            
             if (month > lastMonth) {
-
-
-                let tempMonth = month + 1;
+                let tempMonth = lastMonth + 1;
                 while (month > tempMonth) {
                     groups.push(new Group(moment(tempMonth + 1, 'M').format('MMMM'), [], new Date(year, tempMonth, 1), new Date(year, tempMonth + 1, 1)));
                     lastMonth = tempMonth;
