@@ -32,7 +32,7 @@ class UserController extends Controller
                 ]
             ]);
     
-            if ($this->auth->findByCredentials(['login' => $request->getParam('email')])) {
+            if ($this->auth->getUser()->email !== $request->getParam('email') && $this->auth->findByCredentials(['login' => $request->getParam('email')])) {
                 $this->validator->addError('email', 'Sisestatud email on juba kasutusel');
             }
             
