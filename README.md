@@ -2,12 +2,16 @@
 
  ![Screenshot](/assets/screenshot1.png?raw=true "Screenshot")
 
+---
+
 ## Eesmärk või lühikirjeldus
 
 Eesmärgiks oli luua tööriist kuhu saaks instituudi liikmed lisada tekste, fotosid, videoid ja faile ning neid otsida märksõnade järgi. Luua ka ajajoon kuhu saaks lisada sündmusi ja sündmuste sisse pilte, faile ja videosi. Vajadus digiteerida instituudi ajaloo olulisemad sündmused. 
 
 #### Tallinna Ülikooli Digitehnoloogiate instituut
 See projekt on loodud suve praktika raames.
+
+---
 
 ## Kasutatud tehnoloogiad
 - PHP : versioon 7.2
@@ -16,6 +20,7 @@ See projekt on loodud suve praktika raames.
 - Apache 2
 
 **PHP teegid**
+
 - Slim 3 : versioon 3.0
 - Slim Flash : versioon 0.2.0
 - Slim Validation : versioon
@@ -24,11 +29,14 @@ See projekt on loodud suve praktika raames.
 - Eloquent : versioon 5.4
 
 **NodeJs teegid**
+
 - webpack : versioon 4.32
 - bootstrap : versioon 4.3
 - jquery : versioon 3.4
 - quill : versioon 1.3
 - tippy.js : versioon 4.3
+
+---
 
 ## Arendajad
 - Marvin Helstein
@@ -37,8 +45,10 @@ See projekt on loodud suve praktika raames.
 - Taavi Liivat
 - Steven Saluri
 
+---
+
 ## Eeltingimused
-Selle projekt installimiseks peab sinu arenduskeskkonnas olema PHP 7.2, Node.js, composer ning andmebaas mida Laravel toetab.
+Selle projekt installimiseks peab sinu arenduskeskkonnas olema PHP 7.2, Node.js, composer ning MySQL või MariaDB.
 
 ## Arenduskeskkonna loomine
 
