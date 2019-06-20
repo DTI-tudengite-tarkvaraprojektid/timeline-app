@@ -113,7 +113,7 @@ class EventController extends Controller
         if ($page == null){
             $page = 1;
         }
-        $limit = 10;
+        $limit = 20;
         $skip = $limit * ($page - 1);
         $events = Event::query();
                
@@ -132,7 +132,8 @@ class EventController extends Controller
         return $this->render($response, 'app/events.twig', [
             'events' => $events,
             'page' => $page,
-            'pages' => $pages
+            'pages' => $pages,
+            'limit' => $limit
         ]);
     }
 

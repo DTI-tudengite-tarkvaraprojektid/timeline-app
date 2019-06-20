@@ -18,7 +18,7 @@ class FilesController extends Controller
     if ($page == null) {
       $page = 1;
     }
-    $limit = 10;
+    $limit = 20;
     $skip = $limit * ($page - 1);
 
     
